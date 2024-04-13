@@ -1,4 +1,88 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[source]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib\media\favicon.png</url><title>source</title><link></link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Sat, 13 Apr 2024 17:17:52 GMT</lastBuildDate><atom:link href="lib\rss.xml" rel="self" type="application/rss+xml"/><pubDate>Sat, 13 Apr 2024 17:17:43 GMT</pubDate><ttl>60</ttl><dc:creator></dc:creator><item><title><![CDATA[编码和字符集]]></title><description><![CDATA[ 
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[source]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib\media\favicon.png</url><title>source</title><link/></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Sat, 13 Apr 2024 20:25:46 GMT</lastBuildDate><atom:link href="lib\rss.xml" rel="self" type="application/rss+xml"/><pubDate>Sat, 13 Apr 2024 20:25:46 GMT</pubDate><ttl>60</ttl><dc:creator/><item><title><![CDATA[Hexo指南]]></title><description><![CDATA[ 
+ <br><br>
+<br>创建新文章
+<br>hexo new [layout] &lt;title&gt;
+
+- post
+- page
+- draft
+
+hexo new post -p cs-theory/xxx "title name"
+复制<br>
+<br>git提交修改
+<br>git add xxx
+git commit -m ""
+git push
+复制<br>git push之后，内容就会被推送到hexo分支上<br><br>
+<br>clean and generate public floder
+<br>hexo clean
+hexo g
+复制<br>
+<br>推送并部署<br>
+该处推送，会将master分支（部署分支）推送到远程master分支上。
+<br>hexo d
+复制<br><br>
+<br>
+主题的设置
+修改博客配置_config.yml中的theme为theme文件夹下的目录
+
+<br>
+<a data-tooltip-position="top" aria-label="https://hexo.io/zh-cn/docs/themes" rel="noopener" class="external-link" href="https://hexo.io/zh-cn/docs/themes" target="_blank">主题目录结构</a>
+
+<br>
+添加新模板
+主题模板(区别于hexo根目录下的scaffolds目录中的模板，scaffolds目录中的模板用于创建不同布局文件时的format-header自动填充)，指的是页面的显示模式，不同功能的页面需要不同的模板以适应不同内容的显示。theme下的layout目录中的各种ejs就代表不同的模板，如：index.ejs是首页模板，用于渲染首页；tags.ejs是tag页面模板，用于渲染tags页面等。这些不同的模板当然可以相互之间毫无关联，均开始于 html 标签，但由于复用的缘故，模板默认使用一个共同的布局——layout.ejs。该布局文件layout.ejs中需要提供 &lt;%- body %&gt; ，其他ejs模板就可以公用layout中的公共部分了
+
+<br>1. 新建一个新模板
+	hexo new page "about"
+2. 修改模板头部信息,添加layout头部信息
+	cd _post/about
+	vim index.md
+	layout: about
+
+3. 在theme/xxx/layout目录下创建模板ejs文件 `about.ejs`
+	cd layout
+	vim about.ejs
+复制<br>
+<br>
+ejs简单说明
+ejs是一种模板引擎，类似于php。用于动态生成html。在ejs标记内部使用的是js来作为编程语言的。通过模板引擎，让我们的html可以在前端就动态生成了。
+
+<br><br>github上的两个分支，master和hexo分支。默认clone和展示的分支是hexo分支。hexo分支就是保存我们本地文件的分支。而master分支是hexo进行generate和deploy的分支，当我们写完文章准备同步到远程的时候。我们需要同时更新这两个分支。<br>
+master分支：hexo博客部署和展示的分支，html<br>
+hexo分支：博客修改和创作的分支,md
+<br>
+<br>更新hexo分支
+<br>
+<br>git add .
+<br>git commit
+<br>git push
+<br>
+<br>更新master分支
+<br>
+<br>hexo deploy -g
+<br>Note
+
+<br>hexo部署流程已通过Github Actions的功能进行了优化，文章写完之后推送到远程即可实现自动化部署到Github Pages界面
+<br>更好的笔记部署方式是通过obsidian插件webpage html export 插件将笔记转换成html之后，部署到vercel这个 静态界面托管平台 <a href="about:blank#fn-1-c6c4086470ed9265" class="footnote-link" target="_self" rel="noopener">[1]</a><a href="about:blank#fn-2-c6c4086470ed9265" class="footnote-link" target="_self" rel="noopener">[2]</a> 进行管理，这个平台只需要一个GitHub网址，即可在你更新仓库之后自动部署到vercel平台，不需要编写Github Actions文件。并且该插件能够保留你obsidian中当前的布局和主题，真正做到所见即所得的网址效果
+
+<br><br>
+<br><a data-tooltip-position="top" aria-label="https://github.com/arashrun.github.io" rel="noopener" class="external-link" href="https://github.com/arashrun.github.io" target="_blank">Github Pages</a>
+<br><a data-tooltip-position="top" aria-label="https://arashrun.vercel.app" rel="noopener" class="external-link" href="https://arashrun.vercel.app" target="_blank">Vercel</a>
+<br><br><br>
+<br>
+<br>
+推荐的托管平台
+
+<br><a data-tooltip-position="top" aria-label="https://www.xxyopen.com/2022/07/19/tools/pages_host.html" rel="noopener" class="external-link" href="https://www.xxyopen.com/2022/07/19/tools/pages_host.html" target="_blank">几个免费的静态网站托管平台对比 | xxyopen</a>
+<br><a data-tooltip-position="top" aria-label="https://zhuanlan.zhihu.com/p/180152636" rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/180152636" target="_blank">静态托管平台收集 - 知乎 (zhihu.com)</a>
+
+<a href="about:blank#fnref-1-c6c4086470ed9265" class="footnote-backref footnote-link" target="_self" rel="noopener">↩︎</a>
+
+<br>
+vercel的站点需要一个 index.html 文件才能正常访问，使用webpage插件导出的笔记目录中是没有该index.html的，导致访问vercel站点会出现404错误，可以手写一个入口界面，指向指定的内部界面即可<a href="about:blank#fnref-2-c6c4086470ed9265" class="footnote-backref footnote-link" target="_self" rel="noopener">↩︎</a>
+
+]]></description><link>_posts\hexo指南.html</link><guid isPermaLink="false">_posts/Hexo指南.md</guid><pubDate>Sat, 13 Apr 2024 20:10:18 GMT</pubDate></item><item><title><![CDATA[编码和字符集]]></title><description><![CDATA[ 
  <br><br><br><img src="lib\media\字符集.png"><br>
 要点分析：<br>
 <br>字符集，是字符与其标识代码值的映射关系
@@ -7,7 +91,7 @@
 <br>【补充字符】 【代理项】
 <br>在windows采用unicode之前，存在一些不统一的老旧字符集
 <br>windows代码页，用于在不同的老旧字符集之间切换
-]]></description><link>_posts\编码和字符集.html</link><guid isPermaLink="false">_posts/编码和字符集.md</guid><pubDate>Fri, 17 Mar 2023 14:31:24 GMT</pubDate><enclosure url="lib\media\字符集.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\字符集.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[编码问题]]></title><description><![CDATA[ 
+]]></description><link>_posts\编码和字符集.html</link><guid isPermaLink="false">_posts/编码和字符集.md</guid><pubDate>Fri, 17 Mar 2023 14:31:24 GMT</pubDate><enclosure url="lib\media\字符集.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\字符集.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[编码问题]]></title><description><![CDATA[ 
  <br><br>​<br><br>ANSI	各个国家的ansi编码不一样，中国的ansi为GBK编码，繁体中文为big5，日本的ansi为shift_jis<br>
 ​UTF-8	使用变长字节，包含世界上所有文字<br>
 ​UNICODE	使用2两个字节，统一使用2字节。且在内存中和在网络传输中都是unicode编码。<br>
@@ -120,7 +204,7 @@ Bike b;
 b.PrintTyre();
 c.PrintTyre();
 }
-复制]]></description><link>_posts\多态.html</link><guid isPermaLink="false">_posts/多态.md</guid><pubDate>Tue, 07 Mar 2023 02:01:36 GMT</pubDate><enclosure url="lib\media\为何引入虚基类.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\为何引入虚基类.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[公众号文章爬取]]></title><description><![CDATA[ 
+复制]]></description><link>_posts\多态.html</link><guid isPermaLink="false">_posts/多态.md</guid><pubDate>Tue, 07 Mar 2023 02:01:36 GMT</pubDate><enclosure url="lib\media\为何引入虚基类.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\为何引入虚基类.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[公众号文章爬取]]></title><description><![CDATA[ 
  <br>
 需求：对指定公众号的所有文章进行爬取。
 <br><br>
@@ -210,7 +294,7 @@ for i in range(start - 1, end + 1):
     # df.to_excel(writer, encoding='utf-8', index=False)
     # writer.save()
 
-复制]]></description><link>_posts\公众号文章爬取.html</link><guid isPermaLink="false">_posts/公众号文章爬取.md</guid><pubDate>Mon, 06 Mar 2023 08:01:34 GMT</pubDate><enclosure url="lib\media\公众号爬虫-2.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\公众号爬虫-2.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[哈希表]]></title><description><![CDATA[ 
+复制]]></description><link>_posts\公众号文章爬取.html</link><guid isPermaLink="false">_posts/公众号文章爬取.md</guid><pubDate>Mon, 06 Mar 2023 08:01:34 GMT</pubDate><enclosure url="lib\media\公众号爬虫-2.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\公众号爬虫-2.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[哈希表]]></title><description><![CDATA[ 
  <br><br>
 <br>
 直接寻址
@@ -436,18 +520,18 @@ int CreatSessionID()
 }
 
 
-复制]]></description><link>_posts\雪花算法.html</link><guid isPermaLink="false">_posts/雪花算法.md</guid><pubDate>Mon, 06 Mar 2023 08:59:06 GMT</pubDate><enclosure url="lib\media\snowflake.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\snowflake.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[字节序]]></title><description><![CDATA[ 
+复制]]></description><link>_posts\雪花算法.html</link><guid isPermaLink="false">_posts/雪花算法.md</guid><pubDate>Mon, 06 Mar 2023 08:59:06 GMT</pubDate><enclosure url="lib\media\snowflake.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\snowflake.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[字节序]]></title><description><![CDATA[ 
  <br><br><img src="lib\media\pasted-image-20230418210112.png"><br>
 人类书写数字习惯从左往右，表示从高位向低位书写。如52（5-&gt;2）。5是高位，2是低位<br><br>
 <br>网络字节序统一都是 大端字节序 （字节的高位放在内存低地址）
-<br>]]></description><link>_posts\字节序.html</link><guid isPermaLink="false">_posts/字节序.md</guid><pubDate>Tue, 18 Apr 2023 13:08:38 GMT</pubDate><enclosure url="lib\media\pasted-image-20230418210112.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\pasted-image-20230418210112.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[字体]]></title><description><![CDATA[ 
- <br><br><img src="lib\media\等宽字体.png"><br>]]></description><link>_posts\字体.html</link><guid isPermaLink="false">_posts/字体.md</guid><pubDate>Tue, 07 Mar 2023 02:02:16 GMT</pubDate><enclosure url="lib\media\等宽字体.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\等宽字体.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[algorithm]]></title><description><![CDATA[ 
+<br>]]></description><link>_posts\字节序.html</link><guid isPermaLink="false">_posts/字节序.md</guid><pubDate>Tue, 18 Apr 2023 13:08:38 GMT</pubDate><enclosure url="lib\media\pasted-image-20230418210112.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\pasted-image-20230418210112.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[字体]]></title><description><![CDATA[ 
+ <br><br><img src="lib\media\等宽字体.png"><br>]]></description><link>_posts\字体.html</link><guid isPermaLink="false">_posts/字体.md</guid><pubDate>Tue, 07 Mar 2023 02:02:16 GMT</pubDate><enclosure url="lib\media\等宽字体.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\等宽字体.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[algorithm]]></title><description><![CDATA[ 
  <br><br><a data-tooltip-position="top" aria-label="https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md" rel="noopener" class="external-link" href="https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md" target="_blank">javascript-algorithms/README.zh-CN.md at master · trekhleb/javascript-algorithms (github.com)</a><br><a data-tooltip-position="top" aria-label="https://github.com/labuladong/fucking-algorithm" rel="noopener" class="external-link" href="https://github.com/labuladong/fucking-algorithm" target="_blank">labuladong/fucking-algorithm: 刷算法全靠套路，认准 labuladong 就够了！English version supported! Crack LeetCode, not only how, but also why. (github.com)</a>、<br>《算法导论》<br><br>
 内容整理的目的：
 
 <br>建立算法相关内容的体系结构
 
-<br><img src="lib\media\算法考察频率.png"><br><a class="internal-link" data-href="哈希表.md" href="_posts\哈希表.html" target="_self" rel="noopener">哈希表</a> ]]></description><link>_posts\算法.html</link><guid isPermaLink="false">_posts/算法.md</guid><pubDate>Mon, 29 May 2023 09:20:44 GMT</pubDate><enclosure url="lib\media\算法考察频率.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\算法考察频率.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[android]]></title><description><![CDATA[ 
+<br><img src="lib\media\算法考察频率.png"><br><a class="internal-link" data-href="哈希表.md" href="_posts\哈希表.html" target="_self" rel="noopener">哈希表</a> ]]></description><link>_posts\算法.html</link><guid isPermaLink="false">_posts/算法.md</guid><pubDate>Mon, 29 May 2023 09:20:44 GMT</pubDate><enclosure url="lib\media\算法考察频率.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\算法考察频率.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[android]]></title><description><![CDATA[ 
  <br><br><br>
 <br>【activity】：表示应用中的一个界面
 <br>【service】：是一个不使用用户界面而在后台执行操作的组件
@@ -820,7 +904,7 @@ cv void ：其中的cv指代的是两个关键字const 和 volatile 。cv void�
 <br>如果T是一个左值引用或一个函数的右值引用，那么转换结果为左值。
 <br>如果T是一个对象的右值引用，结果是xvalue
 <br>否则转换结果为prvalue
-<br><br><br><br>使用c风格或函数风格的转换<br>]]></description><link>_posts\cpp数据类型转换.html</link><guid isPermaLink="false">_posts/Cpp数据类型转换.md</guid><pubDate>Sat, 11 Mar 2023 05:09:36 GMT</pubDate><enclosure url="lib\media\standard_conversion.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\standard_conversion.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[c++语言基础]]></title><description><![CDATA[ 
+<br><br><br><br>使用c风格或函数风格的转换<br>]]></description><link>_posts\cpp数据类型转换.html</link><guid isPermaLink="false">_posts/Cpp数据类型转换.md</guid><pubDate>Sat, 11 Mar 2023 05:09:36 GMT</pubDate><enclosure url="lib\media\standard_conversion.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\standard_conversion.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[c++语言基础]]></title><description><![CDATA[ 
  <br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV13T4y1k7qQ?t=10.7" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV13T4y1k7qQ?t=10.7" target="_blank">c++11-20所有新特性</a><br><br>
 https://isocpp.org/
 [标准版本参考]
@@ -933,7 +1017,7 @@ cin.getline(box,box_size);//函数可以同cin.get()函数类似，也可接收�
 <br>ofstream 是用于向文件写入数据的类。
 <br>iostream 是既能用于输入，又能用于输出的类。
 <br>fstream 是既能从文件读取数据，又能向文件写入数据的类。
-<br><br><a data-tooltip-position="top" aria-label="https://zhuanlan.zhihu.com/p/352365043" rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/352365043" target="_blank">C++后台开发，以我之见</a><br><img src="lib\media\v2-9f5ba4cb9644915fa97dfdeb7b241bf6_720w.jpg"><br><img alt="img" src="lib\media\v2-65780d15f794caa74e711894fa0af409_720w.jpg"><br><img src="lib\media\v2-34afd1551b9389cfb4bac4d8c04efe8c_720w.jpg"><br><img src="lib\media\v2-3cc6f3f8fc05bd93af86c37e10de8ed4_720w.jpg"><br><img src="lib\media\v2-c65b8879d3126d15ee791856cf1a81a2_720w.jpg">]]></description><link>_posts\c++.html</link><guid isPermaLink="false">_posts/C++.md</guid><pubDate>Fri, 12 May 2023 01:52:12 GMT</pubDate><enclosure url="lib\media\标准库和标准模板库关系.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\标准库和标准模板库关系.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[C++中IO流体系]]></title><description><![CDATA[ 
+<br><br><a data-tooltip-position="top" aria-label="https://zhuanlan.zhihu.com/p/352365043" rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/352365043" target="_blank">C++后台开发，以我之见</a><br><img src="lib\media\v2-9f5ba4cb9644915fa97dfdeb7b241bf6_720w.jpg"><br><img alt="img" src="lib\media\v2-65780d15f794caa74e711894fa0af409_720w.jpg"><br><img src="lib\media\v2-34afd1551b9389cfb4bac4d8c04efe8c_720w.jpg"><br><img src="lib\media\v2-3cc6f3f8fc05bd93af86c37e10de8ed4_720w.jpg"><br><img src="lib\media\v2-c65b8879d3126d15ee791856cf1a81a2_720w.jpg">]]></description><link>_posts\c++.html</link><guid isPermaLink="false">_posts/C++.md</guid><pubDate>Fri, 12 May 2023 01:52:12 GMT</pubDate><enclosure url="lib\media\标准库和标准模板库关系.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\标准库和标准模板库关系.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[C++中IO流体系]]></title><description><![CDATA[ 
  <br><br>stream有如下几种类型<br>
 <br>标准输入输出流
 <br>string流
@@ -946,7 +1030,7 @@ cin.getline(box,box_size);//函数可以同cin.get()函数类似，也可接收�
 <br>fpos 代表在stream中的位置
 <br><br><br>
 <br>basic_istream继承自basic_ios。因此具有basic_ios的功能
-]]></description><link>_posts\c++中io流体系.html</link><guid isPermaLink="false">_posts/C++中IO流体系.md</guid><pubDate>Thu, 23 Mar 2023 09:37:22 GMT</pubDate><enclosure url="lib\media\io流类的继承体系.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\io流类的继承体系.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[centos7]]></title><description><![CDATA[ 
+]]></description><link>_posts\c++中io流体系.html</link><guid isPermaLink="false">_posts/C++中IO流体系.md</guid><pubDate>Thu, 23 Mar 2023 09:37:22 GMT</pubDate><enclosure url="lib\media\io流类的继承体系.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\io流类的继承体系.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[centos7]]></title><description><![CDATA[ 
  <br><br><img src="lib\media\net模式.png"><br>
 <br>桥接模式：相当于虚拟机直接连接路由器
 <br>仅主机模式：只能所在主机单向访问虚拟机，无法连接外网
@@ -1264,7 +1348,7 @@ systemctl stop mariadb
 <br><br>1.查看启动项<br>
 systemctl list-unit-files<br>
 2.过滤查看启动项<br>
-systemctl list-unit-files | grep enable ]]></description><link>_posts\centos.html</link><guid isPermaLink="false">_posts/centos.md</guid><pubDate>Tue, 07 Mar 2023 02:04:42 GMT</pubDate><enclosure url="lib\media\net模式.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\net模式.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[cmake]]></title><description><![CDATA[ 
+systemctl list-unit-files | grep enable ]]></description><link>_posts\centos.html</link><guid isPermaLink="false">_posts/centos.md</guid><pubDate>Tue, 07 Mar 2023 02:04:42 GMT</pubDate><enclosure url="lib\media\net模式.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\net模式.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[cmake]]></title><description><![CDATA[ 
  <br><br>target:代表可执行程序或库（elf，so）<br>
 add_executable<br>
 add_library<br>
@@ -1390,7 +1474,7 @@ date: 2021/6/19 16:43:23<br><br><br>
 <br><img style="zoom:67%;" alt="ds" src="\pics\数据结构与算法.jpg" referrerpolicy="no-referrer"><br><br>像这种算法问题，其实最终说到底是数学问题，所以数学不好的，搞算法是有难度的。既然自己目前不感兴趣，那就先放着，弄一些有趣的项目来玩，在玩中学习把！不要为了学习技术而学习，兴趣才是第一推动力，再说技术这个东西，如果不是"技术达人"，学习技术，其实只是一种生存的工具罢了。想赚大钱，如果时间都投入到技术中，顶多就是好用的一点的工具。你的世界不应该只有技术！你赚的每一分钱，都是对这个世界的认知的变现。所以要善于结合现实世界，学会把知识变现。<br>
 <br>字符串转为整形---hash算法
 <br>字符串正则提取
-]]></description><link>_posts\data_structure.html</link><guid isPermaLink="false">_posts/data_structure.md</guid><pubDate>Sun, 05 Mar 2023 13:46:34 GMT</pubDate><enclosure url="lib\media\排序算法的时空复杂度.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\排序算法的时空复杂度.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[database]]></title><description><![CDATA[ 
+]]></description><link>_posts\data_structure.html</link><guid isPermaLink="false">_posts/data_structure.md</guid><pubDate>Sun, 05 Mar 2023 13:46:34 GMT</pubDate><enclosure url="lib\media\排序算法的时空复杂度.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\排序算法的时空复杂度.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[database]]></title><description><![CDATA[ 
  ]]></description><link>_posts\database.html</link><guid isPermaLink="false">_posts/database.md</guid><pubDate>Tue, 08 Nov 2022 09:48:28 GMT</pubDate></item><item><title><![CDATA[Docker]]></title><description><![CDATA[ 
  <br><br>
 <a data-tooltip-position="top" aria-label="https://docs.docker.com/engine/reference/builder/" rel="noopener" class="external-link" href="https://docs.docker.com/engine/reference/builder/" target="_blank">Dockerfile reference | Docker Documentation</a><br>
@@ -1621,7 +1705,7 @@ git branch --set-upstream &lt;branch&gt; &lt;remote-branch&gt;
 <br>可扩展性好，可以自定义标签的渲染
 <br><br>
 <br>一个markdown解释器js库
-]]></description><link>_posts\hexo插件.html</link><guid isPermaLink="false">_posts/hexo插件.md</guid><pubDate>Tue, 07 Mar 2023 15:14:38 GMT</pubDate><enclosure url="lib\media\hexo-tools.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\hexo-tools.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[hexo站点优化]]></title><description><![CDATA[ 
+]]></description><link>_posts\hexo插件.html</link><guid isPermaLink="false">_posts/hexo插件.md</guid><pubDate>Tue, 07 Mar 2023 15:14:38 GMT</pubDate><enclosure url="lib\media\hexo-tools.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\hexo-tools.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[hexo站点优化]]></title><description><![CDATA[ 
  <br><a data-tooltip-position="top" aria-label="https://github.com/arashrun/self-hexo-theme" rel="noopener" class="external-link" href="https://github.com/arashrun/self-hexo-theme" target="_blank">本站点的主题地址</a><br><br>
 <br>直接在全局的ejs文件如(footer.ejs)中添加mermaid的cdn。参考mermaid官网文档 <a data-tooltip-position="top" aria-label="https://mermaid.js.org/intro/#deploying-mermaid" rel="noopener" class="external-link" href="https://mermaid.js.org/intro/#deploying-mermaid" target="_blank">About Mermaid | Mermaid</a> 。即可将文本渲染成mermaid图，不需要下载hexo插件 hexo-filter-mermaid-diagrams 。
 <br><br>
@@ -1637,70 +1721,7 @@ git branch --set-upstream &lt;branch&gt; &lt;remote-branch&gt;
 <br>question
 
 
-]]></description><link>_posts\站点优化.html</link><guid isPermaLink="false">_posts/站点优化.md</guid><pubDate>Sat, 01 Apr 2023 02:35:24 GMT</pubDate></item><item><title><![CDATA[Hexo指南]]></title><description><![CDATA[ 
- <br><br>
-<br>创建新文章
-<br>hexo new [layout] &lt;title&gt;
-
-- post
-- page
-- draft
-
-hexo new post -p cs-theory/xxx "title name"
-复制<br>
-<br>git提交修改
-<br>git add xxx
-git commit -m ""
-git push
-复制<br>git push之后，内容就会被推送到hexo分支上<br><br>
-<br>clean and generate public floder
-<br>hexo clean
-hexo g
-复制<br>
-<br>推送并部署<br>
-该处推送，会将master分支（部署分支）推送到远程master分支上。
-<br>hexo d
-复制<br><br>
-<br>
-主题的设置
-修改博客配置_config.yml中的theme为theme文件夹下的目录
-
-<br>
-<a data-tooltip-position="top" aria-label="https://hexo.io/zh-cn/docs/themes" rel="noopener" class="external-link" href="https://hexo.io/zh-cn/docs/themes" target="_blank">主题目录结构</a>
-
-<br>
-添加新模板
-主题模板(区别于hexo根目录下的scaffolds目录中的模板，scaffolds目录中的模板用于创建不同布局文件时的format-header自动填充)，指的是页面的显示模式，不同功能的页面需要不同的模板以适应不同内容的显示。theme下的layout目录中的各种ejs就代表不同的模板，如：index.ejs是首页模板，用于渲染首页；tags.ejs是tag页面模板，用于渲染tags页面等。这些不同的模板当然可以相互之间毫无关联，均开始于 html 标签，但由于复用的缘故，模板默认使用一个共同的布局——layout.ejs。该布局文件layout.ejs中需要提供 &lt;%- body %&gt; ，其他ejs模板就可以公用layout中的公共部分了
-
-<br>1. 新建一个新模板
-	hexo new page "about"
-2. 修改模板头部信息,添加layout头部信息
-	cd _post/about
-	vim index.md
-	layout: about
-
-3. 在theme/xxx/layout目录下创建模板ejs文件 `about.ejs`
-	cd layout
-	vim about.ejs
-复制<br>
-<br>
-ejs简单说明
-ejs是一种模板引擎，类似于php。用于动态生成html。在ejs标记内部使用的是js来作为编程语言的。通过模板引擎，让我们的html可以在前端就动态生成了。
-
-<br><br>github上的两个分支，master和hexo分支。默认clone和展示的分支是hexo分支。hexo分支就是保存我们本地文件的分支。而master分支是hexo进行generate和deploy的分支，当我们写完文章准备同步到远程的时候。我们需要同时更新这两个分支。<br>
-master分支：hexo博客部署和展示的分支，html<br>
-hexo分支：博客修改和创作的分支,md
-<br>
-<br>更新hexo分支
-<br>
-<br>git add .
-<br>git commit
-<br>git push
-<br>
-<br>更新master分支
-<br>
-<br>hexo deploy -g
-]]></description><link>_posts\hexo指南.html</link><guid isPermaLink="false">_posts/Hexo指南.md</guid><pubDate>Wed, 08 Mar 2023 16:38:08 GMT</pubDate></item><item><title><![CDATA[JavaScript]]></title><description><![CDATA[ 
+]]></description><link>_posts\站点优化.html</link><guid isPermaLink="false">_posts/站点优化.md</guid><pubDate>Sat, 01 Apr 2023 02:35:24 GMT</pubDate></item><item><title><![CDATA[JavaScript]]></title><description><![CDATA[ 
  <br><br><br><br><br>
 <br>声明的语法
 <br># 全局
@@ -1788,7 +1809,7 @@ int main()
     Test2 t2(12);//显式调用成功
     return 0;
 }
-复制<br><br><br><br><br><br><br><br>]]></description><link>_posts\keyword-cpp.html</link><guid isPermaLink="false">_posts/keyword-cpp.md</guid><pubDate>Tue, 07 Mar 2023 16:51:28 GMT</pubDate><enclosure url="lib\media\cpp20关键字.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\cpp20关键字.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[lambda]]></title><description><![CDATA[ 
+复制<br><br><br><br><br><br><br><br>]]></description><link>_posts\keyword-cpp.html</link><guid isPermaLink="false">_posts/keyword-cpp.md</guid><pubDate>Tue, 07 Mar 2023 16:51:28 GMT</pubDate><enclosure url="lib\media\cpp20关键字.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\cpp20关键字.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[lambda]]></title><description><![CDATA[ 
  <br><br><br><img src="lib\media\lambuda组成.png"><br>
   <a data-tooltip-position="top" aria-label="http://c.biancheng.net/view/3741.html" rel="noopener" class="external-link" href="http://c.biancheng.net/view/3741.html" target="_blank">lambda 表达式的概念和基本用法</a>
 <br>概念和形式：<br>lambda 表达式定义了一个匿名函数，并且可以捕获一定范围内的变量。lambda 表达式的语法形式可简单归纳如下：<br>[ capture ] ( params ) opt -&gt; ret { body; };
@@ -1811,7 +1832,7 @@ int main()
    [&amp;, n] (int a) mutable { m = ++n + a; }(4); //m使用引用传递，n按值传递。mutable说明按值传递的n可以修改n值，等价于引用方式
    cout &lt;&lt; m &lt;&lt; endl &lt;&lt; n &lt;&lt; endl;
 }
-复制]]></description><link>_posts\lambda.html</link><guid isPermaLink="false">_posts/lambda.md</guid><pubDate>Mon, 06 Mar 2023 08:40:32 GMT</pubDate><enclosure url="lib\media\lambuda组成.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\lambuda组成.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[libcurl]]></title><description><![CDATA[ 
+复制]]></description><link>_posts\lambda.html</link><guid isPermaLink="false">_posts/lambda.md</guid><pubDate>Mon, 06 Mar 2023 08:40:32 GMT</pubDate><enclosure url="lib\media\lambuda组成.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\lambuda组成.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[libcurl]]></title><description><![CDATA[ 
  <br>
 1. create handle
 CURL *easy_handle = curl_easy_init();<br>
@@ -1946,7 +1967,7 @@ int evbuffer_remove_buffer(struct evbuffer *src, struct evbuffer *dst, size_t da
 <br><br>
 每一个bufferevent结构都有两个与数据相关的回调：读回调(read callback)和写回调(write callback)。默认情况下，读回调会当底层传输机制(epool,poll,iocp)有数据可读时触发回调，而写回调只有output buffer中还有空间可写时调用。用户可以通过设置读和写的watermarks(水位)来改变数据收发的时机<br><img src="\pics\water_mark.png" alt="watermarks" referrerpolicy="no-referrer"><br><br>
 &gt; Reference: 
-&gt; http://www.wangafu.net/~nickm/libevent-book/]]></description><link>_posts\libevent2.html</link><guid isPermaLink="false">_posts/libevent2.md</guid><pubDate>Mon, 06 Mar 2023 08:40:42 GMT</pubDate><enclosure url="\pics\water_mark.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;\pics\water_mark.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[linux编程]]></title><description><![CDATA[ 
+&gt; http://www.wangafu.net/~nickm/libevent-book/]]></description><link>_posts\libevent2.html</link><guid isPermaLink="false">_posts/libevent2.md</guid><pubDate>Mon, 06 Mar 2023 08:40:42 GMT</pubDate><enclosure url="\pics\water_mark.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="\pics\water_mark.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[linux编程]]></title><description><![CDATA[ 
  <br><br>]]></description><link>_posts\linux编程接口.html</link><guid isPermaLink="false">_posts/linux编程接口.md</guid><pubDate>Tue, 07 Mar 2023 16:53:58 GMT</pubDate></item><item><title><![CDATA[Linux知识大全]]></title><description><![CDATA[ 
  <br>
 记录范围：<br>
@@ -2280,7 +2301,7 @@ parent: ~
 <br>要保证 ipconfig 出来的地址出现 temporary ipv6 address 才算分配到了ipv6地址<br>
 <img src="lib\media\ipv6.png">
 <br>通过网站 <a data-tooltip-position="top" aria-label="https://ipv6-test.com/" rel="noopener" class="external-link" href="https://ipv6-test.com/" target="_blank">IPv6 test - IPv6/4 connectivity and speed test (ipv6-test.com)</a> 进行ipv6支持性测试
-]]></description><link>_posts\network.html</link><guid isPermaLink="false">_posts/network.md</guid><pubDate>Sun, 02 Apr 2023 07:43:42 GMT</pubDate><enclosure url="lib\media\ipv6.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\ipv6.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[opengrok搭建代码阅读平台]]></title><description><![CDATA[ 
+]]></description><link>_posts\network.html</link><guid isPermaLink="false">_posts/network.md</guid><pubDate>Sun, 02 Apr 2023 07:43:42 GMT</pubDate><enclosure url="lib\media\ipv6.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\ipv6.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[opengrok搭建代码阅读平台]]></title><description><![CDATA[ 
  <br><br>
 <br>install java11<br>
 =====&gt;
@@ -2637,7 +2658,7 @@ while(true) {
 复制
 
 <br>区别:水平触发是只要读缓冲区有数据，就会一直触发可读信号，而边缘触发仅仅在空变为非空的时候通知一次.<br><br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/weixin_40204595/article/details/81109644" rel="noopener" class="external-link" href="https://blog.csdn.net/weixin_40204595/article/details/81109644" target="_blank">宏定义中的#，##的含义</a><br>
-<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" target="_blank">linux动态库链接规则</a>]]></description><link>_posts\os.html</link><guid isPermaLink="false">_posts/os.md</guid><pubDate>Tue, 07 Mar 2023 17:00:00 GMT</pubDate><enclosure url="lib\media\段表.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\段表.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[php]]></title><description><![CDATA[ 
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" target="_blank">linux动态库链接规则</a>]]></description><link>_posts\os.html</link><guid isPermaLink="false">_posts/os.md</guid><pubDate>Tue, 07 Mar 2023 17:00:00 GMT</pubDate><enclosure url="lib\media\段表.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\段表.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[php]]></title><description><![CDATA[ 
  <br><br><br>
 <br>使用浏览器的cookie
 <br>&lt;?php
@@ -2823,7 +2844,7 @@ if __name__ == '__main__':
     httpd = hs.ThreadingHTTPServer(addr, HttpRequestHandler)
     httpd.serve_forever()
     p.join()
-复制]]></description><link>_posts\python-simple-proxy.html</link><guid isPermaLink="false">_posts/python-simple-proxy.md</guid><pubDate>Thu, 06 Apr 2023 02:27:18 GMT</pubDate><enclosure url="lib\media\pac_return.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\pac_return.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[python术语]]></title><description><![CDATA[ 
+复制]]></description><link>_posts\python-simple-proxy.html</link><guid isPermaLink="false">_posts/python-simple-proxy.md</guid><pubDate>Thu, 06 Apr 2023 02:27:18 GMT</pubDate><enclosure url="lib\media\pac_return.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\pac_return.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[python术语]]></title><description><![CDATA[ 
  <br>
 <br>module(模块)<br>
 python代码组织单元
@@ -3305,7 +3326,7 @@ options:=vim中内部的变量或者开关，设置用于实现一些特殊功�
 <br>vim版本变迁（changelog）
 <br>特殊系统需要注意的问题
 <br>vim标准插件
-<br>虽然有11个部分，但是我们需要特别学习的其实就是前5个部分。第8个部分对写vim插件的开发者有帮助]]></description><link>_posts\vim-manual.html</link><guid isPermaLink="false">_posts/vim-manual.md</guid><pubDate>Tue, 07 Mar 2023 17:11:14 GMT</pubDate><enclosure url="lib\media\pasted-image-20221018235635.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\pasted-image-20221018235635.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vim-node-yarn-git配置国内源]]></title><description><![CDATA[ 
+<br>虽然有11个部分，但是我们需要特别学习的其实就是前5个部分。第8个部分对写vim插件的开发者有帮助]]></description><link>_posts\vim-manual.html</link><guid isPermaLink="false">_posts/vim-manual.md</guid><pubDate>Tue, 07 Mar 2023 17:11:14 GMT</pubDate><enclosure url="lib\media\pasted-image-20221018235635.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\pasted-image-20221018235635.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vim-node-yarn-git配置国内源]]></title><description><![CDATA[ 
  <br><br><br>查询当前镜像<br>npm get registry
 复制<br>设置<br>npm config set registry https://registry.npm.taobao.org/        (旧地址)
 npm config set registry https://registry.npmmirror.com/         (最新地址)
@@ -3357,7 +3378,7 @@ nvim中执行:PackerInstall。
  <br><br>terminal的配色方案: one-half-dark<br><br><img src="lib\media\habamax.png"><br><br><img src="lib\media\pablo.png"><br><br><img src="lib\media\torte.png"><br><br>
 <br>posh-git
 <br>oh-my-posh
-]]></description><link>_posts\vim默认主题.html</link><guid isPermaLink="false">_posts/vim默认主题.md</guid><pubDate>Wed, 12 Apr 2023 05:08:14 GMT</pubDate><enclosure url="lib\media\habamax.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\habamax.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vimspector]]></title><description><![CDATA[ 
+]]></description><link>_posts\vim默认主题.html</link><guid isPermaLink="false">_posts/vim默认主题.md</guid><pubDate>Wed, 12 Apr 2023 05:08:14 GMT</pubDate><enclosure url="lib\media\habamax.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\habamax.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vimspector]]></title><description><![CDATA[ 
  <br><br>
 <br>使用vim插件管理器plug.vim安装，添加 Plug 'puremourning/vimspector'
 <br>安装debug adapters（gadgets），实际在后台工作的程序，vimspector只是一个前台交互wrapper
@@ -3412,7 +3433,7 @@ nvim中执行:PackerInstall。
 <br>
 vim界面上可以点击（winbar），不需要自己重写打乱自己的映射
 
-]]></description><link>_posts\vimspector.html</link><guid isPermaLink="false">_posts/vimspector.md</guid><pubDate>Tue, 04 Apr 2023 08:48:48 GMT</pubDate><enclosure url="lib\media\adaptor.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\adaptor.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vps]]></title><description><![CDATA[ 
+]]></description><link>_posts\vimspector.html</link><guid isPermaLink="false">_posts/vimspector.md</guid><pubDate>Tue, 04 Apr 2023 08:48:48 GMT</pubDate><enclosure url="lib\media\adaptor.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\adaptor.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vps]]></title><description><![CDATA[ 
  <br><br><br>
 ### 安全管理<br>设置使用密钥登录<br>
 <br>在客户端使用ssh-keygen的非对称加密算法，生成公私钥(id_rsa--私钥,id_rsa.pub--公钥）
@@ -3472,10 +3493,10 @@ service sshd restart
 <br><a data-tooltip-position="top" aria-label="https://www.w3school.com.cn/jquery/jquery_dom_set.asp" rel="noopener" class="external-link" href="https://www.w3school.com.cn/jquery/jquery_dom_set.asp" target="_blank">jquery设置内容和属性</a>
 <br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/zhengyinling/article/details/111587670" rel="noopener" class="external-link" href="https://blog.csdn.net/zhengyinling/article/details/111587670" target="_blank">js模糊查询,不区分大小写</a>
 <br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1jj411c7sb/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1jj411c7sb/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">前端开发的主流技术_哔哩哔哩_bilibili</a><br>
-<a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1Nt411q73a/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1Nt411q73a/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">为初学者准备的：DOM 速成_哔哩哔哩_bilibili</a><br><br><img src="lib\media\jishupang.png">]]></description><link>_posts\web.html</link><guid isPermaLink="false">_posts/web.md</guid><pubDate>Fri, 12 May 2023 07:30:32 GMT</pubDate><enclosure url="lib\media\jishupang.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\jishupang.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Windows开发]]></title><description><![CDATA[ 
+<a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1Nt411q73a/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1Nt411q73a/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">为初学者准备的：DOM 速成_哔哩哔哩_bilibili</a><br><br><img src="lib\media\jishupang.png">]]></description><link>_posts\web.html</link><guid isPermaLink="false">_posts/web.md</guid><pubDate>Fri, 12 May 2023 07:30:32 GMT</pubDate><enclosure url="lib\media\jishupang.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\jishupang.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Windows开发]]></title><description><![CDATA[ 
  <br><br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/desktop-programming" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/desktop-programming" target="_blank">开始使用 - Win32 apps | Microsoft Learn</a><br>Win32 API（也称为 Windows API）是需要直接访问 Windows 和硬件的本机 C/C++ Windows 应用程序的原始平台。 它提供一流的开发体验，而无需依赖于适用于 Windows 10) 的 UWP 应用的托管运行时环境（如 .NET 和 WinRT (）。 这使得 Win32 API 成为需要最高级别性能和直接访问系统硬件的应用程序的首选平台。<br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/api/" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/api/" target="_blank">Win32 API 编程参考 - Win32 apps | Microsoft Learn</a><br><img src="lib\media\win32-api.png"><br>通过win32 API参考可以看到win32api提供的操作功能范围涉及到windows系统的方方面面，其实就是最原始的windows编程接口。windows操作系统之上的最底层的库<br><br>组件对象模型<br>
 <a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/what-is-a-com-interface-" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/what-is-a-com-interface-" target="_blank">什么是 COM 接口 - Win32 apps | Microsoft Learn</a><br>COM 是创建可重用软件组件的规范。 在基于新式Windows的程序中使用的许多功能都依赖于 COM。其实就是一堆接口，用于隔离应用调用和应用实现库而实现的一个接口库。<br><br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/prepare-your-development-environment" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/prepare-your-development-environment" target="_blank">准备开发环境 - Win32 apps | Microsoft Learn</a><br>若要用 C 或 C++ 编写Windows程序，必须安装 Microsoft Windows 软件开发工具包 (SDK) 或者Microsoft Visual Studio。<br>windows sdk包含如下部分：<br>
 <br>Windows SDK 包含编译和链接应用程序所需的头文件和库文件。因为要使用c++生成windows应用程序，因此不仅包含标准库头文件库文件，还要包含面相特定版本的windows系统的系统api头文件和库文件（win32 api）
 <br>Windows SDK 还包含用于生成Windows应用程序的命令行工具，包括 Visual C++ 编译器（MSVC）和链接器
 <br><br>DirectX 是用于开发Windows游戏的主要图形 API 集，该api集合用于操作GPU设备的，属于windows api的一部分，下载了windows sdk就可以使用directx功能了。<br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/direct3dgetstarted/pre-requisites-for-developing-a-tailored-c---with-directx-app" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/direct3dgetstarted/pre-requisites-for-developing-a-tailored-c---with-directx-app" target="_blank">使用 DirectX 进行开发的先决条件 - Win32 apps | Microsoft Learn</a><br><img src="lib\media\directx.png"><br><br>通用windows平台<br>
-<a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/uwp/get-started/universal-application-platform-guide" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/uwp/get-started/universal-application-platform-guide" target="_blank">什么是通用 Windows 平台 (UWP) 应用？ - UWP applications | Microsoft Learn</a><br>UWP 是创建适用于 Windows 的客户端应用程序的众多方法之一。 UWP 应用使用 WinRT API 来提供强大的 UI 和高级异步功能，这些功能非常适用于 Internet 连接的设备。<br><br><br>]]></description><link>_posts\windows开发.html</link><guid isPermaLink="false">_posts/Windows开发.md</guid><pubDate>Wed, 15 Mar 2023 06:53:30 GMT</pubDate><enclosure url="lib\media\win32-api.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\win32-api.png&quot;&gt;&lt;/figure&gt;</content:encoded></item></channel></rss>
+<a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/uwp/get-started/universal-application-platform-guide" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/uwp/get-started/universal-application-platform-guide" target="_blank">什么是通用 Windows 平台 (UWP) 应用？ - UWP applications | Microsoft Learn</a><br>UWP 是创建适用于 Windows 的客户端应用程序的众多方法之一。 UWP 应用使用 WinRT API 来提供强大的 UI 和高级异步功能，这些功能非常适用于 Internet 连接的设备。<br><br><br>]]></description><link>_posts\windows开发.html</link><guid isPermaLink="false">_posts/Windows开发.md</guid><pubDate>Wed, 15 Mar 2023 06:53:30 GMT</pubDate><enclosure url="lib\media\win32-api.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\win32-api.png"&gt;&lt;/figure&gt;</content:encoded></item></channel></rss>

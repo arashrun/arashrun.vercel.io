@@ -1,0 +1,3481 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[source]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib\media\favicon.png</url><title>source</title><link></link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Sat, 13 Apr 2024 17:17:52 GMT</lastBuildDate><atom:link href="lib\rss.xml" rel="self" type="application/rss+xml"/><pubDate>Sat, 13 Apr 2024 17:17:43 GMT</pubDate><ttl>60</ttl><dc:creator></dc:creator><item><title><![CDATA[编码和字符集]]></title><description><![CDATA[ 
+ <br><br><br><img src="lib\media\字符集.png"><br>
+要点分析：<br>
+<br>字符集，是字符与其标识代码值的映射关系
+<br>unicode是字符编码的全球标准，注意unicode只是一种抽象标准，如同c/c++标准一样，可以有各种对标准的实现
+<br>Windows使用UTF-16（两个字节）来实现unicode标准
+<br>【补充字符】 【代理项】
+<br>在windows采用unicode之前，存在一些不统一的老旧字符集
+<br>windows代码页，用于在不同的老旧字符集之间切换
+]]></description><link>_posts\编码和字符集.html</link><guid isPermaLink="false">_posts/编码和字符集.md</guid><pubDate>Fri, 17 Mar 2023 14:31:24 GMT</pubDate><enclosure url="lib\media\字符集.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\字符集.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[编码问题]]></title><description><![CDATA[ 
+ <br><br>​<br><br>ANSI	各个国家的ansi编码不一样，中国的ansi为GBK编码，繁体中文为big5，日本的ansi为shift_jis<br>
+​UTF-8	使用变长字节，包含世界上所有文字<br>
+​UNICODE	使用2两个字节，统一使用2字节。且在内存中和在网络传输中都是unicode编码。<br>
+​ASCII	使用1个字节，实际上是只使用7位，共表示128个文字。后128个可以扩展为其他字符<br>]]></description><link>_posts\编码问题.html</link><guid isPermaLink="false">_posts/编码问题.md</guid><pubDate>Tue, 07 Mar 2023 02:00:56 GMT</pubDate></item><item><title><![CDATA[多态]]></title><description><![CDATA[ 
+ <br><br>
+<br>同一个方法在基类和派生类中的行为不同，方法的行为取决于调用方法的对象。
+<br>实现方式：<br>
+1.在派生类中重新定义基类需要实现多态的方法<br>
+2.使用虚方法(虚拟成员函数，在方法声明前加上virtual关键字)。编译器对虚方法采用 动态联编（将函数调用推迟到运行时决定）
+<br>动态联编的原因是：继承关系中的第二条。基类指针或引用可以指向派生类对象所导致的。
+<br>class A
+{
+public:
+void funPrint(){cout&lt;&lt;"funPrint of class A"&lt;&lt;endl;};
+};
+
+class B:public A
+{
+public:
+void funPrint(){cout&lt;&lt;"funPrint of class B"&lt;&lt;endl;};
+};
+
+void main()
+{
+A *p; //定义基类的指针
+A a;
+B b;
+p=&amp;a;
+p-&gt;funPrint();
+p=&amp;b;
+p-&gt;funPrint();
+}
+复制<br>大家以为这段代码的输出结果是什么？有的人可能会马上回答funPrint of class A 与 funPrint of class B 因为第一次输出是引用类A的实 例啊，第二次输出是引用类B的实例啊。那么我告诉你这样想就错啦，答案是funPrintof class A 与 funPrint of class A。因为p是一个A类的指针，所以不管你将p指针指向类A或是类B，最终调用的函数都是类A的funPrint 函数。这就是静态联篇，编译器在编译的时候就已经确定好了。可是如果我想实现跟据实例的不同来动态决定调用哪个函数呢？这就须要用到 虚函数（也就是动态联篇）<br><br>class A
+{
+public:
+virtual void funPrint(){cout&lt;&lt;"funPrint of classA"&lt;&lt;endl;};//虚函数
+};
+
+class B:public A
+{
+public:
+virtual void funPrint(){cout&lt;&lt;"funPrint of classB"&lt;&lt;endl;};
+};
+
+void main()
+{
+A *p; //定义基类的指针
+A a;
+B b;
+p=&amp;a;
+p-&gt;funPrint();
+p=&amp;b;
+p-&gt;funPrint();
+}
+复制<br>此时由于继承的A中调用函数是虚函数，编译器采用动态联编，结果就会出现多态性。同一个操作<br>（p-&gt;funprint），不同的结果。<br><br><img src="lib\media\为何引入虚基类.png"><br>为了解决菱形继承体系下，类d，通过类b，类c两条途径获得类a数据的两份拷贝。和可能的命名冲突。通过让类b与类c使用虚拟继承类a来声明类a是共享的。来消除歧义<br>//间接基类A
+class A{
+protected:
+    int m_a;
+};
+
+//直接基类B
+class B: virtual public A{  //虚继承，则类A叫做虚基类
+protected:
+    int m_b;
+};
+
+//直接基类C
+class C: virtual public A{  //虚继承
+protected:
+    int m_c;
+};
+
+//派生类D
+class D: public B, public C{
+public:
+    void seta(int a){ m_a = a; }  //正确，如果类b，c没有声明为虚继承，则此处命名冲突
+    void setb(int b){ m_b = b; }  //正确
+    void setc(int c){ m_c = c; }  //正确
+    void setd(int d){ m_d = d; }  //正确
+private:
+    int m_d;
+};
+
+int main(){
+    D d;
+    return 0;
+}
+复制<br><br>类中含有纯虚函数的类，纯虚函数只是一个接口，没有实现（因此，抽象类无法被实例化）。<br>class Vehicle
+{
+public:
+virtual void PrintTyre()=0; //纯虚函数是这样定义的.该类为抽象类
+};
+
+class Camion:public Vehicle //继承抽象类，要实现接口，如果不实现，则该类也是抽象类
+{
+public:
+virtual void PrintTyre(){cout&lt;&lt;"Camion tyrefour"&lt;&lt;endl;};//virtual关键字不是必需的
+};
+
+class Bike:public Vehicle
+{
+public:
+virtual void PrintTyre(){cout&lt;&lt;"Bike tyre two"&lt;&lt;endl;};
+};
+
+void main()
+{
+Camion c;
+Bike b;
+b.PrintTyre();
+c.PrintTyre();
+}
+复制]]></description><link>_posts\多态.html</link><guid isPermaLink="false">_posts/多态.md</guid><pubDate>Tue, 07 Mar 2023 02:01:36 GMT</pubDate><enclosure url="lib\media\为何引入虚基类.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\为何引入虚基类.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[公众号文章爬取]]></title><description><![CDATA[ 
+ <br>
+需求：对指定公众号的所有文章进行爬取。
+<br><br>
+<a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1qM411P72g/?spm_id_from=333.337.top_right_bar_window_history.content.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1qM411P72g/?spm_id_from=333.337.top_right_bar_window_history.content.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">【Python爬虫】微信公众号文章爬取思路分析与实践_哔哩哔哩_bilibili</a>
+<br><br>
+<br>
+进入自己的公众号平台——&gt;内容和互动——&gt;草稿箱
+
+<br>
+点击插入超链接——&gt;公众号一行，选择其他公众号——&gt;输入需要爬取的公众号并搜索
+
+<br><img src="lib\media\公众号爬虫-2.png"><br>
+<br>F12，选择网络——&gt;点击翻页，观察网络包——&gt;在标头的请求url中获取fakeid和token和cookie
+<br><img src="lib\media\fakeid-token-cookie.png"><br>
+<br>将上面获取的几项替换到代码中几项即可
+<br><img src="lib\media\gzh-code.png"><br><br>
+# coding=utf-8
+# -*- coding:uft-8 -*-
+# 微信公众号
+
+import requests
+import datetime
+from time import sleep
+from lxml import etree
+import pandas as pd
+import re
+import os
+
+
+def validateTitle(tit):
+    reStr = r'[\/\\\:\*\?\"\&lt;\&gt;\|]'
+    newTitle = re.sub(reStr, '_', tit)
+    return newTitle
+
+
+start = 1
+end = 10
+fakeid = 'xxx=='
+token = 'xxx'
+cookie = 'xxx'
+ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36'
+
+path = 'data'
+if not os.path.exists(path):
+    os.makedirs(path)
+# resLs = []
+for i in range(start - 1, end + 1):
+    try:
+        i *= 5
+        url = 'https://mp.weixin.qq.com/cgi-bin/appmsg?action=list_ex&amp;begin={}&amp;count=5&amp;fakeid={}&amp;type=9&amp;query=&amp;token={}&amp;lang=zh_CN&amp;f=json&amp;ajax=1'.format(i, fakeid, token)
+        headers = {
+            'authority': 'mp.weixin.qq.com',
+            'cookie': cookie,
+            'referer': 'https://mp.weixin.qq.com/cgi-bin/appmsg?t=media/appmsg_edit_v2&amp;action=edit&amp;isNew=1&amp;type=10&amp;token={}&amp;lang=zh_CN'.format(token),
+            'user-agent': ua
+        }
+        res = requests.get(url=url, headers=headers).json()
+        for k in res['app_msg_list']:
+            timeStamp = k['update_time']
+            dateArray = datetime.datetime.fromtimestamp(timeStamp)
+            time = dateArray.strftime('%Y-%m-%d %H:%M:%S')
+            u = k['link']
+            hd = {
+                'User-Agent': ua,
+                'cookie': cookie
+            }
+            r = requests.get(url=u, headers=hd).content.decode('utf-8')
+            tree = etree.HTML(r)
+            title = tree.xpath('//h1/text()')[0].strip()
+            content = '\n'.join(tree.xpath('//div[@id="js_content"]//text()')).strip()
+            dic = {
+                '标题': title,
+                '时间': time,
+                '内容': content,
+                '链接': u
+            }
+            # resLs.append(dic)
+            print(dic)
+            open(f'data/{validateTitle(title)}.txt', 'a', encoding='utf-8').write(f'{title}\n{time}\n{content}')
+            sleep(5)
+    except Exception as e:
+        print(str(e))
+        sleep(5)
+        break
+    # df = pd.DataFrame(resLs)
+    # writer = pd.ExcelWriter('微信公众号.xlsx')
+    # df.to_excel(writer, encoding='utf-8', index=False)
+    # writer.save()
+
+复制]]></description><link>_posts\公众号文章爬取.html</link><guid isPermaLink="false">_posts/公众号文章爬取.md</guid><pubDate>Mon, 06 Mar 2023 08:01:34 GMT</pubDate><enclosure url="lib\media\公众号爬虫-2.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\公众号爬虫-2.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[哈希表]]></title><description><![CDATA[ 
+ <br><br>
+<br>
+直接寻址
+
+<br>
+hash table实现
+
+<br>
+hash 函数：关键字映射下标
+
+<br>
+开放寻址法：处理冲突
+
+<br>
+完全hash
+
+<br>
+直接寻址
+
+<br>
+<br>集合小，可以直接通过一个数组来存放所有关键字
+<br>
+<br>hash table实现
+<br>
+<br>通过精心设计的hash函数来实现：关键字到index的映射
+<br>通过链接法 解决hash冲突
+<br>
+<br>hash函数
+<br>
+<br>除法hash函数
+<br>乘法hash函数
+<br>全域hash函数
+<br>
+<br>开放寻址
+<br>]]></description><link>_posts\哈希表.html</link><guid isPermaLink="false">_posts/哈希表.md</guid><pubDate>Mon, 29 May 2023 10:18:52 GMT</pubDate></item><item><title><![CDATA[机器学习(ML)与tensorflow]]></title><description><![CDATA[ 
+ <br>
+keywords:<br>
+回归算法、损失函数、优化器、简单线性回归、多元线性回归、逻辑回归<br>
+感知机、神经网络、常用激活函数、单层感知机、反向传播、多层感知机<br>
+卷积神经网络(cnn, convnet)、迁移学习、循环神经网络(rnn)
+<br><br>张量(tensor)：常量、变量、占位符<br>
+运算操作对象：逻辑运算、位运算、算数运算<br>
+计算图：一个包含节点和边的图。其中节点表示张量对象，边代表运算流向<br><br>
+计算机视觉库
+<br><br>
+<a data-tooltip-position="top" aria-label="http://c.biancheng.net/view/1886.html" rel="noopener" class="external-link" href="http://c.biancheng.net/view/1886.html" target="_blank">tensorflow入门教程</a><br>
+<a data-tooltip-position="top" aria-label="https://opencv24-python-tutorials.readthedocs.io/en/latest/index.html" rel="noopener" class="external-link" href="https://opencv24-python-tutorials.readthedocs.io/en/latest/index.html" target="_blank">opencv-python官方文档</a>
+]]></description><link>_posts\ml.html</link><guid isPermaLink="false">_posts/ml.md</guid><pubDate>Tue, 07 Mar 2023 16:57:18 GMT</pubDate></item><item><title><![CDATA[计算机结构]]></title><description><![CDATA[ 
+ <br>###总体架构<br>
+构成：<br>
+运算器（ALU），存储器，控制器，输入输出设备	（运算器+控制器=cpu）<br>
+指令集<br>
+含义：	一组机器指令的集合，一条机器指令可以看作是一个函数的头部，<br>
+而微指令则是实现这条机器指令的函数体。<br>
+cpu架构<br>
+含义：	cpu架构指的是微指令架构，是对某一指令集的具体实现的硬件电路。<br>
+不同厂家通过授权指令集，可以实现这套指令集来生产出处理器。<br><br><br><br><br><br>将cpu从网络或硬盘传输来的数据加工成显示器要求的格式。从而达到显示的目的<br><br>
+<br>处理器（GPU）
+<br>存储器
+<br>总线接口
+<br><br>sdl<br>
+opengl/DirectX<br><br>RAM(random access memory)	随机访问存储器<br>
+|SRAM(静态随机访问存储器),3到4个CMOS管<br>
+|DRAM(动态随机访问存储器),只有一个CMOS,需要不断刷新.动态说法的来历<br>ROM(read only memory)		只读存储器<br><br><br><br>Q:	主流cpu有哪些<br>
+A:	amd和intel<br>
+L:	<br>Q:	intel   cpu  发展史<br>A:	4004		-》1971	（4位）<br>
+8008		-》1972	（8）<br>
+8080		-》1974	（8）<br>
+8086-8088	-》1978	（16）（协处理器）<br>
+80286		-》1982	（16）<br>
+80386		-》1985	（32）（多任务）<br>
+80486		-》1989	（32）<br>
+pentium系列	—》1994<br>
+pentium mmx	-》1997			（+57条多媒体指令）<br>
+core 		-》2006	<br>L:	<a rel="noopener" class="external-link" href="http://www.360doc.com/content/15/0411/07/21966267_462329844.shtml" target="_blank">http://www.360doc.com/content/15/0411/07/21966267_462329844.shtml</a>]]></description><link>_posts\计算机结构.html</link><guid isPermaLink="false">_posts/计算机结构.md</guid><pubDate>Tue, 07 Mar 2023 16:45:16 GMT</pubDate></item><item><title><![CDATA[加密和安全]]></title><description><![CDATA[ 
+ <br><br>
+Full Name: Certification Authority(认证机构)
+<br><br><br><br>]]></description><link>_posts\加密和安全.html</link><guid isPermaLink="false">_posts/加密和安全.md</guid><pubDate>Thu, 15 Sep 2022 02:47:10 GMT</pubDate></item><item><title><![CDATA[流媒体协议]]></title><description><![CDATA[ 
+ <br><br>
+<br>rtp（real-time transport protocol）实时传输协议<br>
+是一种用于实现实时音视频传输的协议。它为实时应用程序提供端到端传输服务，例如VoIP电话、视频会议、流媒体等应用。<br>
+RTP是IETF（Internet Engineering Task Force）标准化的协议，它通常运行在UDP之上，将音频、视频或其他实时数据划分成多个小的数据包进行传输，并增加了时间戳和序列号等信息。这些信息帮助接收方重组原始数据并保持同步，同时也有助于处理网络传输中的延迟、丢包等问题。<br>
+RTP还支持使用RTCP（Real-time Transport Control Protocol）进行控制信令
+<br>rtcp（real-time transport control protocol）实时传输控制协议<br>
+RTCP用于发送控制消息以实现QoS（Quality of Service——服务质量）和流量管理。通过定期向发送方发送反馈信息，RTCP能够提供网络拥塞情况、传输质量和数据源信息等。
+<br>rtsp（streaming）实时流传输协议<br>
+是一种用于实现音频和视频流的控制协议，RTSP通常运行在TCP或UDP之上，它提供了一种标准的方式来控制流式媒体传输。通过RTSP，客户端可以向服务器请求流媒体资源，并实现对流媒体的控制和管理，例如播放、暂停、快进、倒放、跳转和调整音量等操作。与其他流媒体协议不同的是，RTSP并不直接传输音视频数据，而是协调客户端和服务器之间的数据传输。<br>
+RTSP还支持使用RTCP（Real-time Transport Control Protocol）进行控制信令
+<br>rtmp(messaging) 实时消息传输协议<br>
+是一种用于实现音频和视频流的传输协议。它由Adobe公司开发，主要用于支持Flash Player和Adobe AIR中的实时数据传输。<br>
+RTMP 可以在TCP/IP 协议栈上建立一个可靠的、实时的数据传输通道，用于传输音频、视频等实时数据。与 HTTP 或 FTP 等传输协议不同的是，RTMP 适合用于实时性要求高的场合，例如直播、网络电视等。<br>
+RTMP 分为两种，一种是 RTMP over TCP，另一种是 RTMPS over SSL/TLS。RTMP over TCP 是明文的，未进行加密；而 RTMPS over SSL/TLS 则对传输的数据进行了加密处理，数据更安全。
+<br>hls（http live streaming）<br>
+是一种基于HTTP协议的流媒体传输协议，通过将媒体流切分为小片段，并通过M3U8索引文件动态请求媒体数据，实现了高度的兼容性和可扩展性<br>
+HLS最大的特点是支持直播和点播两种方式。在直播模式下，HLS将实时流媒体数据实时切割为小片段，同时通过M3U8索引文件来标识小片段的位置。播放器通过周期性地请求此M3U8索引文件来获取最新的媒体切片地址，并结合缓冲区和预加载，实现流畅的直播体验。而在点播模式下，HLS会将整个媒体文件分割成多个小片段，请求同样也是通过M3U8索引文件来获取对应的媒体切片地址。
+<br>sip（session initiation protocol）<br>
+是一种应用层协议，用于建立、修改和终止多媒体会话，例如语音通话、视频通话和即时消息等。SIP协议是IETF（Internet Engineering Task Force）制定的标准，被广泛使用在VoIP（Voice over IP）网络中。<br>
+总的来说，SIP是一种用于建立、修改和终止多媒体会话的应用层协议，被广泛使用在VoIP网络中，通过SIP用户可以建立语音、视频通话和即时消息等通讯。
+<br>总结：<br>传输协议：rtp，rtmp，hls<br>
+传输控制协议：rtcp<br>
+传输会话控制协议：rtsp，sip<br><br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/Dreamandpassion/article/details/107525385" rel="noopener" class="external-link" href="https://blog.csdn.net/Dreamandpassion/article/details/107525385" target="_blank">RTP协议详解</a><br>
+<a data-tooltip-position="top" aria-label="https://www.rfc-editor.org/rfc/rfc3550#section-2.1" rel="noopener" class="external-link" href="https://www.rfc-editor.org/rfc/rfc3550#section-2.1" target="_blank">RFC 3550: RTP: A Transport Protocol for Real-Time Applications (rfc-editor.org)</a> <br>摘要<br>
+这个memo描述RTP协议，RTP协议提供端到端的网络传输功能，适合于需要实时传输的数据，比如音频，视频或者simulation数据，通过multicast（多播）或者unicast的网络服务来实现。RTP不会address resource reservation也不对实时服务提供质量保证。数据传输通过RTCP协议扩充，RTCP协议允许监测数据传输在一个网络中，并且提供了最小化的控制和标识功能。RTP和RTCP设计用来独立于底层的传输层和网络层。该协议支持RTP-level的 translators 和 mixers 。<br>
+<br>RTP<br>translators/mixers<br>
+<br>
+mixers：放置在低速带宽区域，用于重新组合发送方每隔20ms发送过来的数据，将多个数据包组合成为一个
+
+<br>
+translators：放在防火墙的内外侧，用于将多播数据包转换到内部多播组中
+
+<br>
+rtp payload：音频数据/压缩的视频数据
+
+<br>
+rtp packet：固定的rtp头部 + 可能为空的csrc字段 + payload数据
+
+<br>
+rtcp packet：固定的rtcp头部 + 各种结构化的element，不同类型
+
+<br>
+rtp media type：rtp payload类型的集合
+
+<br>
+multimedia session：
+
+<br>
+rtp session：
+
+<br>
+synchronization source（ssrc）：标识rtp packet的发送者，int32类型
+
+<br>
+contributing source（csrc）：用在mixer中，标识rtp packet片段用于组合
+
+<br><br><a data-tooltip-position="top" aria-label="https://rtmp.veriskope.com/docs/spec/" rel="noopener" class="external-link" href="https://rtmp.veriskope.com/docs/spec/" target="_blank">Adobe RTMP Specification · RTMP (veriskope.com)</a><br>Public Live:<br>client:<br>
+<br>rtmp_client_create：live/vod 地址设置，回调设置
+<br>rtmp_client_start：设置client模式，publish = 0-推流，1-拉流（live流/vod流）， 2-仅推live流， 3-仅推vod流。开始握手，发送(c0/c1)包
+<br>rtmp_client_input：继续完成握手三阶段。通过getstate判断当前握手状态，如果返回4，则可以开始传输video/audio
+<br>rtmp_client_push_video/rtmp_client_push_audio：传输flv包，或h264/aac码流(NALU)
+<br>server:<br>
+<br>rtmp_server_create：设置回调
+<br>rtmp_server_input: 接收client数据，处理握手和chunk数据
+<br><br><a data-tooltip-position="top" aria-label="https://github.com/ireader/media-server" rel="noopener" class="external-link" href="https://github.com/ireader/media-server" target="_blank">ireader/media-server: RTSP/RTP/RTMP/FLV/HLS/MPEG-TS/MPEG-PS/MPEG-DASH/MP4/fMP4/MKV/WebM (github.com)</a>]]></description><link>_posts\流媒体协议.html</link><guid isPermaLink="false">_posts/流媒体协议.md</guid><pubDate>Thu, 20 Apr 2023 12:27:50 GMT</pubDate></item><item><title><![CDATA[学习资料]]></title><description><![CDATA[ 
+ <br><br>一、算法基础系列<br>
+<br>数据结构基础(C语言版）》朱仲涛 译
+<br>《剑指Offer》
+<br>《编程之美》
+<br>《编程珠玑》
+<br>《CareerCup-Top 150 Questions 4th》
+<br>《[算法导论].(美国)Cormen.扫描版》
+<br>二、C/C++面试题基础系列<br>
+<br>《程序员面试宝典》
+<br>《程序员面试攻略》
+<br>《C/C++程序员生存手册》
+<br>三、高质量代码系列<br>
+<br>《高质量程序设计指南》
+<br>《高质量程序设计艺术》
+<br>四、C语言系列（对很好的掌握C++有很大帮助）<br>
+<br>《编程精粹：编写高质量C语言代码》
+<br>《C语言深度解剖》
+<br>《C和指针》
+<br>《C专家编程》
+<br>五、C++系列<br>
+<br>《C++ primer》
+<br>《C++程序设计语言》
+<br>《effective C++》
+<br>《more effective c++》
+<br>《C++语言99个常见编程错误》
+<br>《c++沉思录》
+<br>《c++ 编程剖析-问题、方案和设计准则》刘未鹏译
+<br>《提高C++性能的编程技术》左飞
+<br>《STL 源码剖析》
+<br>六、LINUX系列<br>
+<br>《鸟哥的LINUX私房菜基础篇》
+<br>《鸟哥的LINUX私房菜服务器架设篇》
+<br>《Linux程序设计》马修
+<br>《UNIX 环境高级编程》
+<br>《Linux内核设计与实现》
+<br>《Linux内核完全注释(修正版v3.0)》
+<br>《Unix 编程艺术》
+<br>七、LINUX 工具系列<br>
+<br>《VIM中文手册》
+<br>《轻松学用linux shell编程》
+<br>《Linux命令、编辑器与Shell编程》 / (美) Mark G. Sobell著; 杨明军, 王凤芹译
+<br>八、多线程编程系列<br>
+<br>《多核多线程编程》
+<br>《LINUX 多线程服务器端编程》 陈硕
+<br>九、其它辅助系列<br>
+<br>《处理器架构》
+<br>《英特尔平台编程》
+<br>《深入理解计算机系统》
+<br>《深入浅出设计模式》
+<br>《[设计模式]：可复用面向对象软件的基础》机械工业出版社
+<br><br><a rel="noopener" class="external-link" href="http://tengine.taobao.org/book/" target="_blank">http://tengine.taobao.org/book/</a><br><a rel="noopener" class="external-link" href="http://www.pagefault.info" target="_blank">http://www.pagefault.info</a>]]></description><link>_posts\学习资料.html</link><guid isPermaLink="false">_posts/学习资料.md</guid><pubDate>Tue, 07 Mar 2023 17:08:26 GMT</pubDate></item><item><title><![CDATA[雪花算法]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1Xa4y1i7Ax/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1Xa4y1i7Ax/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">雪花算法 | 好懂23期_哔哩哔哩_bilibili</a><br><img alt="snowflake" src="lib\media\snowflake.png"><br><br>
+将一个int——32位，作为最终生成的唯一ID。
+
+<br>最高位不用为0
+<br>0-15这16位作为序列号
+<br>15-30这15位作为机器ID
+
+<br>
+int CreatSessionID()
+{
+	int sessionid;
+	//每次选出最小的id
+	static int epch = 0;
+	static int lastId = 0;
+
+	if (epch &gt;= pow(2,15)) {
+		ALOGE("ID run out of");
+		return -1;
+	}
+	if (lastId &gt;= pow(2, 16)) {
+		epch++;
+		lastId = 0;
+	}
+
+	//类雪花算法实现，全局唯一自增ID生成，用一个int(32位)存储id，去掉最高位，可以生成pow(2,31)个唯一id
+	//后16位为序号位，17到31位为轮次位(15位)
+	sessionid= epch &lt;&lt; 16 | lastId++;
+	return sessionid;
+}
+
+
+复制]]></description><link>_posts\雪花算法.html</link><guid isPermaLink="false">_posts/雪花算法.md</guid><pubDate>Mon, 06 Mar 2023 08:59:06 GMT</pubDate><enclosure url="lib\media\snowflake.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\snowflake.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[字节序]]></title><description><![CDATA[ 
+ <br><br><img src="lib\media\pasted-image-20230418210112.png"><br>
+人类书写数字习惯从左往右，表示从高位向低位书写。如52（5-&gt;2）。5是高位，2是低位<br><br>
+<br>网络字节序统一都是 大端字节序 （字节的高位放在内存低地址）
+<br>]]></description><link>_posts\字节序.html</link><guid isPermaLink="false">_posts/字节序.md</guid><pubDate>Tue, 18 Apr 2023 13:08:38 GMT</pubDate><enclosure url="lib\media\pasted-image-20230418210112.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\pasted-image-20230418210112.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[字体]]></title><description><![CDATA[ 
+ <br><br><img src="lib\media\等宽字体.png"><br>]]></description><link>_posts\字体.html</link><guid isPermaLink="false">_posts/字体.md</guid><pubDate>Tue, 07 Mar 2023 02:02:16 GMT</pubDate><enclosure url="lib\media\等宽字体.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\等宽字体.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[algorithm]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md" rel="noopener" class="external-link" href="https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md" target="_blank">javascript-algorithms/README.zh-CN.md at master · trekhleb/javascript-algorithms (github.com)</a><br><a data-tooltip-position="top" aria-label="https://github.com/labuladong/fucking-algorithm" rel="noopener" class="external-link" href="https://github.com/labuladong/fucking-algorithm" target="_blank">labuladong/fucking-algorithm: 刷算法全靠套路，认准 labuladong 就够了！English version supported! Crack LeetCode, not only how, but also why. (github.com)</a>、<br>《算法导论》<br><br>
+内容整理的目的：
+
+<br>建立算法相关内容的体系结构
+
+<br><img src="lib\media\算法考察频率.png"><br><a class="internal-link" data-href="哈希表.md" href="_posts\哈希表.html" target="_self" rel="noopener">哈希表</a> ]]></description><link>_posts\算法.html</link><guid isPermaLink="false">_posts/算法.md</guid><pubDate>Mon, 29 May 2023 09:20:44 GMT</pubDate><enclosure url="lib\media\算法考察频率.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\算法考察频率.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[android]]></title><description><![CDATA[ 
+ <br><br><br>
+<br>【activity】：表示应用中的一个界面
+<br>【service】：是一个不使用用户界面而在后台执行操作的组件
+<br>【broadcast】：是一种消息类型，任何应用都可以接受
+<br>【intent】：是消息传递的载体
+<br>【显式 Intent】：提供了消息传递的目标地址的intent
+<br>【隐式intent】：没有提供明确目标地址的intent，而是提供了想要执行的操作，让系统中其他匹配的应用提供服务。<a class="internal-link" data-href="#隐式intent处理逻辑" href="about:blank#隐式intent处理逻辑" target="_self" rel="noopener">隐式intent处理逻辑</a>
+<br>【intent过滤器】：是<a class="internal-link" data-href="#应用清单文件" href="about:blank#应用清单文件" target="_self" rel="noopener">应用清单文件</a>中的一个表达式，用于指定该应用可以接收的intent类型
+<br><br><br><a data-tooltip-position="top" aria-label="https://developer.android.google.cn/guide/topics/manifest/manifest-intro" rel="noopener" class="external-link" href="https://developer.android.google.cn/guide/topics/manifest/manifest-intro" target="_blank">清单文件</a><br><br>使用隐式 Intent 时，Android 系统通过将 Intent 的内容与在设备上其他应用的清单文件中声明的&nbsp;Intent 过滤器进行比较，从而找到要启动的相应组件。如果 Intent 与 Intent 过滤器匹配，则系统将启动该组件，并向其传递对象。如果多个 Intent 过滤器兼容，则系统会显示一个对话框，支持用户选取要使用的应用。<br><br>
+Android NDK 是一组使您能将 C 或 C++（“原生代码”）嵌入到 Android 应用中的工具
+]]></description><link>_posts\android.html</link><guid isPermaLink="false">_posts/android.md</guid><pubDate>Thu, 09 Nov 2023 13:10:14 GMT</pubDate></item><item><title><![CDATA[app抓包]]></title><description><![CDATA[ 
+ <br><br>
+<br>下载fiddler，一个网络抓包工具
+<br>下载nox模拟器，并开启多开模式使用Android 5版本来安装要抓包的应用，Android 6之后，用户添加的ca证书无法生效
+<br>设置模拟器中的网络代理，将代理服务器地址和端口设置为fiddler的代理端口和本机ip
+<br>fiddler中开启https的解密功能，将解密需要的ca证书在nox浏览器中通过代理ip和端口下载并安装
+<br>在nox的游戏中心下载xposed模块
+<br>下载justtrustme.apk，并在xposed中选中justtrustme。
+<br>开启抖音，并点击vlog主的主页中。此时fiddler中会看到一个比较大的包，看response中的json中play_url。就是需要的视频地址了。
+]]></description><link>_posts\app抓包.html</link><guid isPermaLink="false">_posts/app抓包.md</guid><pubDate>Tue, 07 Mar 2023 02:02:52 GMT</pubDate></item><item><title><![CDATA[archlinux]]></title><description><![CDATA[ 
+ <br><br>0.References
+https://www.jianshu.com/p/7c78dc4c53e5
+https://zhuanlan.zhihu.com/p/202914804
+
+0. 下载镜像，并制作镜像盘
+制作iso镜像工具：https://www.balena.io/etcher/
+
+1.网络连接检测
+(使用iwctl连接无线网络](https://www.debugpoint.com/2020/11/connect-wifi-terminal-linux/)
+ping -c 3 baidu.com
+
+2.更新系统时间
+timedatectl set-ntp true
+
+3.硬盘分区
+fdisk /dev/sda
+
+4.分区格式化
+mkfs.ext4 /dev/sda1
+
+5.磁盘挂载
+mount /dev/sda1  /mnt
+
+6.置国内archlinux软件下载镜像源
+vim /etc/pacman.d/mirrorlist
+Server = https://mirrors.163.com/archlinux/$repo/os/$arch
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+
+7.安装基本软件和kernel
+pacstrap /mnt base base-devel linux linux-firmware
+
+8.生成挂载信息文件
+genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+
+9.切换到新系统
+arch-chroot /mnt
+
+10.安装vim
+pacman -S vim
+
+11.设置时区
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock --systohc
+
+12.设置本地化文本编码
+vim /etc/locale.gen
+zh_CN.UTF-8 UTF-8
+
+locale-gen
+
+vim /etc/locale.conf
+LANG=en_US.UTF-8
+
+13.设置主机名
+vim /etc/hostname
+
+14.配置hosts文件
+vim /etc/hosts
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   hellokitty.localdomain  hellokitty
+
+15.管理员账号设置密码
+passwd
+
+16.创建新普通用户
+useradd -m tom
+passwd tom
+
+17.安装grub,设置引导（bios主板）
+pacman -S intel-ucode grub
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+17.2. 安装grub（UEFI主板）(查考UEFI系统：https://wiki.archlinux.org/index.php/GRUB)
+pacman -S grub efibootmgr
+fdisk -l （查看efi是在哪个分区）
+mkdir /uefi;mount /dev/efi所在分区 /uefi
+grub-install --target=x86_64-efi --efi-directory=/uefi --bootloader-id=自己命名
+
+18.配置完毕
+exit
+reboot
+
+
+复制<br><br>systemctl enable NetworkManager.service<br>#1.list nearby Wi-Fi networks
+$ nmcli device wifi list
+#2.connect to a wifi network
+nmcli device wifi connect AP_NAME password PASSWORD
+#3.show the connected wifi information
+nmcli connection show
+复制<br><br>
+<br>pacman -S terminus-font
+<br>configure
+
+<br>temporary changes<br>
+setfont xxx(/usr/share/kbd/consolefonts/)
+<br>persistent change<br>
+vim /etc/vconsole.conf
+    FONT=ter-u32b
+复制
+
+
+
+<br><br># /etc/pacman.d/mirrorlist
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+Server = https://mirrors.163.com/archlinux/$repo/os/$arch
+复制<br>pacman -Sy<br><br><br><br>user.name=dere-arch
+user.email=catt82401@gmail.com
+core.editor=vim
+复制<br><br>pacman -S xorg-xserver xorg-xinit<br>
+pacman -S i3-gaps compton feh i3status dmenu<br>
+NOTE:<br>
+|tools name |description |<br>
+|-----------|------------|<br>
+|compton |used to transparent the windows |<br>
+|feh |a tool to change the wallpaper |<br>
+|i3status |i3 buttom status line |<br>
+|dmenu |a application startup tool |<br>configure:<br>
+<br>cp /etc/X11/xinit/xinitrc ~/.xinitrc
+<br>edit .xinitrc
+<br>#twm &amp;
+#xterm -geometry 80x50+494+51 &amp;
+#xterm -geometry 80x20+494-0 &amp;
+#exec xterm -geometry 80x66+0+0 -name login
+exec feh --bg-max --randomize ~/wallpapers/* &amp;
+#exec fcitx &amp;
+exec i3
+复制<br>
+<br>vim ~/.config/i3/config
+<br>set $mod Mod4
+font pango:monospace 16
+exec  --no-startup-id compton -b
+复制<br><br>pacman -S alsa-utils<br>
+<br>alsamixer -- a gui setting<br>
+00 --&gt; not mute<br>
+MM --&gt; is mute<br>
+rotation key to switch items and set sound size
+<br>amixer sset Master unmute
+<br><br>
+<br>
+if your grapic card is inter.<br>
+pacman -S xorg-xbacklight
+
+<br>
+otherwish, use a common interface controllor tools.<br>
+pacman -S acpilight
+
+<br>usage:<br>
+xbacklight -get<br>
+xbacklight -set 30<br>
+xbacklight -inc 10<br>
+xbacklight -dec 10<br><br>
+<br>download<br>
+pacman -S shadowsocks-libev asciidoc xmlto
+<br>git clone https://github.com/shadowsocks/simple-obfs.git
+cd simple-obfs
+git submodule update --init --recursive
+./autogen.sh
+./configure &amp;&amp; make
+make install
+复制<br>
+<br>configure
+<br>
+<br>shadowsocks-libev(ss-local, ss-server...)
+<br>`/etc/shadowsocks/config.json`
+{
+    "server":"xxx",
+    "server_port":"443",
+    "local_ipv4_address":"127.0.0.1",
+    "local_port":"1314",
+    "password":"xxx",
+    "method":"xchacha20-ietf-poly1305",
+
+    "plugin":"obfs-local",
+    "plugin_opts":"obfs=tls",
+
+    "timeout": 10
+}
+
+`/usr/lib/systemd/system/shadowsocks-libev@.service`
+ExecStart=/usr/bin/ss-local -c /etc/shadowsocks/%i.json -v
+
+复制<br>
+<br>startup<br>
+systemctl start <a data-tooltip-position="top" aria-label="mailto:shadowsocks-libev@config.service" rel="noopener" class="external-link" href="mailto:shadowsocks-libev@config.service" target="_blank">shadowsocks-libev@config.service</a><br>
+systemctl status shadowsocks-libev@config
+<br><br>
+A tool convert socks5 proxy to http proxy.
+<br>
+<br>
+download<br>
+pacman -S privoxy
+
+<br>
+configure
+
+<br>::::/etc/privoxy/config
+
+//The privoxy work ip and port
+listen-address 127.0.0.1:8118
+
+//socks5 work ip &amp; port
+forward-socks5 / 127.0.0.1:1314 .
+
+::::~/.zshrc
+export http_proxy="http://localhost:8118"
+复制<br>
+<br>start<br>
+systemctl start privoxy.service<br>
+systemctl enable privoxy.service
+<br><br><br>
+To run the makepkg can not be root, so first we should to add a aur user used to do this job.
+<br>useradd aur
+passwd github
+mkdir /home/aur &amp;&amp; chown aur:aur /home/aur
+visudo (Note: export VISUAL="vim")
+    aur ALL=(ALL)ALL
+
+### manual install aur package
+1. download the PKGBUILD file (from archlinux offical website or git clone from the url)
+2. makepkg -ris (r = remove[clean the instal], i = install[install the package], s = dependiency[auto download dependiency])
+
+
+
+## systemd timer (used for Timers)
+&gt; Is build-in support for archlinux, need not to be install
+
+### A demostration
+1. create `.timer` suffix file in /etc/systemd/system/
+```ini
+#filename: foo.timer
+[Unit]
+Description=xxx
+
+[Timer]
+OnBootSec=10min
+# OnCalendar format:
+# DayOfWeek Y-M-D H-M-S
+# 1. Mon,Tue *-*-01..04 12:00:00
+# equal to under
+# OnCalendar=*-*-*
+OnCalendar=daily
+# when the system boot from powered off that missed the last start time it triggers the sevice immediately
+Persistent=true
+
+[Install]
+#systemd build-in target which sets up all timers that should be active after boot
+WantedBy=timers.target
+复制<br>
+<br>create .service suffix file in /etc/systemd/system/
+<br>#filename foo.service
+[Unit]
+Description=xxx
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /path/to/needed-to-exec.sh
+
+复制<br>
+<br>startup<br>
+systemctl enable foo.timer<br>
+systemctl start foo.timer
+<br><br>systemctl status foo.service<br>
+systemctl list-timers<br><br>
+1.网络配置
+- 保证虚拟机网卡是桥接模式
+- 查看是否存在无线网卡
+ls /sys/class/net/en*/
+如果存在wireless或phy80211文件夹，存在无线网卡
+- 使用systemd-networkd来管理网络
+2.为有线网卡配置静态ip
+vim /etc/systemd/network/20-wired.network
+
+[Match]
+Name=ensxx
+[Network]
+Address=192.168.1.200/24
+Gateway=192.168.1.1
+DNS=192.168.1.1
+DNS=8.8.8.8
+DNS=114.114.114.114
+
+3.设置后台服务（systemd-networkd.service）开机启动
+systemctl enable systemd-networkd.service
+
+
+4.安装sshd
+pacman -S openssh
+systemctl start sshd
+systemctl enable sshd.service
+
+5.让普通用户使用sudo权力
+sudo -
+chattr -i /etc/sudoers
+vim /etc/sudoers
+xxx ALL=(ALL)ALL
+chattr +i /etc/sudoers
+
+复制]]></description><link>_posts\archlinux.html</link><guid isPermaLink="false">_posts/archlinux.md</guid><pubDate>Tue, 25 Oct 2022 00:52:24 GMT</pubDate></item><item><title><![CDATA[asio]]></title><description><![CDATA[ 
+ <br><a data-tooltip-position="top" aria-label="https://www.boost.org/doc/libs/1_82_0/doc/html/boost_asio/overview.html" rel="noopener" class="external-link" href="https://www.boost.org/doc/libs/1_82_0/doc/html/boost_asio/overview.html" target="_blank">Overview - 1.82.0 (boost.org)</a><br>
+<br>基本原理（rationale）
+<br>Boost.asio基础解析（anatomy）
+<br>异步模型
+
+<br>异步操作
+<br>异步代理
+<br>执行器（Executors）
+<br>分配器（Allocators）
+
+
+<br>核心概念和函数
+<br>组合（composition）和完成（completion）tokens
+<br>网络
+<br>定时器
+<br>文件
+<br>管道
+<br>串口
+<br>信号处理
+]]></description><link>_posts\asio.html</link><guid isPermaLink="false">_posts/asio.md</guid><pubDate>Mon, 17 Apr 2023 06:25:44 GMT</pubDate></item><item><title><![CDATA[c++并发编程]]></title><description><![CDATA[ 
+ <br><br>Atomic operations<br>
+These components are provided for fine-grained atomic operations allowing for lockless concurrent programming. Each atomic operation is indivisible with regards to any other atomic operation that involves the same object. Atomic objects are free of data races.<br>
+这些组件提供了良好的粒度，原子的操作允许不通过锁的方式就可以做到同步编程。每一个原子操作都是不可分割的，对于其他的原子操作对象并且作用在同一个对象上，原子对象对于数据竞争是自由的free of data races
+<br>Mutual exclusion<br>
+Mutual exclusion algorithms prevent multiple threads from simultaneously accessing shared resources. This prevents data races and provides support for synchronization between threads.<br><br><br>
+互斥量算法阻止多个线程同时访问共享资源，它可以防止数据竞争，提供了多个线程之间同步的机制。
+<br>Mutual exclusion (互相的+排斥的 = 互斥量)<br>
+simultaneously (同时的)<br>
+synchronization (同步性)<br>通常互斥量mutex不会单独使用，就像new和delte一样容易忘记释放。建议使用自动管理类（lock_guard,unique_lock)等来间接使用。<br>
+<br>lock_guard(是一个mutex的简单封装，构造时加锁，析构时自动解锁）
+<br>unique_lock：(提供了更多的功能相比于lock_guard，配合条件变量使用）
+<br>Condition variables<br>
+A condition variable is a synchronization primitive that allows multiple threads to communicate with each other. It allows some number of threads to wait (possibly with a timeout) for notification from another thread that they may proceed. A condition variable is always associated with a mutex.<br><br><br>
+一个条件变量是一个同步原语,同步的意思是允许多个线程互相交流。它允许一些数量的线程去等待另外的线程发起通知唤醒。一个条件变量通常和一个互斥量（mutex）联系在一起
+<br>Semaphores<br>
+A semaphore is a lightweight synchronization primitive used to constrain concurrent access to a shared resource. When either would suffice, a semaphore can be more efficient than a condition variable.<br><br><br>
+一个信号量是一个轻量级的同步原语，用于限制同时访问共享资源。当都没有suffice的时候，使用信号量比条件变量更加有效。
+<br>Latches and Barriers<br>(since c++20)<br>
+Latches and barriers are thread coordination mechanisms that allow any number of threads to block until an expected number of threads arrive. A latch cannot be reused, while a barrier can be used repeatedly.<br><br><br>
+门闩和栅栏都是线程协作机制，它们允许任意数量的线程阻塞直到一些被期望的线程到达。门闩不能够被重复使用，而栅栏可以被重复使用多次。
+<br>Futures<br>
+The standard library provides facilities to obtain values that are returned and to catch exceptions that are thrown by asynchronous tasks (i.e. functions launched in separate threads). These values are communicated in a shared state, in which the asynchronous task may write its return value or store an exception, and which may be examined, waited for, and otherwise manipulated by other threads that hold instances of std::future or std::shared_future that reference that shared state.<br><br><br>
+标准库提供的一个机制，用来获取那些异步运行的任务的返回值和异常。这些返回值和异常通过共享的状态来交流，异步任务会将它的返回值写入或者存储它的异常到这个共享状态中。之后那些拥有std::future or std::shared_future对象的线程就可以通过这些对象来检查，等待或者操作这些返回值和异常。（这里的共享状态就是std::future or std::shared_future)
+]]></description><link>_posts\thread.html</link><guid isPermaLink="false">_posts/thread.md</guid><pubDate>Tue, 07 Mar 2023 17:09:24 GMT</pubDate></item><item><title><![CDATA[C++数据类型转换]]></title><description><![CDATA[ 
+ <br><br>
+<a rel="noopener" class="external-link" href="https://cplusplus.com/doc/tutorial/typecasting/" target="_blank">https://cplusplus.com/doc/tutorial/typecasting/</a><br>
+<a data-tooltip-position="top" aria-label="https://zh.cppreference.com/w/cpp/language/expressions" rel="noopener" class="external-link" href="https://zh.cppreference.com/w/cpp/language/expressions" target="_blank">表达式 - cppreference.com</a>
+<br><br><img src="lib\media\standard_conversion.png"><br><br><br><img src="lib\media\dynamic_cast.png"><br>表达式 dynamic_cast&lt;T&gt;(v) 的结果是将表达式 v 转换为类型 T 。类型T应该是一个指向完整class type的指针或引用，或者是指向 cv void 的指针<br>解释：<br>
+cv void ：其中的cv指代的是两个关键字const 和 volatile 。cv void指的就是被这两个关键字组合出的各种void类型的统称。如: const void, volatile void, const volatile void<br><br><br><img src="lib\media\static_cast.png"><br>类型转换表达式 static_cast&lt;T&gt;(v) 用于将表达式v转为类型T。<br>
+<br>如果T是一个左值引用或一个函数的右值引用，那么转换结果为左值。
+<br>如果T是一个对象的右值引用，结果是xvalue
+<br>否则转换结果为prvalue
+<br><br><br><br>使用c风格或函数风格的转换<br>]]></description><link>_posts\cpp数据类型转换.html</link><guid isPermaLink="false">_posts/Cpp数据类型转换.md</guid><pubDate>Sat, 11 Mar 2023 05:09:36 GMT</pubDate><enclosure url="lib\media\standard_conversion.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\standard_conversion.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[c++语言基础]]></title><description><![CDATA[ 
+ <br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV13T4y1k7qQ?t=10.7" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV13T4y1k7qQ?t=10.7" target="_blank">c++11-20所有新特性</a><br><br>
+https://isocpp.org/
+[标准版本参考]
+https://en.cppreference.com/w/cpp/compiler_support
+[儿童版本参考]
+https://cplusplus.com/
+复制
+<br><br>
+  c++标准只是一种规范，是对要实现功能的定义，规范只是规定了需要实现哪些内容，而具体如何实现就不属于规范范畴了。它包括
+
+<br>
+c++语言标准（实现：编译器gcc，msvc）
+
+<br>
+c++标准库标准（实现：libc++，libstdc++）
+
+
+<br>   c++标准库（std）的内容可以分为10类：
+   
+   1. 语言支持:&lt;limits&gt;,&lt;climits&gt;,&lt;cfloat&gt;,&lt;cstdint&gt;,&lt;new&gt;,&lt;ctime&gt;,&lt;cstdlib&gt;,&lt;csignal&gt;,
+   2. IO操作:&lt;iostream&gt;,&lt;ios&gt;,&lt;iosfwd&gt;,&lt;streambuf&gt;,&lt;istream&gt;,&lt;ostream&gt;,&lt;iomanip&gt;,&lt;sstream&gt;,
+   3. 诊断:&lt;exception&gt;,&lt;stdexcept&gt;,&lt;cassert&gt;,&lt;cerrno&gt;,&lt;system_error&gt;
+   4. 通用工具：&lt;utility&gt;,&lt;tuple&gt;,&lt;functional&gt;,&lt;memory&gt;,&lt;chrono&gt;,&lt;ctime&gt;,&lt;iterator&gt;
+   5. 字符串：&lt;string&gt;,&lt;cctype&gt;,&lt;cwctype&gt;,&lt;regex&gt;,&lt;cwchar&gt;,&lt;cstdlib&gt;,&lt;cuchar&gt;,&lt;cstring&gt;
+   6. 容器：&lt;deque&gt;,&lt;vector&gt;,&lt;list&gt;,&lt;map&gt;,&lt;queue&gt;,&lt;set&gt;,&lt;stack&gt;,&lt;array&gt;,&lt;bitset&gt;,&lt;forward_list&gt;,&lt;unordered_map&gt;,&lt;unordered_set&gt;
+   7. 并发：&lt;atomic&gt;,&lt;thread&gt;,&lt;mutex&gt;,&lt;future&gt;,&lt;condition_variable&gt;
+   8. 算法：&lt;algorithm&gt;,&lt;cstdlib&gt;
+   9. 数值操作：&lt;numeric&gt;,&lt;complex&gt;,&lt;cmath&gt;,&lt;random&gt;,&lt;cstdlib&gt;,&lt;valarray&gt;
+   10. 本地化:&lt;locale&gt;,&lt;clocale&gt;,&lt;condecvt&gt;
+复制<br>如果一个程序的功能完全使用标准库中的东西来实现的话，就可以做到跨平台（一份相同的代码，在不同操作系统上编译执行）。因为标准库中的东西其实只是接口（对功能的定义），具体到不同平台的c++标准库实现是不同的（gun/linux中是libstdc++，mac和ios中是libc++，android中是NDK），具体实现其实是对系统调用的使用来实现的。<br><img src="lib\media\标准库和标准模板库关系.png"><br><br>stl由:容器,迭代器,算法,函数对象组成
+复制<br><br>
+  <a data-tooltip-position="top" aria-label="https://www.cnblogs.com/zuofaqi/p/10194541.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/zuofaqi/p/10194541.html" target="_blank">emplace_back()和push_back()区别和注意</a>
+<br>队列：queue
+
+//初始化
+queue&lt;T&gt; que;//默认构造
+queue(const queue &amp;q);//拷贝构造
+
+//操作
+push(e);//add to tail
+pop();//remove head
+back();//get tail
+front();//get head
+size();//get size
+empty();//if noting
+
+
+
+复制<br><br>复制<br><br>复制<br><br>class func
+{
+    void operator ()(int aa);
+}
+func a;//函数对象
+a(3);
+
+
+double fs(int a);
+functional&lt;double(int))&gt; fo = bind(f,3);//fo为函数对象
+复制<br><br><br>​	<br><br><br>
+<br>
+显示调用：
+
+<br>stock s= stock();
+<br>stock* sp= new stock("hi",123);
+
+
+<br>
+隐式调用：
+
+<br>
+stock s;				--&gt;调用默认构造函数
+
+<br>
+stock s("hello",123);	--&gt;没有参数的时候不能写成这样stock s().该句是声明一个函数。要用上面的形式。
+
+
+
+<br><br>​	每一个新对象其实就是一块c-结构体空间。<br>​	stock s；的意思是在变量声明堆栈上开辟一块stock大小的内存空间，s是该区域的地址（相当于汇编中的标号）。<br>​	但调用构造函数之后就相当于对这块内存的对应区域进行了初始化。而不同对象是共用类的方法的，成员函数通过缺省的this指针知道该调用哪一个对象的数据来改变。<br><br>​		默认构造函数:stock();								  --&gt;stock a;<br>
+​		复制构造函数:stock(const stock&amp;s);	 	--&gt;stock a = stock(b);			使用一个对象来创建另一个对象<br>
+​																					stock a(b);<br>
+​																					stock* a= new stock(b);<br>
+​																					stock a=b;<br>
+​		移动构造函数:stock(const stock&amp;&amp;s);		--&gt;<br>
+​		赋值操作符： stock&amp; operator=(const stock &amp;s);  --&gt; a=b				将a对象重新赋值为b。<br>必须使用成员初始化列表初始化的三种情况<br>
+<br>const成员变量的初始化
+<br>引用成员的初始化
+<br>初始化没有默认构造函数的对象（该对象可能是继承来的，也可以是组合的对象）
+<br><br>
+<br>
+派生类和基类之间的关系：<br>
+​		1.派生类对象可以使用基类中的公有方法（派生类--》基类）<br>
+​		2.基类指针或引用可以指向派生类对象（基类--》派生类），但是该指针或引用只能访问派生类中基类的方法
+
+<br>
+3种继承方式（私有，保护，公有）改变的只是继承体系之外的使用派生类的访问权限，而对于继承体系之内（基类，派生类）基类中成员是什麽访问权限，对于派生类来说就是什么权限。
+
+<br><br><img src="lib\media\运算符优先级.png"><br>RAII<br>
+<br>lock_guard&lt;mutex&gt;
+<br>unique_lock&lt;mutex&gt; 		支持条件变量
+<br><br>
+<a data-tooltip-position="top" aria-label="http://c.biancheng.net/view/272.html" rel="noopener" class="external-link" href="http://c.biancheng.net/view/272.html" target="_blank">c语言中文网</a> 
+<br>getline(src,dst);
+gets(src);//可以无限读取，以回车结束读取
+cin.get(box,box_size);//函数可以接收空格，遇回车结束输入。
+cin.getline(box,box_size);//函数可以同cin.get()函数类似，也可接收空格，遇回车结束输入
+复制<br><img src="lib\media\1.png"><br>
+<br>istream 是用于输入的流类，cin 就是该类的对象。
+<br>ostream 是用于输出的流类，cout 就是该类的对象。
+<br>ifstream 是用于从文件读取数据的类。
+<br>ofstream 是用于向文件写入数据的类。
+<br>iostream 是既能用于输入，又能用于输出的类。
+<br>fstream 是既能从文件读取数据，又能向文件写入数据的类。
+<br><br><a data-tooltip-position="top" aria-label="https://zhuanlan.zhihu.com/p/352365043" rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/352365043" target="_blank">C++后台开发，以我之见</a><br><img src="lib\media\v2-9f5ba4cb9644915fa97dfdeb7b241bf6_720w.jpg"><br><img alt="img" src="lib\media\v2-65780d15f794caa74e711894fa0af409_720w.jpg"><br><img src="lib\media\v2-34afd1551b9389cfb4bac4d8c04efe8c_720w.jpg"><br><img src="lib\media\v2-3cc6f3f8fc05bd93af86c37e10de8ed4_720w.jpg"><br><img src="lib\media\v2-c65b8879d3126d15ee791856cf1a81a2_720w.jpg">]]></description><link>_posts\c++.html</link><guid isPermaLink="false">_posts/C++.md</guid><pubDate>Fri, 12 May 2023 01:52:12 GMT</pubDate><enclosure url="lib\media\标准库和标准模板库关系.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\标准库和标准模板库关系.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[C++中IO流体系]]></title><description><![CDATA[ 
+ <br><br>stream有如下几种类型<br>
+<br>标准输入输出流
+<br>string流
+<br>file流
+<br><br><img src="lib\media\io流类的继承体系.png"><br>
+<img src="lib\media\cppref.png"><br><br><br>
+<br>ios_base 和 basic_ios 定义了不区分是输入流还是输出流的基本功能
+<br>ios_base 独立于模板参数（不是模板类），描述了所有类型的stream的最基本部分，独立于stream的具体数据类型
+<br>basic_ios 依赖于模板参数，是一个类模板，通过传入不同的模板参数创建不同模板类
+<br>fpos 代表在stream中的位置
+<br><br><br>
+<br>basic_istream继承自basic_ios。因此具有basic_ios的功能
+]]></description><link>_posts\c++中io流体系.html</link><guid isPermaLink="false">_posts/C++中IO流体系.md</guid><pubDate>Thu, 23 Mar 2023 09:37:22 GMT</pubDate><enclosure url="lib\media\io流类的继承体系.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\io流类的继承体系.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[centos7]]></title><description><![CDATA[ 
+ <br><br><img src="lib\media\net模式.png"><br>
+<br>桥接模式：相当于虚拟机直接连接路由器
+<br>仅主机模式：只能所在主机单向访问虚拟机，无法连接外网
+<br>nat模式：主机和虚拟机之间可以双向通讯，且通过nat网络映射的原理能实现连接外部网络。但局域网中的其他主机一般无法访问此虚拟机的服务。
+<br><br>
+<br>
+查看Linux内核版本<br>
+cat /proc/version    或者 uname -a   
+
+<br>
+查看linux发行版（什么系统centos？Fedora？，版本号）<br>
+lsb_release -a  , cat /etc/issue  适用于所有发行版Redhat，suse，debian<br>
+cat /etc/redhat-release   适用于Redhat系列的linux<br>
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+<br>
+centos的第7个版本，（也就是通过cat /etc/redhat-release 查看的有centos7字样的。）中的防火墙不再是iptables，而是firewalld。
+
+<br>firewalld是一个后台进程，分为系统配置文件和用户配置文件，系统配置文件（/usr/lib/firewalld/services），用户配置文件（/etc/firewalld/）<br>修改防火墙的设置有两种方法。<br>
+1.直接修改用户配置文件，<br>
+2.使用命令（firewall-cmd）来间接管理修改配置文件<br>  firewall-cmd --permanent --add-port=445/tcp 开放9527端口<br>
+firewall-cmd --permanent --remove-port=12345/tcp  禁用端口<br>
+firewall-cmd --state        查看防火墙的状态<br>
+firewall-cmd --list-all       查看防火墙的开放列表<br>firewalld 常用命令<br>
+1.重启，关闭，开启firewalld服务<br>
+service firewalld start/stop/restart<br>
+<br>开放80端口(centos6)<br>
+vi /etc/sysconfig/iptables<br>
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT<br>
+service iptables restart<br>
+或:<br>
+iptables -A INPUT -p tcp -m state --state  NEW  -m tcp --dport 80 -j ACCEPT<br>
+service iptables save<br>
+service iptables restart 
+<br>（<a data-tooltip-position="top" aria-label="https://blog.csdn.net/yyycheng/article/details/79753032%EF%BC%89" rel="noopener" class="external-link" href="https://blog.csdn.net/yyycheng/article/details/79753032%EF%BC%89" target="_blank">https://blog.csdn.net/yyycheng/article/details/79753032）</a><br>
+（<a data-tooltip-position="top" aria-label="https://blog.csdn.net/xiazichenxi/article/details/80169927%EF%BC%89%E9%98%B2%E7%81%AB%E5%A2%99%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D" rel="noopener" class="external-link" href="https://blog.csdn.net/xiazichenxi/article/details/80169927%EF%BC%89%E9%98%B2%E7%81%AB%E5%A2%99%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D" target="_blank">https://blog.csdn.net/xiazichenxi/article/details/80169927）防火墙详细介绍</a><br>
+（<a data-tooltip-position="top" aria-label="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/security_guide/sec-using_firewalls%EF%BC%89redhat%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3" rel="noopener" class="external-link" href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/security_guide/sec-using_firewalls%EF%BC%89redhat%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3" target="_blank">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/security_guide/sec-using_firewalls）redhat官方文档</a><br>
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br><br>
+<br>
+安装centos7，通过镜像
+
+<br>
+配置网络<br>
+vi /etc/sysconfig/network-scripts/ifcfg-xxx<br>
+{<br>
+修改如下:<br>
+static<br>
+on<br>
+添加如下:<br>
+IPADDR=192.168.1.100<br>
+NETMASK=255.255.255.0<br>
+GATEWAY=192.168.1.1<br>
+DNS1=114.114.114.114<br>
+DNS2=8.8.8.8<br>
+DNS3=192.168.1.1(/etc/resolve.conf文件会根据网卡配置文件中的dns值设置nameserver，因此会出现每次重启导致resolve.conf文件清空)<br>
+}<br>
+systemctl restart network.service(service network restart)<br>
+ip addr
+
+<br>
+配置yum国内镜像源
+3.1 首先备份/etc/yum.repos.d/CentOS-Base.repo<br>
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+ 3.2 在163镜像站里找到centos对应版本repo文件下载<br>
+curl <a rel="noopener" class="external-link" href="http://mirrors.163.com/.help/CentOS7-Base-163.repo" target="_blank">http://mirrors.163.com/.help/CentOS7-Base-163.repo</a> &gt; /etc/yum.repos.d/CentOS7-Base-163.repo
+3.3 生成缓存<br>
+yum clean all<br>
+yum makecache
+
+<br>
+安装常用软件<br>
+yum install gcc vim git wget
+
+<br>
+bashrc配置
+
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+
+
+alias cl='cl(){ cd $1;ls;};cl'
+alias scpget='scpget(){ scp root@192.168.1.101:$1 $2;};scpget'
+alias scpsend='scpsend(){ scp root@192.168.1.101:$1 $2;};scpsend'
+alias home='home(){ cl ~;};home'
+alias portadd='portadd() { firewall-cmd --permanent --add-port=$1/tcp;};portadd'
+alias portsub='portsub(){ firewall-cmd --permanent --remove-port=$1/tcp;};portsub'
+alias net='net(){ netstat -lnp |grep $1;};net'
+
+复制
+
+<br>
+安装zsh和下载zsh的配置文件oh-my-zsh
+
+<br>+++ 安装zsh +++<br>
+yum install -y zsh<br>+++ 安装oh-my-zsh +++<br>
+git clone <a rel="noopener" class="external-link" href="https://gitee.com/mirrors/oh-my-zsh.git" target="_blank">https://gitee.com/mirrors/oh-my-zsh.git</a> ~/.oh-my-zsh<br>
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc<br>
+<br>配置网络时间同步服务ntpd<br>
+<a rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/156757418" target="_blank">https://zhuanlan.zhihu.com/p/156757418</a>
+<br><br>
+<br><br><br>
+References:<br>
+<a rel="noopener" class="external-link" href="https://blog.csdn.net/liang_operations/article/details/83241551#2rpm_7" target="_blank">https://blog.csdn.net/liang_operations/article/details/83241551#2rpm_7</a>
+<br>
+<br>
+软件类型<br>
+rpm--》二进制软件。<br>
+tar--》软件源码。
+
+<br>
+rpm管理（1.手动下载安装。 2.使用yum包管理软件来管理）
+
+<br>
+手动管理
+
+<br>
+rpm包格式<br>
+eg：perl-Carp-1.26-244.el7.noarch.rpm<br>
+软件名：    perl-Carp<br>
+版本：     1.26-244  （版本细分：主版本号1，次版本号26，release次数244）<br>
+操作系统版本： e17<br>
+cpu架构：    noarch
+
+<br>
+下载<br>
+通过互联网下载（curl或wget）xxx.rpm
+
+<br>
+安装<br>
+rpm -ivh xxx.rpm
+
+<br>
+查询<br>
+rpm -qa xxx （查询是否安装某软件）<br>
+rpm -qf /usr/bin/dd （查询软件所属rpm包）
+
+<br>
+删除<br>
+rpm -e xxx.rpm
+
+
+
+<br>
+yum软件来管理
+
+<br>yum原理<br>
+首先yum软件运行makecache选项后通过目录/etc/yum.repos.d/下的配置文件，<br>
+通过网络更新软件信息缓存表（只是软件的描述信息，而不是软件本身）<br>
+用户就可以查询相关软件的信息在本地，通过缓存表<br>
+yum clean all 清空缓存表（/var/cache/yum）<br>
+yum makecache 生成缓存
+
+1、升级系统
+[root@localhost ~]#yum update
+ 
+2、安装指定的软件包
+[root@localhost ~]# yum -y install mysql-server
+ 
+3、升级指定的软件包
+[root@localhost ~]# yum -y update mysql
+ 
+4、卸载指定的软件包
+[root@localhost ~]# yum -y remore mysql
+ 
+5、查看系统中已经安装的和可用的软件组，对于可用的软件组，你可以选择安装
+[root@localhost ~]# yum grouplist
+ 
+6、安装上一个命令中显示的可用的软件组中的一个软件组
+[root@localhost ~]# yum -y groupinstall Emacs
+ 
+7、更新指定软件组中的软件包
+[root@localhost ~]# yum -y groupupdate Emacs
+ 
+8、卸载指定软件组中的软件包
+[root@localhost ~]# yum -y groupremove Emacs
+ 
+9、清除缓存中的rpm 头文件和包文件
+[root@localhost ~]# yum clean all
+ 
+10、搜索相关的软件包
+[root@localhost ~]# yum -y search Emacs
+ 
+11、显示指定软件包的信息
+[root@localhost ~]# yum info Emacs
+ 
+12、查询指定软件包的依赖包
+[root@localhost ~]# yum deplist emacs
+ 
+13、列出所有以 yum 开头的软件包
+[root@localhost ~]# yum list yum\*
+ 
+14、列出已经安装的但是不包含在资源库中的rpm 包
+[root@localhost ~]# # yum list extras
+复制
+
+
+
+<br>
+tar源码包管理<br>
+./configure --prefix = /usr/local/bin/    （配置软件的属性：安装路径，功能选项。类似win下单安装软件过程。最终生成makefile文件）<br>
+make      根据makefile规则执行编译<br>
+make install  根据makefile规则执行安装<br>
+make clean    根据makefile规则执行清理
+
+<br>
+自己安装软件,设置环境变量
+
+<br>建立可执行文件的软连接.<br>
+ln -s src dst
+<br>vim .bashrc<br>
+export PATH=$PATH:
+<br>source .bashrc
+
+
+<br><br>
+<br><br><br><br>
+<br>
+安装nginx<br>
+方式一：<br>
+yum install epel-release<br>
+yum makecache<br>
+yum install nginx -y<br>
+方式二：<br>
+cat /etc/redhat-release 发行版本号,下面的6<br>
+uname -a //内核版本x.x.x<br>
+vi  /etc/yum.repos.d/nginx.repo
+        [nginx]
+        name=nginx repo
+        baseurl=http://nginx.org/packages/centos/6/$basearch/
+        gpgcheck=0
+        enabled=1
+    
+        yum clean all
+        yum makecache
+        yum install nginx
+复制
+
+<br>
+安装php<br>
+rpm -Uvh <a rel="noopener" class="external-link" href="https://centos7.iuscommunity.org/ius-release.rpm" target="_blank">https://centos7.iuscommunity.org/ius-release.rpm</a>   ==添加源<br>
+yum search php7x   ==查找包<br>
+yum install php7x*   ==安装7x的所有包(扩展)
+
+<br>
+配置nginx<br>
+1.修改<br>
+location / {<br>
+root   E:\php-7.2.6\www;   //php目录<br>
+index  index.html index.htm;<br>
+}<br>
+2.解开如下location节点<br>
+location ~ .php$ {<br>
+root           E:\php-7.2.6\www;   //php目录<br>
+fastcgi_pass   127.0.0.1:9000;<br>
+fastcgi_index  index.php;<br>
+fastcgi_param  SCRIPT_FILENAME  fastcgi_script_name; //修改/script为$document_root<br>
+include        fastcgi_params;<br>
+}
+
+<br>
+配置php<br>
+3.配置<br>
+3.1 解开配置<br>
+extension_dir = E:\php-7.2.6\ext;//php插件目录<br>
+cgi.fix_pathinfo=1; //php与使用cgi的配置项<br>
+4.管理<br>
+4.1.启动<br>
+php-cgi.exe -b 127.0.0.1:9000 -c php.ini<br>
+4.2.关闭
+
+<br><br>
+<br><br><br>
+<br>
+首先下载java<br>
+yum clean all<br>
+yum makecache<br>
+yum install java
+
+<br>
+下载tomcat安装包<br>
+国内超快镜像  <a rel="noopener" class="external-link" href="https://mirrors.cnnic.cn/apache/tomcat/" target="_blank">https://mirrors.cnnic.cn/apache/tomcat/</a>
+
+<br>
+解压tar.gz<br>
+tar -zvxf apache-tomcat.tar.gz<br>
+cd apache-tomcat/bin<br>
+./starup.sh
+
+<br>
+查看tomcat实时日志记录<br>
+cd apache-tomcat/logs<br>
+tail -f catalina.out<br>
+ctrl+c退出
+
+<br><br>
+<br><br><br>
+centos7中不再使用mysql，MySQL被收购之后就不是开源了。使用的是mariadb数据库
+<br>
+<br>安装mariadb<br>
+yum install mariadb-server mariadb
+<br>启动mariadb<br>
+systemctl start mariadb
+<br>关闭mariadb<br>
+systemctl stop mariadb
+<br><br>1.查看启动项<br>
+systemctl list-unit-files<br>
+2.过滤查看启动项<br>
+systemctl list-unit-files | grep enable ]]></description><link>_posts\centos.html</link><guid isPermaLink="false">_posts/centos.md</guid><pubDate>Tue, 07 Mar 2023 02:04:42 GMT</pubDate><enclosure url="lib\media\net模式.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\net模式.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[cmake]]></title><description><![CDATA[ 
+ <br><br>target:代表可执行程序或库（elf，so）<br>
+add_executable<br>
+add_library<br>
+add_custom_command<br>
+project:<br>
+command:<br>
+target properties:<br>
+<br>cmake构建系统是由一系列target组成,cmake就是围绕target进行展开的。
+<br><br>cmake cache <br>]]></description><link>_posts\cmake.html</link><guid isPermaLink="false">_posts/cmake.md</guid><pubDate>Mon, 13 Mar 2023 02:50:24 GMT</pubDate></item><item><title><![CDATA[cmakelist]]></title><description><![CDATA[ 
+ <br><br>title: cmakelists<br>
+date: 2021-07-21 18:01:12<br>
+categories:<br>
+<br>工具<br>
+tags:
+<br>cmake
+<br><br><br>cmake_minimum_required(VERSION 2.8)	//cmake最低版本要求  
+project(name)				//项目名称  
+add_executable(name file1 file2)	//通过多个file文件构建name可执行文件  
+set(var v1 v2)				//设置变量var为v1 v2  
+set(CMAKE_CXX_FLAGS "-std=c++11")
+include_directories(path1 path2)	//头文件路径  
+link_directories(path1)			//库文件路径  
+target_link_libraries(name ws2_32.lib)	//具体链接的库  
+
+复制]]></description><link>_posts\cmakelist.html</link><guid isPermaLink="false">_posts/cmakelist.md</guid><pubDate>Mon, 13 Mar 2023 02:51:42 GMT</pubDate></item><item><title><![CDATA[cocos2d]]></title><description><![CDATA[ 
+ <br>Cocos2d-x 是 MIT<br>
+游戏引擎<br>
+游戏引擎是一种特殊的软件，它提供游戏开发时需要的常见功能<br>
+包含渲染器，2D/3D 图形元素，碰撞检测，物理引擎，声音，控制器支持，动画等<br>精灵、动作、动画、粒子特效、场景转换、事件、文件 IO、数据持久化、骨骼动画、3D]]></description><link>_posts\cocos2d.html</link><guid isPermaLink="false">_posts/cocos2d.md</guid><pubDate>Tue, 14 Mar 2023 13:58:24 GMT</pubDate></item><item><title><![CDATA[computer_图形学]]></title><description><![CDATA[ 
+ <br><br>
+<br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1X7411F744?t=4.7" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1X7411F744?t=4.7" target="_blank">GAMES101-现代计算机图形学入门-闫令琪</a> 
+<br>tiger_book
+]]></description><link>_posts\computer-图形学.html</link><guid isPermaLink="false">_posts/computer-图形学.md</guid><pubDate>Sat, 01 Apr 2023 02:48:02 GMT</pubDate></item><item><title><![CDATA[data_structure]]></title><description><![CDATA[ 
+ <br><br>title: 数据结构与算法<br>
+date: 2021/6/19 16:43:23<br><br><br>
+学习方式：<a rel="noopener" class="external-link" href="https://www.zhihu.com/question/20588261/answer/926157817" target="_blank">https://www.zhihu.com/question/20588261/answer/926157817</a>
+<br><br><br><br><br><br><br><br>
+<br>层序遍历<br>
+步骤：
+<br>已知前序，中序求树。已知中序和后序求树。<br>
+步骤:
+<br><br><br>
+<br><br><br>
+出自链接：
+<a rel="noopener" class="external-link" href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247484184&amp;idx=1&amp;sn=62965b401aa42107b3c17d1d8ea17454&amp;chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&amp;scene=21#wechat_redirect" target="_blank">https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247484184&amp;idx=1&amp;sn=62965b401aa42107b3c17d1d8ea17454&amp;chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&amp;scene=21#wechat_redirect</a>
+<br>十大排序算法的时空复杂度如下图<br><img alt="十大排序" src="lib\media\排序算法的时空复杂度.png" referrerpolicy="no-referrer"><br><br>
+
+<br>从数列中挑出一个元素，称为 “基准”（pivot）;
+<br>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+<br>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；
+
+<br><img style="zoom:67%;" alt="kuaipai" src="\pics\快速排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列；
+<br>设定两个指针，最初位置分别为两个已经排序序列的起始位置；
+<br>比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；
+<br>重复步骤 3 直到某一指针达到序列尾；
+<br>将另一序列剩下的所有元素直接复制到合并序列尾。
+
+<br><img style="zoom:67%;" alt="guibing" src="\pics\归并排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>将第一待排序序列第一个元素看做一个有序序列，把第二个元素到最后一个元素当成是未排序序列。
+<br>从头到尾依次扫描未排序序列，将扫描到的每个元素插入有序序列的适当位置。（如果待插入的元素与有序序列中的某个元素相等，则将待插入元素插入到相等元素的后面。）
+
+<br><img style="zoom:67%;" alt="charu" src="\pics\插入排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>比较相邻的元素。如果第一个比第二个大，就交换他们两个。
+<br>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。
+<br>针对所有的元素重复以上的步骤，除了最后一个。
+<br>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。
+
+<br><img style="zoom:67%;" alt="maopao" src="\pics\冒泡排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置
+<br>再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+<br>重复第二步，直到所有元素均排序完毕。
+
+<br><img style="zoom:67%;" alt="xuanze" src="\pics\选择排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>花O(n)的时间扫描一下整个序列 A，获取最小值 min 和最大值 max
+<br>开辟一块新的空间创建新的数组 B，长度为 ( max - min + 1)
+<br>数组 B 中 index 的元素记录的值是 A 中某元素出现的次数
+<br>最后输出目标整数序列，具体的逻辑是遍历数组 B，输出相应元素以及对应的个数
+
+<br><img style="zoom:67%;" alt="jisu" src="\pics\计数排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>将所有待比较数值（正整数）统一为同样的数位长度，数位较短的数前面补零
+<br>从最低位开始，依次进行一次排序
+<br>从最低位排序一直到最高位排序完成以后, 数列就变成一个有序序列
+
+<br><img style="zoom:67%;" alt="jisu" src="\pics\基数排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>创建一个堆 H[0……n-1]；
+<br>把堆首（最大值）和堆尾互换；
+<br>把堆的尺寸缩小 1，并调用 shift_down(0)，目的是把新的数组顶端数据调整到相应位置；
+<br>重复步骤 2，直到堆的尺寸为 1。
+
+<br><img style="zoom:67%;" alt="dui" src="\pics\堆排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>设置固定数量的空桶。
+<br>把数据放到对应的桶中。
+<br>对每个不为空的桶中数据进行排序。
+<br>拼接不为空的桶中数据，得到结果
+
+<br><img style="zoom:67%;" alt="tong" src="\pics\桶排序.gif" referrerpolicy="no-referrer"><br><br>
+
+<br>选择一个增量序列 t1，t2，……，tk，其中 ti &gt; tj, tk = 1；
+<br>按增量序列个数 k，对序列进行 k 趟排序；
+<br>每趟排序，根据对应的增量 ti，将待排序列分割成若干长度为 m 的子序列，分别对各子表进行直接插入排序。仅增量因子为 1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。
+
+<br><img style="zoom:67%;" alt="xier" src="\pics\希尔排序.gif" referrerpolicy="no-referrer"><br><br>静态查找<br>
+|----- 顺序查找<br>
+|----- 二分查找<br>
+动态查找<br>
+|----- 二叉查找树<br>
++添加平衡条件<br>
+|			|----- 平衡二叉AVL<br>
+|----- 红黑树<br>
+|----- B树和B+树			<br>
+|----- 哈希查找<br><br>为什么可以用不同的语言来实现数据结构和算法？<br>答：数据结构是一种抽象概念，独立于语言和平台，代表着数据和信息在计算机内存中的组织方式。不同语言都有独特的原子数据类型和运算符，代表着不同的语言设计理念。但归根结底语言的作用就两个：<br>1.存储和表示数据（信息）【每种语言都有独特的原子数据类型如c语言中的数组，int，指针。python中的列表，字典，集合。都是用来存放数据的容器】。<br>2.操作数据【每种语言都有运算符（逻辑运算符，算术运算符，）代表着如何操控数据】。<br>于是，各种语言都可以使用语言本身的原子数据结构和操作运算符。将数据在内存中存储和操作了。<br><br>如何学习排序算法：<br>​	单纯地去练习算法还是不好，以应用场景为导向才是正确姿势。要明白算法是解决什么样的问题而产生的。<br><br>
+<br>10个数据结构：数组，链表，栈，队列，二叉树，图，堆，散列表，跳表，trie树
+<br>10个算法：递归，二分查找，搜索，排序，哈希算法，贪心算法，分治算法，动态规划，字符串匹配算法
+<br><img style="zoom:67%;" alt="ds" src="\pics\数据结构与算法.jpg" referrerpolicy="no-referrer"><br><br>像这种算法问题，其实最终说到底是数学问题，所以数学不好的，搞算法是有难度的。既然自己目前不感兴趣，那就先放着，弄一些有趣的项目来玩，在玩中学习把！不要为了学习技术而学习，兴趣才是第一推动力，再说技术这个东西，如果不是"技术达人"，学习技术，其实只是一种生存的工具罢了。想赚大钱，如果时间都投入到技术中，顶多就是好用的一点的工具。你的世界不应该只有技术！你赚的每一分钱，都是对这个世界的认知的变现。所以要善于结合现实世界，学会把知识变现。<br>
+<br>字符串转为整形---hash算法
+<br>字符串正则提取
+]]></description><link>_posts\data_structure.html</link><guid isPermaLink="false">_posts/data_structure.md</guid><pubDate>Sun, 05 Mar 2023 13:46:34 GMT</pubDate><enclosure url="lib\media\排序算法的时空复杂度.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\排序算法的时空复杂度.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[database]]></title><description><![CDATA[ 
+ ]]></description><link>_posts\database.html</link><guid isPermaLink="false">_posts/database.md</guid><pubDate>Tue, 08 Nov 2022 09:48:28 GMT</pubDate></item><item><title><![CDATA[Docker]]></title><description><![CDATA[ 
+ <br><br>
+<a data-tooltip-position="top" aria-label="https://docs.docker.com/engine/reference/builder/" rel="noopener" class="external-link" href="https://docs.docker.com/engine/reference/builder/" target="_blank">Dockerfile reference | Docker Documentation</a><br>
+<a data-tooltip-position="top" aria-label="https://docs.docker.com/" rel="noopener" class="external-link" href="https://docs.docker.com/" target="_blank">Docker Documentation | Docker Documentation</a>
+<br><br><br>是什么<br>
+参考文档<br>
+docker命令行参考<br>
+API参考<br>
+Dockerfile参考<br>
+Compose file参考<br>
+驱动和规范文档<br><br>
+<br>
+curl -sSL <a rel="noopener" class="external-link" href="https://get.daocloud.io/docker" target="_blank">https://get.daocloud.io/docker</a> | sh
+
+<br>
+systemctl start docker
+
+<br>
+docker run hello-world
+
+<br><br><br><br>
+<br>
+创建或修改 /etc/docker/daemon.json 文件，修改为如下形式 
+{    
+    "registry-mirrors" : 
+    			[    
+    				"https://registry.docker-cn.com",   
+    				"https://docker.mirrors.ustc.edu.cn",    
+    				"http://hub-mirror.c.163.com",    
+    				"https://cr.console.aliyun.com/"  
+				] 
+}
+复制
+
+<br>
+重启docker服务
+systemctl restart docker
+
+<br><br>
+<br>
+为client创建一个伪终端
+docker run -it 镜像名 /bin/bash
+
+<br>
+查看运行过的容器
+docker ps （-a详细信息）
+
+<br>
+不使用缓存构建镜像<br>
+docker build -t xxx --no-cache .
+
+<br>
+将容器内的端口映射到本机指定端口<br>
+docker run -p &lt;host_port&gt;:&lt;container_port&gt; &lt;img_name&gt;
+
+<br>
+替换镜像指定的cmd运行容器，异常退出调试有用<br>
+docker run -it --entrypoint /bin/bash &lt;img_name&gt;
+
+<br>]]></description><link>_posts\docker.html</link><guid isPermaLink="false">_posts/docker.md</guid><pubDate>Tue, 07 Mar 2023 16:46:20 GMT</pubDate></item><item><title><![CDATA[electron]]></title><description><![CDATA[ 
+ <br><br>
+//直接安装会出现网络错误
+❯❯ electron   10:46 npm install electron --save-dev
+npm ERR! code 1
+npm ERR! path D:\k-s\private\electron\node_modules\electron
+npm ERR! command failed
+npm ERR! command C:\WINDOWS\system32\cmd.exe /d /s /c node install.js
+npm ERR! RequestError: connect ETIMEDOUT 20.205.243.166:443
+npm ERR!     at ClientRequest.&lt;anonymous&gt; (D:\k-s\private\electron\node_modules\got\dist\source\core\index.js:970:111)
+npm ERR!     at Object.onceWrapper (node:events:640:26)
+npm ERR!     at ClientRequest.emit (node:events:532:35)
+npm ERR!     at ClientRequest.origin.emit (D:\k-s\private\electron\node_modules\@szmarczak\http-timer\dist\source\index.js:43:20)
+npm ERR!     at TLSSocket.socketErrorListener (node:_http_client:442:9)
+npm ERR!     at TLSSocket.emit (node:events:520:28)
+npm ERR!     at emitErrorNT (node:internal/streams/destroy:157:8)
+npm ERR!     at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+npm ERR!     at processTicksAndRejections (node:internal/process/task_queues:83:21)
+npm ERR!     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1157:16)
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     C:\Users\ming\AppData\Local\npm-cache\_logs\2023-04-19T02_46_23_786Z-debug-0.log
+
+//解决办法：设置mirror
+❯❯ electron   10:47 npm config set electron_mirror "https://npm.taobao.org/mirrors/electron/"
+
+//再次执行
+❯❯ electron  10:52 npm install electron --save-dev
+
+added 71 packages, and audited 72 packages in 59s
+
+17 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+复制<br><br>npm run start
+复制<br><br>- 在项目中安装打包工具 electron-forge
+npm install --save-dev @electron-forge/cli
+- 将项目导入electron-forge
+npx electron-forge import
+- 执行打包
+npm run make
+复制<br><br>
+<br><a data-tooltip-position="top" aria-label="https://gitee.com/arashrun/mdviewer" rel="noopener" class="external-link" href="https://gitee.com/arashrun/mdviewer" target="_blank">mdviewer: 简单的markdown浏览应用，不支持编辑，适合于简单的单markdown文件浏览 (gitee.com)</a>
+<br><br><a data-tooltip-position="top" aria-label="http://dev.nodejs.cn/learn/reading-files-with-nodejs" rel="noopener" class="external-link" href="http://dev.nodejs.cn/learn/reading-files-with-nodejs" target="_blank">使用 Node.js 读取文件 (nodejs.cn)</a><br>
+<a data-tooltip-position="top" aria-label="https://www.electronjs.org/docs/latest/" rel="noopener" class="external-link" href="https://www.electronjs.org/docs/latest/" target="_blank">Introduction | Electron (electronjs.org)</a><br><a data-tooltip-position="top" aria-label="https://www.electronforge.io/cli#start" rel="noopener" class="external-link" href="https://www.electronforge.io/cli#start" target="_blank">CLI - Electron Forge</a>]]></description><link>_posts\electron.html</link><guid isPermaLink="false">_posts/electron.md</guid><pubDate>Tue, 25 Apr 2023 10:43:32 GMT</pubDate></item><item><title><![CDATA[Esp32]]></title><description><![CDATA[ 
+ <br><br>
+<br>rom<br>
+rom能被pro cpu加载的原理
+<br>flash
+<br>rtos
+<br>pro cpu<br>
+app cpu]]></description><link>_posts\esp32.html</link><guid isPermaLink="false">_posts/esp32.md</guid><pubDate>Tue, 07 Mar 2023 16:47:22 GMT</pubDate></item><item><title><![CDATA[ffmpeg]]></title><description><![CDATA[ 
+ <br><br><br>wsl无法使用ffplay播放视频的问题。<br>
+1. 下载vcxsrv，
+2. 在配置文件中配置display
+3. 下载sdl2-dev库
+
+复制<br>ffmpeg无法推h264流<br>
+1. 下载libx264库，编译安装
+    编译命令: configure --system-libx264 --enable-shared &amp;&amp; make &amp;&amp; sudo make install
+2. 重新编译ffmpeg
+    configure --enable-shared --enable-libx264 --enable-gpl
+    make -j32
+    sudo make install
+复制<br><br>
+<br>分辨率
+<br>视频码率
+<br>帧率
+<br><br><br>Decode流程<br>
+将压缩的av流，通过avcodec解压缩为原始数据<br>]]></description><link>_posts\ffmpeg.html</link><guid isPermaLink="false">_posts/ffmpeg.md</guid><pubDate>Sat, 25 Mar 2023 03:16:32 GMT</pubDate></item><item><title><![CDATA[firewall]]></title><description><![CDATA[ 
+ ]]></description><link>_posts\firewall.html</link><guid isPermaLink="false">_posts/firewall.md</guid><pubDate>Tue, 07 Mar 2023 16:48:36 GMT</pubDate></item><item><title><![CDATA[gdb 调试]]></title><description><![CDATA[ 
+ <br><br><br>gcc -g<br>
+g++ -ggdb3      # 生成调试版本<br>file       # 加载可执行文件<br>run [argv]      # 一直运行,直到碰到breakpoint，或带命令行参数argv运行<br>
+start           # 执行到main下第一行停止<br>step/s          # 进入当前行, 逐步运行<br>
+next/n          # 运行到下一行<br>
+countinue/c     # 继续run运行，到下一个break点或错误、正常退出<br>list            # 显示main所在文件源码<br>
+list file.c:10  # 显示指定文件某行<br>break/b 10      # 指定行打断点<br>
+b file.c:10     #<br>bt              # 打印当前栈帧 == where<br>
+where           # 同上<br>
+up              # 跳到上一个栈<br>
+down            # 跳到下一个栈<br>watch exp       # 监视表达式，常用于循环变量，运行过程中变化<br><br>revert-step     # 回退执行<br><br>ctrl-x a        # 进入/退出 交换界面<br>
+ctrl-x 1        #<br>
+ctrl-x 2        #<br>ctrl-l          # 刷新界面输出<br># ~/.gdbinit      # 用于自动刷新tux界面
+
+define c 
+  continue
+  refresh
+end
+
+define n
+  next
+  refresh
+end
+
+复制<br>layout<br>
+- src       # 显示源码窗口<br>
+- asm       # 显示汇编窗口<br>
+- reg       # 显示源码、汇编、寄存器窗口<br>
+- split     # 源码、汇编窗口<br>
+- next      # 类似tabnext，下一个窗口<br>
+- prev      # 与next相对<br>info source     # 显示编译时的源码目录信息<br>
+show dir        # 显示gdb的源码搜索路径<br>
+dir             # 添加gdb的默认源码搜索路径<br>
+<a data-tooltip-position="top" aria-label="https://blog.csdn.net/albertsh/article/details/107437084" rel="noopener" class="external-link" href="https://blog.csdn.net/albertsh/article/details/107437084" target="_blank">解决gdb调试找不到源码的问题</a>]]></description><link>_posts\gdb.html</link><guid isPermaLink="false">_posts/gdb.md</guid><pubDate>Sat, 01 Apr 2023 02:36:00 GMT</pubDate></item><item><title><![CDATA[git-skill]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="https://gitee.com/all-about-git" rel="noopener" class="external-link" href="https://gitee.com/all-about-git" target="_blank">git reference</a><br>
+<br>diff &amp; patch usage<br>
+<a data-tooltip-position="top" aria-label="https://www.jianshu.com/p/ec04de3f95cc" rel="noopener" class="external-link" href="https://www.jianshu.com/p/ec04de3f95cc" target="_blank">Git 打补丁-- patch 和 diff 的使用</a><br>
+<a data-tooltip-position="top" aria-label="https://cloud.tencent.com/developer/article/1423939" rel="noopener" class="external-link" href="https://cloud.tencent.com/developer/article/1423939" target="_blank">git 补丁 - diff 和 patch 使用详解</a>
+<br><br>
+<br>git clone私有仓库
+<br>git clone https://username:password@github.com/username/repo_name.git
+复制<br>
+<br>
+add, commit
+
+<br>
+git撤销修改
+
+<br>git的撤销是基于修改的，比如修改工作空间的文件内容是一种修改操作，git add 到缓存区也是一种修改操作，git commit也是。
+因此基于这三种修改操作就会有对应的三种撤销操作。分别是：
+
+- 修改了工作空间的文件，想完全删除修改的内容。
+    git checkout xxx
+- 使用git add操作，想撤销add操作。
+    git reset HEAD xxx
+- 使用git commit操作，想撤销commit的操作。
+    git reset --hard HEAD^
+复制<br>
+<br>修改git远程厂库地址
+<br>$ git remote -v
+origin  root@192.168.145.128:~/opt/git/tools.git (fetch)
+origin  root@192.168.145.128:~/opt/git/tools.git (push)
+$ git remote set-url origin root@192.168.147.130:~/opt/git/tools.git
+复制<br>
+<br>取消文件跟踪(取消git add)
+<br>git rm -r --cached xxx/         -- 不删除本地文件，只是取消git跟踪
+git rm -r --f xxx/              -- 删除本地文件，取消跟踪
+复制<br>
+<br>推送本地新建分支到远程新建分支（创建远程分支），并在两者之间建立联系。
+<br>git push &lt;remote repo name&gt; &lt;remote new branch&gt;:&lt;local new branch&gt;
+git branch --set-upstream &lt;branch&gt; &lt;remote-branch&gt;
+复制<br><br>
+<br>git submodule add 		//添加子模块
+<br><br><a data-tooltip-position="top" aria-label="https://github.com/zhiyong0804/server_develop_guide_book" rel="noopener" class="external-link" href="https://github.com/zhiyong0804/server_develop_guide_book" target="_blank">后台服务器开发指南</a><br>
+<a data-tooltip-position="top" aria-label="https://github.com/xingshaocheng/architect-awesome" rel="noopener" class="external-link" href="https://github.com/xingshaocheng/architect-awesome" target="_blank">后端架构师技术栈</a><br>
+<a data-tooltip-position="top" aria-label="https://github.com/SerenityOS/serenity.git" rel="noopener" class="external-link" href="https://github.com/SerenityOS/serenity.git" target="_blank">serenityos操作系统</a>]]></description><link>_posts\git-skill.html</link><guid isPermaLink="false">_posts/git-skill.md</guid><pubDate>Tue, 07 Mar 2023 16:50:38 GMT</pubDate></item><item><title><![CDATA[hexo插件]]></title><description><![CDATA[ 
+ <br><a data-tooltip-position="top" aria-label="https://github.com/hexojs/hexo/wiki/Plugins" rel="noopener" class="external-link" href="https://github.com/hexojs/hexo/wiki/Plugins" target="_blank">Plugins · hexojs/hexo Wiki (github.com)</a><br>hexo插件用于在不修改hexo源码的情况下扩展hexo博客的功能，hexo插件分为两种<br>
+<br>script类型：用于单文件实现的简单插件，放在根目录script目录下即可自动加载
+<br>plugin类型：多文件的复杂插件需要在node_module目录下创建以hexo-打头的文件夹下，以符合node模块的方式编写即可，完成之后需要在根目录下的 package.json 中添加依赖
+<br>hexo提供了如下一些插件用于加速你对插件开发<br><img src="lib\media\hexo-tools.png"><br>目前已有的插件基本上按功能分，不限如下几类：<br>
+<br>Server：hexo-admin在线修改文章
+<br>Generator：生成器类型插件，用于生成不同类型的静态文件,rss,html,css
+<br>Renderer：渲染器类型，用于处理不同类型文件如，ejs，less，stylus，markdown等
+<br>Migrator：用于从不同博客类型迁移到hexo，rss，wordpress，
+<br>MultiMedia：多媒体插件，提供插入多媒体文件功能，各种远程图片，video等
+<br><br><br>
+<br>基于<a class="internal-link" data-href="#hexo-renderer-markdown-it" href="about:blank#hexo-renderer-markdown-it" target="_self" rel="noopener">Hexo-renderer-markdown-it</a>插件，做了markdown-it插件集成和拓展
+<br>该插件默认集成并开启了如下这些markdown-it插件<br><img src="lib\media\hexo-it-plus.png"><br><br>
+<br>基于 <a class="internal-link" data-href="#markdown-it" href="about:blank#markdown-it" target="_self" rel="noopener">markdown-it</a> 库的markdown渲染器
+<br>比hexo的默认自带的markdown渲染器[Hexo-renderer-marked]更快
+<br>支持如下特性，注脚，上下标，下划线
+<br><br>
+<br>一个js版本的markdown语法解析器，支持CommonMark规范，支持扩展，语法插件，且高速
+<br><br>
+<br>hexo初始化默认的markdown渲染器，npm删除会导致无法执行md-&gt;html的转换（若没有其他的渲染器的话）
+<br>基于 <a class="internal-link" data-href="#marked" href="about:blank#marked" target="_self" rel="noopener">marked</a> 库，做成hexo拓展
+<br>可扩展性好，可以自定义标签的渲染
+<br><br>
+<br>一个markdown解释器js库
+]]></description><link>_posts\hexo插件.html</link><guid isPermaLink="false">_posts/hexo插件.md</guid><pubDate>Tue, 07 Mar 2023 15:14:38 GMT</pubDate><enclosure url="lib\media\hexo-tools.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\hexo-tools.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[hexo站点优化]]></title><description><![CDATA[ 
+ <br><a data-tooltip-position="top" aria-label="https://github.com/arashrun/self-hexo-theme" rel="noopener" class="external-link" href="https://github.com/arashrun/self-hexo-theme" target="_blank">本站点的主题地址</a><br><br>
+<br>直接在全局的ejs文件如(footer.ejs)中添加mermaid的cdn。参考mermaid官网文档 <a data-tooltip-position="top" aria-label="https://mermaid.js.org/intro/#deploying-mermaid" rel="noopener" class="external-link" href="https://mermaid.js.org/intro/#deploying-mermaid" target="_blank">About Mermaid | Mermaid</a> 。即可将文本渲染成mermaid图，不需要下载hexo插件 hexo-filter-mermaid-diagrams 。
+<br><br>
+<br>为配合obisidian原生blockquote样式（obisidin中称之为 Callout ），修改主题中的blockquote标签，根据blockquote头部信息【note，error，todo】渲染不同的样式。基本思路如下：首先修改js文件，通过不同的callout类型来为blockquote标签添加特定的class属性，然后通过css对不同的class分别进行渲染
+<br>具体代码修改 <a data-tooltip-position="top" aria-label="https://github.com/arashrun/self-hexo-theme/commit/8ae4b01f7e7035e0109137525f420a2bac8273ab" rel="noopener" class="external-link" href="https://github.com/arashrun/self-hexo-theme/commit/8ae4b01f7e7035e0109137525f420a2bac8273ab" target="_blank">参考本主题的该次commit</a> 
+<br>目前支持如下callout
+
+<br>todo
+<br>note
+<br>danger
+<br>error
+<br>warning
+<br>question
+
+
+]]></description><link>_posts\站点优化.html</link><guid isPermaLink="false">_posts/站点优化.md</guid><pubDate>Sat, 01 Apr 2023 02:35:24 GMT</pubDate></item><item><title><![CDATA[Hexo指南]]></title><description><![CDATA[ 
+ <br><br>
+<br>创建新文章
+<br>hexo new [layout] &lt;title&gt;
+
+- post
+- page
+- draft
+
+hexo new post -p cs-theory/xxx "title name"
+复制<br>
+<br>git提交修改
+<br>git add xxx
+git commit -m ""
+git push
+复制<br>git push之后，内容就会被推送到hexo分支上<br><br>
+<br>clean and generate public floder
+<br>hexo clean
+hexo g
+复制<br>
+<br>推送并部署<br>
+该处推送，会将master分支（部署分支）推送到远程master分支上。
+<br>hexo d
+复制<br><br>
+<br>
+主题的设置
+修改博客配置_config.yml中的theme为theme文件夹下的目录
+
+<br>
+<a data-tooltip-position="top" aria-label="https://hexo.io/zh-cn/docs/themes" rel="noopener" class="external-link" href="https://hexo.io/zh-cn/docs/themes" target="_blank">主题目录结构</a>
+
+<br>
+添加新模板
+主题模板(区别于hexo根目录下的scaffolds目录中的模板，scaffolds目录中的模板用于创建不同布局文件时的format-header自动填充)，指的是页面的显示模式，不同功能的页面需要不同的模板以适应不同内容的显示。theme下的layout目录中的各种ejs就代表不同的模板，如：index.ejs是首页模板，用于渲染首页；tags.ejs是tag页面模板，用于渲染tags页面等。这些不同的模板当然可以相互之间毫无关联，均开始于 html 标签，但由于复用的缘故，模板默认使用一个共同的布局——layout.ejs。该布局文件layout.ejs中需要提供 &lt;%- body %&gt; ，其他ejs模板就可以公用layout中的公共部分了
+
+<br>1. 新建一个新模板
+	hexo new page "about"
+2. 修改模板头部信息,添加layout头部信息
+	cd _post/about
+	vim index.md
+	layout: about
+
+3. 在theme/xxx/layout目录下创建模板ejs文件 `about.ejs`
+	cd layout
+	vim about.ejs
+复制<br>
+<br>
+ejs简单说明
+ejs是一种模板引擎，类似于php。用于动态生成html。在ejs标记内部使用的是js来作为编程语言的。通过模板引擎，让我们的html可以在前端就动态生成了。
+
+<br><br>github上的两个分支，master和hexo分支。默认clone和展示的分支是hexo分支。hexo分支就是保存我们本地文件的分支。而master分支是hexo进行generate和deploy的分支，当我们写完文章准备同步到远程的时候。我们需要同时更新这两个分支。<br>
+master分支：hexo博客部署和展示的分支，html<br>
+hexo分支：博客修改和创作的分支,md
+<br>
+<br>更新hexo分支
+<br>
+<br>git add .
+<br>git commit
+<br>git push
+<br>
+<br>更新master分支
+<br>
+<br>hexo deploy -g
+]]></description><link>_posts\hexo指南.html</link><guid isPermaLink="false">_posts/Hexo指南.md</guid><pubDate>Wed, 08 Mar 2023 16:38:08 GMT</pubDate></item><item><title><![CDATA[JavaScript]]></title><description><![CDATA[ 
+ <br><br><br><br><br>
+<br>声明的语法
+<br># 全局
+a = 12
+# 范围全局
+var elem;
+
+# 局部
+let elem2 = 22;
+{
+	elem = 12;
+}
+复制<br>
+<br>作用域
+]]></description><link>_posts\javascript.html</link><guid isPermaLink="false">_posts/JavaScript.md</guid><pubDate>Tue, 09 Apr 2024 16:21:34 GMT</pubDate></item><item><title><![CDATA[keyword-c++]]></title><description><![CDATA[ 
+ <br><img src="lib\media\cpp20关键字.png"><br><br>
+作用：
+const ==&gt; constant (adj.不变的,不可修改的)
+起因：
+使用场景：
+<br>
+<br>const char * a
+<br>char const *a<br>
+上面两种都是指明*a的内容不可修改。
+<br>char * const a<br>
+代表指针a不可修改。
+<br>void func() const<br>
+代表被修饰函数不能修改任何成员变量值，不能调用非const函数。且不加const和加了const的同名函数是不一样的。
+<br><br>
+static (adj.静态的，不会被删除的,可修改)
+百度百科-static 		<a rel="noopener" class="external-link" href="https://baike.baidu.com/item/static/9598919?fr=aladdin#1" target="_blank">https://baike.baidu.com/item/static/9598919?fr=aladdin#1</a>
+<br>面向过程中<br>
+<br>静态全局变量:
+<br>
+<br>静态全局变量保存在全局数据区    (生命周期)
+<br>未经初始化的静态全局变量会被程序自动初始化为0    (由于保存在全局数据区)
+<br>静态全局变量在声明它的整个文件都是可见的，而在文件之外是不可见的    (作用域)
+<br>
+<br>静态局部变量:
+<br>
+<br>静态局部变量保存在全局数据区    (生命周期)
+<br>静态局部变量一般在声明处初始化，如果没有显式初始化，会被程序自动初始化为0  (由于保存在全局数据区)
+<br>它始终驻留在全局数据区，直到程序运行结束。但其作用域为局部作用域    (作用域)
+<br>
+<br>静态函数:
+<br>
+<br>静态函数不能被其它文件所用其它文件中可以定义相同名字的函数，不会发生冲突
+<br>面向对象中<br>
+<br>静态数据成员:
+<br>
+<br>静态数据成员是该类的所有对象所共有的。对该类的多个对象来说，静态数据成员只分配一次内存，供所有对象共用
+<br>静态数据成员存储在全局数据区, 在没有产生类对象时其<a data-tooltip-position="top" aria-label="https://baike.baidu.com/item/%E4%BD%9C%E7%94%A8%E5%9F%9F" rel="noopener" class="external-link" href="https://baike.baidu.com/item/%E4%BD%9C%E7%94%A8%E5%9F%9F" target="_blank">作用域</a>就可见，即在没有产生类的实例时，我们就可以操作它
+<br>静态数据成员定义时要分配空间，所以不能在类声明中定义
+<br>静态数据成员没有进入程序的全局名字空间，因此不存在与程序中其它全局名字冲突的可能性
+<br>
+<br>静态成员函数:
+<br><br><br>
+语义是“常量表达式”，也就是在编译期可求值的表达式
+<br><br><br>​	explicit构造函数是用来防止隐式转换的<br>class Test1
+{
+public:
+    Test1(int n)
+    {
+        num=n;
+    }//普通构造函数
+private:
+    int num;
+};
+//--------------------------------------------
+class Test2
+{
+public:
+    explicit Test2(int n)
+    {
+        num=n;
+    }//explicit(显式)构造函数
+private:
+    int num;
+};
+//----------------------------------------------
+int main()
+{
+    Test1 t1=12;//隐式调用其构造函数,成功
+    Test2 t2=12;//编译错误,不能隐式调用其构造函数
+    Test2 t2(12);//显式调用成功
+    return 0;
+}
+复制<br><br><br><br><br><br><br><br>]]></description><link>_posts\keyword-cpp.html</link><guid isPermaLink="false">_posts/keyword-cpp.md</guid><pubDate>Tue, 07 Mar 2023 16:51:28 GMT</pubDate><enclosure url="lib\media\cpp20关键字.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\cpp20关键字.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[lambda]]></title><description><![CDATA[ 
+ <br><br><br><img src="lib\media\lambuda组成.png"><br>
+  <a data-tooltip-position="top" aria-label="http://c.biancheng.net/view/3741.html" rel="noopener" class="external-link" href="http://c.biancheng.net/view/3741.html" target="_blank">lambda 表达式的概念和基本用法</a>
+<br>概念和形式：<br>lambda 表达式定义了一个匿名函数，并且可以捕获一定范围内的变量。lambda 表达式的语法形式可简单归纳如下：<br>[ capture ] ( params ) opt -&gt; ret { body; };
+复制<br>其中 capture 是捕获列表，params 是参数表，opt 是函数选项（一般就是mutable），ret 是返回值类型，body是函数体。<br>捕获列表：<br>lambda 表达式可以通过捕获列表捕获一定范围内的变量：<br>
+<br>[] 不捕获任何变量。
+<br>捕获外部作用域中所有变量，并作为引用在函数体中使用（按引用捕获）。
+<br>捕获外部作用域中所有变量，并作为副本在函数体中使用（按值捕获）。
+<br>[=，&amp;foo] 按值捕获外部作用域中所有变量，并按引用捕获 foo 变量。
+<br>[bar] 按值捕获 bar 变量，同时不捕获其他变量。
+<br>[this] 捕获当前类中的 this <a data-tooltip-position="top" aria-label="http://c.biancheng.net/c/80/" rel="noopener" class="external-link" href="http://c.biancheng.net/c/80/" target="_blank">指针</a>，让 lambda 表达式拥有和当前类成员函数同样的访问权限。如果已经使用了 &amp; 或者 =，就默认添加此选项。捕获 this 的目的是可以在 lamda 中使用当前类的成员函数和成员变量。
+<br>// captures_lambda_expression.cpp
+// compile with: /W4 /EHsc
+#include &lt;iostream&gt;
+using namespace std;
+
+int main()
+{
+   int m = 0;
+   int n = 0;
+   [&amp;, n] (int a) mutable { m = ++n + a; }(4); //m使用引用传递，n按值传递。mutable说明按值传递的n可以修改n值，等价于引用方式
+   cout &lt;&lt; m &lt;&lt; endl &lt;&lt; n &lt;&lt; endl;
+}
+复制]]></description><link>_posts\lambda.html</link><guid isPermaLink="false">_posts/lambda.md</guid><pubDate>Mon, 06 Mar 2023 08:40:32 GMT</pubDate><enclosure url="lib\media\lambuda组成.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\lambuda组成.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[libcurl]]></title><description><![CDATA[ 
+ <br>
+1. create handle
+CURL *easy_handle = curl_easy_init();<br>
+<br>set options<br>
+/ set URL to operate on /<br>
+res = curl_easy_setopt(easy_handle, CURLOPT_URL, "<a data-tooltip-position="top" aria-label="http://example.com/%22)" rel="noopener" class="external-link" href="http://example.com/%22)" target="_blank">http://example.com/")</a>;
+<br>
+3. begine transfer
+// 3.1 simple transfer way
+res = curl_easy_perform( easy_handle );
+// 3.2 multi handle<br>// 3.3<br><br>
+href: <a rel="noopener" class="external-link" href="https://everything.curl.dev/libcurl" target="_blank">https://everything.curl.dev/libcurl</a>
+]]></description><link>_posts\libcurl.html</link><guid isPermaLink="false">_posts/libcurl.md</guid><pubDate>Mon, 06 Mar 2023 08:40:38 GMT</pubDate></item><item><title><![CDATA[libevent2]]></title><description><![CDATA[ 
+ <br><br><br><br><br>
+struct event_base *event_base_new(void);<br>
+
+创建event-base结构体
+<br><br><br>
+struct event_config *event_config_new(void);<br>
+struct event_base *event_base_new_with_config(const struct event_config *cfg);<br>
+void event_config_free(struct event_config *cfg);<br>
+
+使用特定的配置(event_config)来创建一个event_base。event_config_new只是创建一个结构体，具体的配置需要使用如下的函数来配置。
+<br><br><br>
+int event_config_avoid_method(struct event_config *cfg, const char *method);<br>
+int event_config_require_features(struct event_config *cfg,
+                                  enum event_method_feature feature);<br>
+int event_config_set_flag(struct event_config *cfg,
+    enum event_base_config_flag flag);<br>
+
+使用上述的函数接口来配置event_config结构体。
+<br><br><br>
+const char **event_get_supported_methods(void);<br>
+const char *event_base_get_method(const struct event_base *base);<br>
+enum event_method_feature event_base_get_features(const struct event_base *base);<br>
+
+- 获取本机支持的底层事件机制（select，poll，epoll）。最后一个字符串是null<br>
+- 获取当前event_base使用的哪个机制<br>
+- 获取当前event_base机制支持的features
+<br><br><br>
+void event_base_free(struct event_base *base);<br>
+
+释放event_base。但不会释放管理的event，和涉及到的file description及指针<br><br><br><br>
+<br>
+2.1 event的状态机模型<br>
+<br>
+initialized<br>
+|<br>
+pending<br>
+|<br>
+active<br>
+|--------[persistent]----pending<br>
+no pending<br>
+<br>
+当使用event_new创建一个event之后，event就处于initialized状态。<br>
+使用event_add将该event添加到event_base中之后，该event就处于pending状态<br>
+当event监听的相应事件发生之后，会触发event的回调。此时的event就处于active状态<br>
+回调执行完成之后，如果event之前设置为persistent。则event又进入pending状态进入监听状态<br>
+如果没有设置为persistent，回调执行一次之后event就退出pending状态<br>
+此时可以使用event_del将结束的event带入到no pending状态，或者使用event_add再次带入pending状态。<br>
+<br><br><br>
+
+#define EV_TIMEOUT      0x01<br>
+#define EV_READ         0x02<br>
+#define EV_WRITE        0x04<br>
+#define EV_SIGNAL       0x08<br>
+#define EV_PERSIST      0x10<br>
+#define EV_ET           0x20<br>
+
+支持的事件类型，最后两个时用来设置file description的属性。<br>
+<br><br><br>
+typedef void (*event_callback_fn)(evutil_socket_t, short, void *);<br><br>struct event event_new(struct event_base base, evutil_socket_t fd, short what, event_callback_fn cb, void arg);<br>
+<br><br>
+void event_free(struct event event);<br>
+<br>
+创建(将事件带入initilized状态)和销毁事件。<br>
+<br><br>
+<br>
+int event_add(struct event ev, const struct timeval tv);<br>
+int event_del(struct event ev);<br>
+int event_remove_timer(struct event ev);<br>- 将event带入pending状态<br>
+- 将event带入no pending状态，处于initialized和pending之间的一个状态<br>
+- 移除event所带的定时器事件<br>
+<br><br>
+<br>
+
+#define EVLOOP_ONCE             0x01<br>
+#define EVLOOP_NONBLOCK         0x02<br>
+#define EVLOOP_NO_EXIT_ON_EMPTY 0x04<br>
+int event_base_loop(struct event_base *base, int flags);<br>
+
+使用某一种方式运行event_base。EVLOOP_ONCE等待并运行完成所有事件。EVLOOP_NONBLOCK巡逻式的检查是否有event激活。
+<br><br><br>
+int event_base_dispatch(struct event_base *base);
+
+使用默认的方式（一直运行，直到没有注册的事件，或者调用event_base_loopbreak,event_base_loopexit来强制结束事件循环）运行
+<br>
+<br><br>
+int event_base_loopexit(struct event_base *base,
+                        const struct timeval *tv);<br>
+int event_base_loopbreak(struct event_base *base);<br>
+
+终止loop。
+<br><br><br>
+void event_base_dump_events(struct event_base *base, FILE *f);<br>
+
+用于调试，将event_base当前持有的事件写入文件中。
+<br><br><br><br>struct event_base:<br>
+struct event:<br>
+struct bufferevent:<br>
+struct evbuffer:<br>struct evbuffer *evbuffer_new(void);
+void evbuffer_free(struct evbuffer *buf);
+
+int evbuffer_enable_locking(struct evbuffer *buf, void *lock);
+void evbuffer_lock(struct evbuffer *buf);
+void evbuffer_unlock(struct evbuffer *buf);
+
+size_t evbuffer_get_length(const struct evbuffer *buf);
+size_t evbuffer_get_contiguous_space(const struct evbuffer *buf);
+
+int evbuffer_add(struct evbuffer *buf, const void *data, size_t datlen);
+int evbuffer_add_printf(struct evbuffer *buf, const char *fmt, ...)
+int evbuffer_add_vprintf(struct evbuffer *buf, const char *fmt, va_list ap);
+int evbuffer_expand(struct evbuffer *buf, size_t datlen);
+
+int evbuffer_add_buffer(struct evbuffer *dst, struct evbuffer *src);
+int evbuffer_remove_buffer(struct evbuffer *src, struct evbuffer *dst, size_t datlen);
+复制<br><br>
+<br>
+<br><br><br>
+每一个bufferevent结构都有一个input buffer和output buffer(均为evbuffer结构).当有数据往bufferevent中写时，bufferevent就会将要写入的数据添加到output buffer中。反过来，当bufferevent中有数据可读时，你可以从bufferevent中的input buffer提取出数据
+<br><br>
+每一个bufferevent结构都有两个与数据相关的回调：读回调(read callback)和写回调(write callback)。默认情况下，读回调会当底层传输机制(epool,poll,iocp)有数据可读时触发回调，而写回调只有output buffer中还有空间可写时调用。用户可以通过设置读和写的watermarks(水位)来改变数据收发的时机<br><img src="\pics\water_mark.png" alt="watermarks" referrerpolicy="no-referrer"><br><br>
+&gt; Reference: 
+&gt; http://www.wangafu.net/~nickm/libevent-book/]]></description><link>_posts\libevent2.html</link><guid isPermaLink="false">_posts/libevent2.md</guid><pubDate>Mon, 06 Mar 2023 08:40:42 GMT</pubDate><enclosure url="\pics\water_mark.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;\pics\water_mark.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[linux编程]]></title><description><![CDATA[ 
+ <br><br>]]></description><link>_posts\linux编程接口.html</link><guid isPermaLink="false">_posts/linux编程接口.md</guid><pubDate>Tue, 07 Mar 2023 16:53:58 GMT</pubDate></item><item><title><![CDATA[Linux知识大全]]></title><description><![CDATA[ 
+ <br>
+记录范围：<br>
+1.关于Linux方面的通用概念<br>
+2.linux上好用的必备软件
+<br><br>
+<br>windows下的ssr的选项设置下的本地代理勾选中
+<br><a data-tooltip-position="top" aria-label="http://aiezu.com/article/linux_bash_set_proxy.html#:~:text=linux%E8%A6%81%E5%9C%A8s,%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8D%B3%E5%8F%AF%E3%80%82" rel="noopener" class="external-link" href="http://aiezu.com/article/linux_bash_set_proxy.html#:~:text=linux%E8%A6%81%E5%9C%A8s,%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8D%B3%E5%8F%AF%E3%80%82" target="_blank">Linux bash终端设置代理（proxy）访问</a>
+<br>#.bashrc
+export http_proxy=10.0.0.52:1080
+export https_proxy=10.0.0.52:1080
+export no_proxy="*.aiezu.com,10.*.*.*,192.168.*.*,*.local,localhost,127.0.0.1"
+
+复制<br><br>sudo apt-get install ruby<br>
+sudo gem install fy<br><br>
+s sh（secure shell）是一种协议，用于应用层协议下，常用于对应用数据进行加密。是一种数据加密的协议。常用的sshd服务（linux）和openssh（win）就是基于此协议的应用（用于安全的远程登录，以前使用telnet进行远程登录）
+<br><br><br>  1.1 首先在客户端使用openssh(windows上的)的ssh-keygen生成公私钥（生成位置：~/.ssh/）<br>
+ssh-keygen -t rsa<br>
+1.2 将公钥通过scp发送给服务端，并保存到（/root/.ssh/authorized_keys） 文件中<br>
+scp id_rsa.pub root@ip地址:文件保存路径<br>
+cat id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys<br>
+chmod 600 /root/.ssh/authorized_keys（为了安全修改文件权限）<br>
+1.3修改服务器中的sshd的配置文件（sshd_config），修改如下几项，没有自行添加<br>
+RSAAuthentication yes   (开启rsa验证)<br>
+PubkeyAuthentication yes  (是否使用公钥验证)<br>
+AuthorizedKeysFile  .ssh/authorized_keys (公钥的保存位置)<br>
+1.4 重启ssh服务<br>
+service sshd restart<br>【注】 。ssh属于数据加密中的非对称加密(有公钥和私钥，对称机密秘钥都是相同的)<br>
+。ssh-keygen 的选项有（-t 使用的加密算法类型 -p 保护私钥的安全 -f 指定秘钥存放的文件，带pub后缀的为公钥）<br>
+。<a rel="noopener" class="external-link" href="https://www.cnblogs.com/olio1993/p/10960306.html" target="_blank">https://www.cnblogs.com/olio1993/p/10960306.html</a> ssh加密的理解<br><br>1. 在a中生成公私密钥
+    ssh-keygen -t rsa -P ""
+2. 将公钥(.pub)发送到b中
+3. cat xxx.pub &gt;&gt; authorized_keys
+复制<br><br>  。<a rel="noopener" class="external-link" href="https://blog.csdn.net/boshuzhang/article/details/69524800" target="_blank">https://blog.csdn.net/boshuzhang/article/details/69524800</a>  ssh的配置文件<br>
+。<a rel="noopener" class="external-link" href="https://www.douban.com/note/666554273/" target="_blank">https://www.douban.com/note/666554273/</a>   客户端配置长连接和共享连接<br>
+。<a rel="noopener" class="external-link" href="https://blog.csdn.net/chenqijing2/article/details/79098703/" target="_blank">https://blog.csdn.net/chenqijing2/article/details/79098703/</a>  ssh详细参数介绍<br><br>yum install squid<br>
+vi /etc/squid/squid.conf<br>
+//检查配置文件<br>
+squid -k parse<br>
+squid start<br>
+//关闭服务<br>
+squid -k shutdown<br>shadowsocks 基本操作<br>
+wget --no-check-certificate <a rel="noopener" class="external-link" href="https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev.sh" target="_blank">https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev.sh</a>  安装<br>
+chmod +x shadowsocks-libev.sh<br>
+./shadowsocks-libev.sh 2&gt;&amp;1 | tee shadowsocks-libev.log   运行<br>
+./shadowsocks-libev.sh uninstall  xie zai<br>
+/etc/init.d/shadowsocks start qidong<br>
+/etc/init.d/shadowsocks stop  ting zhi <br>
+References:<br>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/bluestorm/p/9032086.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/bluestorm/p/9032086.html" target="_blank">squid基本的配置和运行管理命令</a><br>
+<a data-tooltip-position="top" aria-label="https://www.hawu.me/operation/886" rel="noopener" class="external-link" href="https://www.hawu.me/operation/886" target="_blank">squid+ssl+stunnel，建立加密信道连接实现代理越墙</a><br>
+<a data-tooltip-position="top" aria-label="https://www.williamlong.info/archives/4680.html" rel="noopener" class="external-link" href="https://www.williamlong.info/archives/4680.html" target="_blank">shadowsocks详细操作</a>
+<br><br><br><br><br><br><br><br><br>pv = physic volume(物理卷)<br>
+vg = volume group(卷组)<br>
+lv = logic volume(逻辑卷)<br><br>- VMware将磁盘扩容，不是添加sdb，sdc
+- 磁盘分区
+- 将分区转化为pv
+- 将pv加入某一vg
+- 将vg进行extend操作
+- 从vg种划分出多个pe出来成为lv
+复制<br><br>1.df -T 只可以查看已经挂载的分区和文件系统类型<br>
+2.fdisk -l 可以显示出所有挂载和未挂载的分区，但不显示文件系统类型<br>
+3.parted -l 可以查看未挂载的文件系统类型，以及哪些分区尚未格式化<br>
+4.lsblk -f 也可以查看未挂载的文件系统类型<br>
+5.file -s /dev/sda3<br><br>
+<br>分区：表示对硬盘进行切割的操作
+<br>分区类型：mbr gpt 【形象地理解就是对硬盘切割的方式不同，可能一个横着切，一个竖着切。且不同分区类型支持的硬盘大小也不同】 
+<br>分区标记：root swap boot bios-grub hidden lvm 【这些都是对被分区盘块的标识，如同一个衣柜，根据每个小隔间起一个名字，这块叫上衣间，那块叫裤子间，那块叫袜子间。】
+<br>挂载点：/ /home /boot /usr 【分完区，贴上标记之后。我们为了能够访问不是root分区的盘块，必须将其他分区通过一根线(挂载线)，和root分区挂钩。因为linux只能逻辑上访问root分区中的数据，我们通过挂载点来访问非root分区数据】
+<br>文件系统：ext3 ext4 ntfs 【分完区之后，我们还要细分割每个分区之后才能使用。文件系统代表分区的分割方式】
+<br><br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/mao0514/article/details/51218522" rel="noopener" class="external-link" href="https://blog.csdn.net/mao0514/article/details/51218522" target="_blank">通过grub-install命令把grub安装到u盘-总结</a><br>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/Dumblidor/p/6056948.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/Dumblidor/p/6056948.html" target="_blank">GRUB Rescue 恢复</a><br>
+<a data-tooltip-position="top" aria-label="http://www.cnblogs.com/yinheyi/p/7279508.html" rel="noopener" class="external-link" href="http://www.cnblogs.com/yinheyi/p/7279508.html" target="_blank">GRUB 原理及安装+grub手动引导启动</a><br>
+Linux中grub写入U盘<br>
+vboxmanage internalcommands createrawvmdk -filename d:\usb23.vmdk -rawdisk \.\PhysicalDrive1 -partitions 2,3,4<br><br><br><br>图形界面下---ctrl+alt+f[1-6]<br>
+命令行下----ctrl+alt+f7<br><br>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/xqzt/p/5426666.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/xqzt/p/5426666.html" target="_blank">locate参考链接</a>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/jycjy/p/6940544.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/jycjy/p/6940544.html" target="_blank">四者的区别</a>
+<br>
+<br>
+find：实时查找，精确查找，但速度慢。
+
+<br>
+locate:命令不是实时查找，所以查找的结果不精确，但查找速度很快。因为它查找的不是目录，而是一个数据库（/var/lib/locatedb），这个数据库中含有本地所有文件信息Linux系统自动创建这个数据库，并且每天自动更新一次，所以使用locate命令查不到最新变动过的文件。为了避免这种情况，可以在使用locate之前，先使用updatedb命令，手动更新数据库。
+
+<br>
+which:查找命令类型的文件
+
+<br>
+whereis：只搜索，二进制文件，man手册，源文件
+
+<br><br>
+该命令读取家目录下的.bash_history文件。
+参看链接： <a rel="noopener" class="external-link" href="https://www.cnblogs.com/wxxjianchi/p/9588916.html" target="_blank">https://www.cnblogs.com/wxxjianchi/p/9588916.html</a>
+<br>history [n]
+-c： 将目前shell中的所有history命令消除。对命令历史文件没有影响
+-w ：将本次登录的命令写入命令历史文件中
+-r ： 将命令历史文件中的内容读入到目前shell的history记忆中
+
+! number 执行第几条命令  
+! command 从最近的命令查到以command开头的命令执行
+!! 执行上一条
+复制<br><br>grep -r "内容" dir
+返回:文件名+内容
+
+grep -r -l '内容' dir
+返回:文件名
+
+-n 显示行号
+-i 忽略大小写
+-r 递归搜索子目录(recursive)
+
+复制<br><br>find . -name "*.c"
+在当前目录及子目录下找出所有.c文件
+
+-type c 类型为c的文件(c= d目录,f一般文件, l符号链接, )
+-maxdepth 1 非递归查询,默认递归
+
+复制<br><br>1.查看在线用户
+w -s
+2.查看某用户运行的进程
+ps
+3.获得某个终端下（tty）所有进程
+ps -t /dev/pts/xxx
+4.优雅退出进程
+kill pid （向进程发送sigterm信号）
+kill -9 pid （发送sigkill，不等进程处理）
+复制<br><br><br><br>alias不支持传递命令行参数，所以需要自定义函数来实现外部参数的使用
+
+alias scpget='scpget(){ scp root@ip:$1 $2;};scpget'    #注意最后的两个分号和{ 右边的空格
+alias net='net(){ netstat -lnp |grep $1;};net'          #查看指定端口占用情况
+复制<br><br>##数组定义
+nums=(29 100 13 8 91 44)
+arr=(20 56 "http://c.biancheng.net/shell/")
+ages=([3]=24 [5]=19 [10]=12)
+##获取数组元素
+${array_name[index]}
+使用@或*可以获取数组中的所有元素，例如：
+${nums[*]}
+${nums[@]}
+
+复制<br><br>date +'%c'	#输出日期和时间
+复制<br><br>
+
+<br><a data-tooltip-position="top" aria-label="https://www.cnblogs.com/zhanbing/p/10976796.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/zhanbing/p/10976796.html" target="_blank">inotifywait命令参数</a>
+<br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/beeworkshop/article/details/111349815?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=shell%E7%9B%91%E6%8E%A7%E6%96%87%E4%BB%B6%E5%A4%B9%E5%8F%98%E5%8C%96&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-3-111349815.pc_search_result_no_baidu_js" rel="noopener" class="external-link" href="https://blog.csdn.net/beeworkshop/article/details/111349815?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=shell%E7%9B%91%E6%8E%A7%E6%96%87%E4%BB%B6%E5%A4%B9%E5%8F%98%E5%8C%96&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-3-111349815.pc_search_result_no_baidu_js" target="_blank">检测文件变化</a>
+
+<br>eg:<br>
+监测root，etc及递归下的文件变化<br>
+inotifywait -mrq --format '%e' --event create,delete,modify  /root/ /etc/<br><br>cat &lt;&lt;EOF &gt; /home/xxx
+fadfasdfas
+dfasdfadf
+fasdfasd
+fadfasdfasfadfasdfa
+EOF
+复制]]></description><link>_posts\linux.html</link><guid isPermaLink="false">_posts/linux.md</guid><pubDate>Wed, 23 Nov 2022 01:10:10 GMT</pubDate></item><item><title><![CDATA[makefile]]></title><description><![CDATA[ 
+ <br><br>$* 　　不包含扩展名的目标文件名称。
+
+$+ 　　所有的依赖文件，以空格分开，并以出现的先后为序，可能包含重复的依赖文件。
+
+$&lt; 　　第一个依赖文件的名称。
+
+$? 　　所有的依赖文件，以空格分开，这些依赖文件的修改日期比目标的创建日期晚。
+
+$@ 　 目标的完整名称。
+
+$^ 　　所有的依赖文件，以空格分开，不包含重复的依赖文件。
+
+$% 如果目标是归档成员，则该变量表示目标的归档成员名称。
+复制<br><br>$(subst FROM,TO,TEXT)
+$(subst ee,EE,feet on the stree) //替换“feet on the street“中的ee为EE。结果得到字符串”fEEt on the strEEt”
+
+$(patsubst PATTERN,REPLACEMENT,TEXT)
+$(patsubst %.c,%.o,x.c.c bar.c) //替换以.o结尾的字符,函数的返回结果就为”x.c.o bar.o”
+
+$(strip STRING)
+去掉字符串STRING开头和结尾的空格，并将其中多个连续空字符合并为一个空字符
+
+$(findstring FIND,IN)
+$(findstring a,a b c)返回 a //如果在IN中找到FIND子字符串，则返回FIND，否则返回空
+
+$(filter PATTERN…,TEXT) //返回text中匹配符合pattern的字符串
+cc $(filter %.c %s,foo.c bar.c baz.s ugh.h) -o foo  
+
+$(eval string) 	//
+
+$(filter-out PATTERN…,TEXT)
+和filter相反，剔除掉TEXT中所有符合模式PATTERN的单词
+
+$(sort LIST)
+给字符串LIST中的单词以首字母为主进行排序，并去掉重复的单词
+
+$(word N,TEXT)
+$(word 2,foo bar baz) 返回bar  //取字符串TEXT中第N个单词(N的值从1开始)
+
+$(wordlist S,E,TEXT)
+$(wordlist 2,3,foo bar baz)   返回”bar baz”  //返回TEXT中从第S到E的单词串
+
+$(words TEXT)
+统计TEXT字符串的单词个数，返回值即为单词个数
+
+$(firstword NAMES…)
+//返回NAMES的第一个单词
+复制<br><br>windows上涉及到**多线程**和**网络**编译时需要加上（-lwsock32）
+
+复制<br><br>
+Let's start from the gnu-build-system
+]]></description><link>_posts\makefile.html</link><guid isPermaLink="false">_posts/makefile.md</guid><pubDate>Tue, 07 Mar 2023 16:55:26 GMT</pubDate></item><item><title><![CDATA[meson]]></title><description><![CDATA[<a class="tag" href="?query=tag:表示注释" style="background-color: rgb(4, 108, 116); color: white; font-weight: 700; border: none; border-radius: 1em; padding: 0.2em 0.5em;">#表示注释</a> 
+ <br><br>
+yml文件和json文件类似，是一种配置文件。但由于其语法更加简洁明了，因此也常出没在github中（.travis.yml）
+<br><br>规则：<br>
+<br>大小写敏感
+<br>用缩进表示层级关系
+<br><a href=".?query=tag:表示注释" class="tag" target="_blank" rel="noopener">#表示注释</a>
+<br>数据结构<br>
+<br>
+对象
+# conf.yml
+animal: pets
+hash: { name: Steve, foo: bar }
+复制
+等价于
+{
+    { "animal": "pets" },
+    { "hash": { "name": "Steve", "foo": "bar" } }
+}
+复制
+
+<br>
+数组
+# conf.yml
+Animal:
+ - Cat
+ - Dog
+ - Goldfish
+复制
+{ "Animal": [ "Cat", "Dog", "Goldfish" ] }
+复制
+
+<br>
+字符串
+# conf.yml
+# 正常情况下字符串不用写引号
+str: 这是一行字符串
+# 字符串内有空格或者特殊字符时需要加引号
+str: '内容： 字符串'
+复制
+
+<br>
+null
+# conf.yml
+parent: ~
+复制
+{ "parent": null }
+复制
+
+]]></description><link>_posts\meson.html</link><guid isPermaLink="false">_posts/meson.md</guid><pubDate>Tue, 07 Mar 2023 17:02:08 GMT</pubDate></item><item><title><![CDATA[mysql]]></title><description><![CDATA[ 
+ <br><br>mysql的开源版本，mysql被oracle公司收购。mysql之父又写了一个就是mariadb<br><br>		//相关数据结构
+		MYSQL：代表数据库连接
+		MYSQL_SET:代表结果集和元数据
+		MYSQL_ROW:一个字符指针数组，指针指向实际数据所在列
+		MYSQL_FIELD:表示某一列的元数据
+		MYSQL_STMT:表示准备好的语句句柄
+		MYSQL_BIND:用于为准备好的语句提供参数，或为接受输出列的值
+		MYSQL_TIME:用于日期和时间值
+
+		//建立连接的相关函数
+		mysql_init:准备并初始化MYSQL结构，该结构被mysql_real_connect使用
+		mysql_real_connect:与要求的数据库进行连接，并返回MYSQL句柄
+		mysql_thread_init:用于多线程的程序
+		mysql_options:用于设置额外的连接选项，并影响连接行为======mysql_optionsv()
+		mysql_close:关闭一个之前打开的连接
+
+		//查询相关函数
+		mysql_query:执行一个语句(二进制不安全的：读取字符串时考虑字符转义的问题。二进制安全：不考虑字符转义的问题。)
+		mysql_real_query:执行一条语句(二进制安全)
+		mysql_hex_string:允许语句中出现16进制
+		mysql_store_result:返回一个结果集
+		mysql_free_result:释放store分配的动态内存
+		mysql_use_result:用于初始化上一次查询结果集的索引值
+		mysql_select_db:选择另一个数据库
+		mysql_send_query:
+
+		//行列相关的操作
+		mysql_num_fields:列数
+		mysql_field_count:
+		mysql_field_seek:
+		mysql_field_tell:
+		mysql_fetch_field:
+		mysql_fetch_fields:
+		mysql_fetch_field_direct:
+
+		mysql_num_rows:行数
+		mysql_row_seek:
+		mysql_row_tell:
+
+		mysql_affected_rows:被影响的行数
+
+
+		//工具函数
+		mysql_ping:检测和服务器的连接是否在工作c
+		mysql_error:
+复制]]></description><link>_posts\mysql.html</link><guid isPermaLink="false">_posts/mysql.md</guid><pubDate>Sun, 05 Mar 2023 16:22:20 GMT</pubDate></item><item><title><![CDATA[network]]></title><description><![CDATA[ 
+ <br><br>
+<br>
+全球asn（as编号）查询	<br>
+<a rel="noopener" class="external-link" href="http://as.chacuo.net" target="_blank">http://as.chacuo.net</a><br>
+<a rel="noopener" class="external-link" href="https://tools.ipip.net/as.php" target="_blank">https://tools.ipip.net/as.php</a><br>
+<a rel="noopener" class="external-link" href="https://www.iamle.com/archives/1961.html" target="_blank">https://www.iamle.com/archives/1961.html</a>
+
+<br>
+路由协议：运行在路由器上的协议，该协议用来确定数据包如何到达目标路径。网关是路由器的旧称。
+
+<br>
+根据路由区域大小，路由协议分为两类：<br>
+在一个as（自治系统）内的路由协议称为   内部网关协议  （这里的内部指的是在同一个as中），而各个as之间的路由协议称为   外部网关协议
+​	内部网关协议：<br>
+​	rip-1<br>
+​	rip-2<br>
+​	igrp		上三种使用距离向量算法<br>
+​	eigrp<br>
+​	is-is<br>
+​	ospf		上两种使用链路状态算法
+​	外部网关协议：<br>
+​	egp<br>
+​	bgp
+
+<br><br><br>不可靠：<br>
+无连接：<br><br><br>
+<br>进入路由器，找到ipv6的支持页面，配置路由器的DNS地址为ipv6的公共DNS服务器 240c::6666 然后设置Lan模式为桥模式，这样路由器就只相当于一个桥的作用，因此会给Lan（局域网）范围内的主机分配ipv6地址
+<br>要保证 ipconfig 出来的地址出现 temporary ipv6 address 才算分配到了ipv6地址<br>
+<img src="lib\media\ipv6.png">
+<br>通过网站 <a data-tooltip-position="top" aria-label="https://ipv6-test.com/" rel="noopener" class="external-link" href="https://ipv6-test.com/" target="_blank">IPv6 test - IPv6/4 connectivity and speed test (ipv6-test.com)</a> 进行ipv6支持性测试
+]]></description><link>_posts\network.html</link><guid isPermaLink="false">_posts/network.md</guid><pubDate>Sun, 02 Apr 2023 07:43:42 GMT</pubDate><enclosure url="lib\media\ipv6.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\ipv6.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[opengrok搭建代码阅读平台]]></title><description><![CDATA[ 
+ <br><br>
+<br>install java11<br>
+=====&gt;
+<br>
+<br>yum search java-11
+<br>yum install java-11xxx
+<br>yum install java-11-jrexxx<br>
+=====&gt;
+<br>
+<br>dowload opengrop.tar.gz<br>
+==&gt;<br>
+wget <a rel="noopener" class="external-link" href="https://github.com/OpenGrok/OpenGrok/releases/$xxx" target="_blank">https://github.com/OpenGrok/OpenGrok/releases/$xxx</a><br>
+==&gt;
+<br>install universal-ctags<br>
+====&gt;
+<br>
+<br>mkdir ~/garbage
+<br>cd garbage
+<br>wget <a rel="noopener" class="external-link" href="https://github.com/universal-ctags/ctags/archive/p5.9.20201108.0.tar.gz" target="_blank">https://github.com/universal-ctags/ctags/archive/p5.9.20201108.0.tar.gz</a>
+<br>tar -zxf p5.xxx
+<br>cd ctagsxxx
+<br>follow $ctagsxxx/doc/autotools.rst instructions<br>
+====&gt;
+<br>
+<br>install tomcat
+<br><br>
+<br>mkdir $opengrok/{src,data,dist,etc,log}
+<br>tar -C $opengrok/dist/ --strip-components=1 -xzf opengrok.tar.gz
+<br>cp $opengrok/dist/doc/logging.properties $opengrok/etc
+<br># logging.properties
+
+handlers= java.util.logging.FileHandler, java.util.logging.ConsoleHandler
+
+java.util.logging.FileHandler.pattern = $opengrok/log/opengrok%g.%u.log
+java.util.logging.FileHandler.append = false
+java.util.logging.FileHandler.limit = 0
+java.util.logging.FileHandler.count = 30
+java.util.logging.FileHandler.level = ALL
+java.util.logging.FileHandler.formatter = org.opengrok.indexer.logger.formatter.SimpleFileLogFormatter
+
+java.util.logging.ConsoleHandler.level = WARNING
+java.util.logging.ConsoleHandler.formatter = org.opengrok.indexer.logger.formatter.SimpleFileLogFormatter
+
+org.opengrok.level = FINE
+
+复制<br>
+<br>cp $opengrok/dist/lib/source.war $tomcat/webapps
+<br>$tomcat/bin/startup.sh
+<br>cd $tomcat/webapps/source/
+<br>vim $tomcat/webapps/source/WEB-INF/web.xml
+<br># web.xml
+
+&lt;param-name&gt;CONFIGURATION&lt;/param-name&gt;
+&lt;param-value&gt;$opengrok/etc/configuration.xml&lt;/param-value&gt;
+复制<br>
+<br>vim deploy.sh
+<br># deploy.sh
+
+java \
+    -Djava.util.logging.config.file=/root/softs/opengrok/etc/logging.properties \
+	-jar /root/softs/opengrok/dist/lib/opengrok.jar \
+	-c /root/bin/exctags \
+	-s /root/softs/opengrok/src -d /root/softs/opengrok/data -H -P -S -G -v \
+	-W /root/softs/opengrok/etc/configuration.xml -U http://127.0.0.1:8888/source
+复制<br><br>
+<br>put the source code which you need to study into $opengrok/src directory
+<br>./deploy.sh(it will genorate the source code index using ctags. !!!need a while time!!!)
+<br>in the browser typing http://192.168.1.100:8888/source url.
+<br>enjoy the reading
+<br><br>
+<br>
+opengrok install-configure-usage<br>
+<a rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/24369747" target="_blank">https://zhuanlan.zhihu.com/p/24369747</a>
+
+<br>
+OpenGrok wiki<br>
+<a rel="noopener" class="external-link" href="https://github.com/oracle/opengrok/wiki/How-to-setup-OpenGrok" target="_blank">https://github.com/oracle/opengrok/wiki/How-to-setup-OpenGrok</a>
+
+]]></description><link>_posts\opengrok.html</link><guid isPermaLink="false">_posts/opengrok.md</guid><pubDate>Tue, 07 Mar 2023 16:59:18 GMT</pubDate></item><item><title><![CDATA[OR操作]]></title><description><![CDATA[ 
+ <br><br>OR运算就是 或 运算。<br><br>一个值A如果是多个值OR运算之后的结果，如何判断该值A中是否包含某值？<br>答：]]></description><link>_posts\or操作.html</link><guid isPermaLink="false">_posts/OR操作.md</guid><pubDate>Sun, 21 Jan 2024 02:03:41 GMT</pubDate></item><item><title><![CDATA[os]]></title><description><![CDATA[ 
+ <br><br>title: OS原理<br>
+date: 2022-04-07 22:31:08<br>
+categories:<br>
+<br>cs基础<br>
+tags:
+<br><br><br>
+编译（源程序模块）---》链接（目标模块）---》装入(装入模块)
+1.链接和装入的策略，分为3种。在磁盘上，在内存中，在cpu执行时。
+2.一个程序的运行，需要经过几道程序的运行。（编译器---链接器---装入内存（装入器）---内存分配（内存管理器））
+​	编译器：将程序员写的源程序编译为目标模块
+​	链接器：多个目标模块拼接，通过一定的策略形成可装入模块
+​	装入器：将可装入模块，通过一定的策略装入内存
+​	内存管理器：配合装入器，通过一定的策略完成对程序运行所需内存的分配
+<br><br>
+<br>静态链接：在装入内存之前，将各个目标模块链接起来。形成可装入模块（linux中就是链接.a静态库）
+<br>装入时动态链接：边装入边链接
+<br>运行时动态链接：执行时需要的时候才链接目标模块
+<br><br>
+<br>绝对装入：程序的逻辑地址==进程的物理地址。缺点：编写的程序必须从指定位置开始，必须非常了解内存要求。常用于单道程序环境
+<br>可重定位装入：当程序被装入程序（loader）装入内存后根据实际可用物理地址来变更程序中全文的地址。此时能够运行躲到程序缺点：程序装入之后，不可动态修改程序中的地址
+<br>运行时动态装入：在指令被执行时，才动态修改地址。
+<br><br>操作系统对内存的分配，大体上可以分为两个思路。1.分割内存，不分割装入模块（连续分区分配）。2.分割内存，并且分割程序（分页，分段，段页）<br>连续分区分配：<br>​	顾名思义，也就是程序作为一个整体装入内存中。而根据对内存的分割策略来看，有3种方式。<br>
+<br>单一连续分配（整个内存分为内核区，和用户区。用户区只有一道程序）
+<br>静态分区分配（将用户区，划分固定大小的几个区域。开始可以存放多道程序，但可能有的程序很小，但是占据很大的区域，造成浪费）
+<br>动态分区分配（根据程序的大小来确定内存分区的大小）
+<br>动态重定位分区分配算法（在动态分区分配的基础上增加“紧凑”功能，减少内存的碎片，为了实现紧凑功能需要配合运行时动态装入的装入算法）
+<br>分页、分段、段页内存分配：<br>​	这些分配方式，不仅分割内存，还分割装入模块（进程）。可以看作数据结构中的链表。整个进程离散地分散到内存不同位置。不像连续分配，将装入模块整体装入。<br>
+<br>
+分页
+将程序和内存空间分割成多个大小一样的片段（页面），操作系统的内存管理模块通过为程序建立页表，然后MTU地址转换单元通过查询进程的页表，来实现程序地址的动态重定位。
+当访问进程的某一条指令（比如：load 1，2500）2500是程序的逻辑地址，MTU首先计算得出该逻辑地址对应的程序分页中的页号，和页内偏移。然后通过在页表中查询到程序分页中的页号对应的物理块号，得到物理块号之后和前边的页内偏移相加，从而完成程序的逻辑地址到物理地址的转换。
+
+<br>
+分段
+由于分页方法（固定大小的页面的缺点：不符合程序中指令和数据的排布，导致）的缺陷，提出一种分段内存分配的算法，将一个程序分割为不同段：代码段，数据段，堆段，栈段，bss段，作为一个查询单位。而将内存分割为与程序相同的段。这样只要通过段表查询到段基址，就能保证能够每一个段在内存中是连续分配的。
+
+<br><img src="lib\media\段表.png"><br>
+<br>
+段页式
+分页的好处是能够节省内存，分段的好处是程序友好，方便编程。为了结合两方面优势，将每一个程序段通过分页处理，然后通过段号找到页号，通过页号找到物理地址。
+
+<br>
+内存模型到底是什么：现在的编译器会将我们的程序进行分段处理，c语言，c++中的内存模型，其实就是编译器所规定的一种逻辑上的程序组织方式，在内存中每一个段可能连续的一块（段式）来存储，也可能一个程序段分布在不同的物理内存（段页式）来存储，然后在执行指令，进行地址转换时，操作系统根据实际内存分配方式，完成逻辑地址（每一个段的逻辑地址都是从0号开始的）到物理地址的转换，然后cpu访问物理地址来执行我们的程序。
+<br><br><br>unix标准<br>
+<br>iso c：该标准定义了c语言语法语义和c语言标准库，因为是所以unix都提供了c标准中的库函数，因此默认也就成了一种标准
+<br>ieee posix：该标准的目的是提高应用程序在各种unix系统环境之间的可移植性
+<br>SUS=single unix specification（单一unix规范）：是posix的超集，在posix的基础上还规定了一些操作系统接口，扩展了posix的功能
+<br>unix实现<br>SVR4(system v release 4)：System V 是 AT&amp;T 的第一个商业UNIX版本（UNIX System III）的加强。传统上，System V 被看作是两种UNIX"风味"之一（另一个是 BSD）。然而，随着一些并不基于这两者代码的<a data-tooltip-position="top" aria-label="https://baike.baidu.com/item/UNIX/219943" rel="noopener" class="external-link" href="https://baike.baidu.com/item/UNIX/219943" target="_blank">UNIX</a>实现的出现，例如 Linux 和 QNX， 这一归纳不再准确，但不论如何，像POSIX这样的标准化努力一直在试图减少各种实现之间的不同。流行的SysV 衍生版本包括 Dell SVR4 和 Bull SVR4。当今广泛使用的 System V 版本是 SCO OpenServer，基于 System V Release 3，以及SUN Solaris 和 SCO UnixWare，都基于 System V Release 4。<br>BSD:<br><br><br>
+文件系统：是一种存储和组织计算机数据的方法，它使得对其访问和查找变得容易，文件系统使用文件和树形目录的抽象逻辑概念代替了硬盘和光盘等物理设备使用数据块的概念，用户使用文件系统来保存数据不必关心数据实际保存在硬盘（或者光盘）的地址为多少的数据块上，只需要记住这个文件的所属目录和文件名。
+<br>数据在硬盘上的存储和组织方式：<br><img src="lib\media\连续块存储.png"><br>连续块存储：这是一种最简单的实现方式，管理便捷。但最大的问题是空洞问题，即使物理磁盘还有空余容量，也不能再写入文件了。常见于CD-ROM等预先明确数据大小的存储器<br><img src="lib\media\链表式存储.png"><br>链表式存储：好处是不存在存储空洞且只需要记住第一个block的位置即可，缺点很明显：就是会造成大量的随机IO，而且读取完一个block才知道下一个block的位置，效率过低。为了改进这种效率问题，FAT诞生<br><img src="lib\media\fat文件系统.png"><br>FAT：链表式存储中，next指针是存储在每个block中的，而FAT把这些指针统一写在一个array中，这样获取一个文件的所有block位置就变得简单很多，效率也更高。但FAT也有一定的限制，比如FAT16只有65536个位置，FAT32虽然有更多的指针位，但是FAT表本身也占用了更大的内存。且FAT在读取某一文件中部时效率低，因为需要链表遍历。此外，FAT格式的文件系统不利于扩展文件的metadata。<br><img src="lib\media\linux的inode原理.png"><br>I-Node：Linux 文件系统的思想是把所有与数据本身无关的data（如类型，大小，owner，创建修改时间等）都存进一个特殊的block中（inode），然后通过这个block可以找到与数据相关的所有block<br><img src="lib\media\inode实现原理.png"><br>可以看到，每个inode都有12个直接block指针，假设每个block是4k，那么有48k的地址可以通过一次寻址直接找到，这对小文件的寻址速度有非常大的帮助，而文件系统中，绝大多数文件都是小文件，这样也就直接提高了文件系统的性能。如果有大文件，可以通过二次甚至三次间接寻址的方式来获取block地址，目的是能节省inode占用的空间，把更多的空间留给数据。<br><img src="lib\media\inode寻址过程.png"><br>这里有一个比较清晰地例子表明，文件系统是如何将path转变为真正的block地址的。简而言之，inode树组成了目录树，通过树形查找获取磁盘信息。<br>
+<br>【原文出处】<a rel="noopener" class="external-link" href="https://www.jianshu.com/p/a5d783643fc2" target="_blank">https://www.jianshu.com/p/a5d783643fc2</a>
+<br>【linux内核对IO体系的实现】<a rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/96391501" target="_blank">https://zhuanlan.zhihu.com/p/96391501</a>
+<br>
+<br><br><br>
+系统调用是操作系统提供给用户态程序使用操作系统功能的接口，是在有操作系统的情况下访问硬件资源或内核的----唯一入口---。
+<br>实现方式：<br>
+《linux下用户态程序使用系统调用》<br>
+1.高级语言如c/c++，通过使用封装好的c库（lib）函数，通常一个标准函数会使用一个或多个系统调用来实现<br>
+例如：printf --》 write系统调用<br>
+scanf	--》	read系统调用	<br>
+2.汇编语言，则是直接跟内核通信。内核中系统调用是通过中断机制来实现的，操作系统通过自定义内存中的中断向量表，将中断向量指向内核中的中断处理例程（程序）。而系统调用的中断在汇编中是用（int 80h）指令来实现的，<br>
+参考<br>
+<a rel="noopener" class="external-link" href="http://blog.sina.com.cn/s/blog_51e9c0ab010099ow.html" target="_blank">http://blog.sina.com.cn/s/blog_51e9c0ab010099ow.html</a>	系统调用<br><br>​	/*<br>
+​		linux中文件的内涵很多，<br>
+​		内核将加载到内存中的文件称为文件描述符，文件有很多种：普通文件，pipe（管道），fifo，终端。。。<br>
+​		进程通过使用文件描述符来使用内存中的文件对象。通常加载文件使用open系统调用来完成。<br>
+​		使用文件描述符的I/O函数是无缓冲，以字节为单位进行读写的。而标准io设置了缓冲区，读写单位可以是行（以换行符结尾）<br>
+​		全文（通过malloc分配文件大小的内存）。<br>​		<br>​		文件描述符fd---&gt;文件表项---&gt;i节点表项<br>​	/<br>
+​	int open(const char filename, int flags, ...)<br>
+​											filename:要打开的文件名<br>
+​											flags:	设置文件的操作方式（只读，只写，读写）<br><br>操作进程环境表<br>#include&lt;stdlib.h&gt;
+//每一个进程都会在栈段的上部存放一些系统的相关信息（环境表）
+
+//获取name对应的value
+char *getenv(const char *name)//cg=value
+//将name=value字符串放入环境表
+int putenv(char *str)//cg=0
+//将name设置为value.
+int setenv(char *name, char *value, int rewrite)//cg=0
+int unsetenv(const char *name)//cg=0
+复制<br>进程创建与退出<br>#include&lt;unistd.h&gt;
+	pid_t fork(void);//cg:father=pid,son=0
+#include&lt;stdlib.h&gt;
+		void exit(int status);//执行清理工作（执行终止处理程序，关闭标准IO），然后陷入内核
+		void _Exit(int status);//status：进程终止状态
+		//进程注册终止处理函数
+		int atexit(void (*func)(void));//cg=0
+#include&lt;unistd.h&gt;
+		void _exit(int status);
+
+复制<br>执行新程序<br>#include&lt;unistd.h&gt;
+//区别：1.前四个使用路径名，后两个使用文件名 2.参数arg传递方式l（代表list=独立参数），v（代表vector=指针数组）
+int execl(const char *pathname, const char *arg0, ...);
+int execv(const char *pathname, const char *arg[]);
+int execle(const char *pathname, const char *arg0, ...);
+int execve(const char *pathname, const char *arg[], char *const envp[]);
+int execlp(const char *filename, const char *arg0, ...);
+int execvp(const char *filename, const char *arg[]);
+复制<br>获得进程终止状态<br>#include&lt;sys/wait.h&gt;
+pid_t wait(int *statloc);
+pid_t waitpid(pid_t pid, int *statloc, int opt);
+int waitid(idtype_t idtype, id_t id, siginfo *infop, int opt);//cg=0
+pid_t wait3(int *statloc, struct rusage *rusage);
+pid_t wait4(pid_t pid, int *statloc, int opt, struct rusage *ruage);
+复制<br><br>
+pipe（管道）
+fifo（命名管道）
+消息队列
+信号量
+共享存储
+套接字
+<br>XSI ipc(标识符用于进程中，键key可用于不同进程中标识同一个内核ipc结构)<br>消息队列<br>#include&lt;sys/msg.h&gt;
+int msgget(key_t key, int flag);//cg=队列标识符
+//cmd对队列要执行的操作（IPC_STAT,IPC_SET,IPC_RMID)分别取buf，设置buf，移除buf
+int msgctl(int msgid, int cmd, struct msgid_ds *buf);//cg=0
+//ptr代表消息，nbytes消息大小，flag可以设置为非阻塞发送消息到队列
+int msgsend(int msgid, const void *ptr, size_t nbytes, int flag);//cg=0
+//type代表取消息的方式，flag可以设置为MSG_NOERROR
+int msgrecv(int msgid, const void *ptr, size_t nbytes, long type, int flag);
+复制<br>信号量<br>#include&lt;sys/sem.h&gt;
+//linux上是信号量集合，因此需要一个参数nsems指定集合大小
+int semget(key_t key, int nsems, int flag);//cg=信号量标识符
+int semctl(int semid, int nsems, int cmd, ...);//cg=0
+int semop(int semid, struct sembuf semoparray[], size_t nops);//cg=0
+复制<br>共享存储<br>#include&lt;sys/shm.h&gt;
+int shmget(key_t key, size_t size, int flag);//cg=共享存储id
+int shmctl(int shmid, int cmd, struct shmid_ds *buf);//cg=0
+void *shmat(int shmid, const void *addr, int flag);//cg=共享存储的地址
+int shmdt(void *addr);//cg=0
+复制<br>shm共享内存和内存映射mmap<br>
+<a data-tooltip-position="top" aria-label="https://blog.csdn.net/ababab12345/article/details/102931841" rel="noopener" class="external-link" href="https://blog.csdn.net/ababab12345/article/details/102931841" target="_blank">shm &amp; mmap</a>
+<br>shm_open
+mmap
+munmap
+shm_unlink
+ftruncate
+复制<br>套接字<br>
+套接字是一种进程间通信的形式，如同管道，fifo，信号量，共享存储等。套接字可以在不同通信范围（domain）内的进程之间通信，而套接字就是一个传输中介。
+<br><img src="lib\media\socket结构.png"><br>创建于销毁<br>#include&lt;sys/socket.h&gt;
+//domain确定通信范围(AF_INET,AF_INET6,AF_UNIX,AF_UNSPEC)，间接影响了地址格式
+//type确定套接字类型(SOCK_STREAM,SOCK_DGRAM,SOCK_RAW,SOCK_SEQPACKET)
+int socket(int domain, int type, int protocol);//cg=描述符
+
+//how关闭套接字：SHUT_RD(关闭读取),SHUT_WR(关闭写入),SHUT_RDWR(关闭读写)
+int shutdown(int socket, int how);//cg=0
+复制<br>设置套接字选项<br>#include&lt;sys/socket.h&gt;
+//option代表要设置套接字的功能选项，level代表选项所修改的协议。
+int setsockopt(int sockfd, int level, int option, const void *val, socklen_t len);//cg=0
+int getsockopt(int sockfd, int level, int option, const void *val, socklen_t len);//cg=0
+
+
+复制<br>地址格式<br>//地址格式：(地址格式，在不同的通信域中是不一样的。但为了使用同一套接口，不同地址可以转换成统一的地址:sockaddr)
+#include&lt;netinet/in.h&gt;
+	AF_INET域:	
+		sockaddr_in
+		{
+							sin_family;	//地址族
+							sin_port;	//端口
+			struct in_addr	sin_addr;	//ipv4地址
+		}
+
+		in_addr
+		{
+			s_addr;						//ipv4地址
+		}
+复制<br>#include&lt;sys/socket.h&gt;
+客户端：
+	
+		//创建socket
+		int connect(int sockfd,	const struct sockaddr*addr,	socklen_t len)//cg=0
+
+服务器：
+		//socket绑定网卡
+		int bind(int sockfd, const struct sockaddr* addr, socklen_t len)//cg=0
+		int listen(int sockfd,	int backlog)//cg=0
+		int accept(int sockfd,	struct sockaddr*addr,	socklen_t* len)//cg=clientfd
+
+共用：
+		//关闭socket
+		int socket(int domain,int type,int protocol)//cg=socketfd
+		int shutdown(int sockfd,int how)//cg=0
+		int close(int sockfd)//cg=0
+		//数据传输
+		ssize_t send(int sockfd,const void*buf,	size_t nbytes,	int flags);
+		ssize_t recv(int sockfd, void* buf, size_t nbytes, int flags);
+		read(),write()
+		//设置套接字选项
+		int setsockopt(int sockfd, int level, int option, const void* val, socklen_t len)//cg=0
+复制<br><br>创建与销毁<br>#include&lt;pthread.h&gt;
+    int pthread_equal(pthread_t t1, pthread_t t2);//不等0，相等=0
+    pthread_t pthread_self(void); //线程id
+    int pthread_create(pthread_t *tid, pthread_attr_t *attr/线程属性/, void*(*func)(void*)/调用函数/, void*arg/函数参数/)//cg=0
+    //线程退出的三种方式1.正常退出 2.被其他线程取消pthread_cancel，pthread_exit(PTHREAD_CANCELED) 3.调用pthread_exit
+    void pthread_exit(void\*ptr);//线程退出
+    int pthread_cancel(pthread_t t);//cg=0//只是提出取消请求，具体是否取消可以在线程中设置
+    int pthread_join(pthread_t t, void\*\*ptr)//cg=0
+复制<br><br>
+<br>互斥量(pthread_mutex_t)
+<br>//初始化方法有两种1.pthread_mutex_t = PTHREAD_MUTEX_INITIALIZER; 2.使用下面的init方法。
+int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t*attr);//cg=0
+int pthread_mutex_destroy(pthread_mutex_t \*mutex);//cg=0
+//互斥量加锁和解锁方法
+int pthread_mutex_lock(pthread_mutex_t *mutex);//cg=0
+int pthread_mutex_unlock(pthread_mutex_t *mutex);//cg=0
+int pthread_mutex_trylock(pthread_mutex_t*mutex);//cg=0
+复制<br>
+<br>读写锁(pthread_rwlock_t)
+<br>//初始化方法
+int pthread_rwlock_init(pthread_rwlock_t *rwlock, const pthread_rwlockattr_t*attr);
+int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
+//读写锁，两种加锁方式和一种解锁方式//cg=0
+int pthread_rwlock_rdlock(pthread_rwlock_t*rwlock);
+int pthread_rwlock_wrlock(pthread_rwlock_t*rwlock);
+int pthread_rwlock_unlock(pthread_rwlock_t*rwlock);
+复制<br>
+<br>条件变量(pthread_cond_t)
+<br>//初始化方法有两种1.pthread_cond_t = PTHREAD_COND_INITIALIZER 2.使用下面的方法
+int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t* attr);//cg=0
+int pthread_cond_destroy(pthread_cond_t *cond);//cg=0
+//等待条件发生
+int pthread_cond_wait(pthread_cond_t*cond, pthread_mutex_t *mutex);//cg=0
+int pthread_cond_timewait(pthread_cond_t*cond,pthread_mutex*mutex,const timespec*timeout);//cg=0
+复制<br><br><br>从用户的角度来看，操作系统的核心是由抽象概念和其上的基本操作所构成的，而基本操作则可通过系统调用加以利用<br>
+<br>定义抽象概念（--进程抽象【cpu】、虚拟地址空间抽象【内存】、文件和目录抽象【硬盘】、IO抽象【键盘鼠标。。。】、）
+<br>提供基本操作（向上，对开发人员）
+<br>确保隔离
+<br>管理硬件（对下，屏蔽硬件差异）
+<br>进程有关的信息存放在：地址空间中、内核的进程表<br>地址空间：指令，数据，堆（储物间），栈（垃圾桶），外部数据源（文件，socket）<br><br>•阻塞式IO       阻塞于read（）<br>
+•非阻塞IO       立即返回错误码（进程对多个套接字轮寻）<br>
+•上两种+多线程 线程切换开销大<br>
+•IO复用        调用epoll<br>
+•异步IO        （内核将就绪的描述符，准备好并通知进程来取用。显然这样就解放了进程，将复杂任务交给内核来完成）<br>
+•reactor模式   基于事件触发机制。将需要判断的描述符注册入reactor中，然后由reactor调用事件关联处理函数。<br>reactor：<br>
+​描述符fd --事件<br>
+​事件分用器 --epoll/poll/select<br>
+​事件处理器 --将处理器中的回调函数声明为虚函数，便于具体的处理器继承和实现<br>
+​reactor管理器 --包含事件分用器<br><br>
+<br>虚拟内存=硬盘上的一块空间，当作内存看待。通过缺页中断来调入内存，通过页面替换算法调出内存
+<br>虚拟地址空间 = 32位系统上，每一个进程有4GB的虚拟地址空间（虚拟的可用的空间）。当cpu寄存器CR0的31位分页标志位置为1时，cpu启用MMU机构（地址转换机构），读入虚拟地址，然后根据该进程在内核中对应的页目录和页表，将该进程的虚拟地址转换为实际的物理地址。<br>
+{<br>
+★ 每一个程序自以为自己真有4GB的空间。<br>
+★ 每一个进程都有在内核区会有一个页表和页目录<br>
+}
+<br>可重定向文件（relocatable）：编译器编译而成的.o文件，可以重新定向组合成可执行文件也称之为目标文件
+<br>可执行文件（executable）：操作系统能够直接运行的文件
+<br>共享库（shared object）：在程序运行过程中被动态链接的文件，可以减小可执行文件的大小
+<br>其中可执行文件和共享库文件都是由目标文件（.o文件）构成的，因此他们的文件格式和目标文件的格式是一样的，在linux上目标文件的格式称之为（elf）文件格式
+<br><br>
+参考:
+[epoll水平触发和边缘触发]<a rel="noopener" class="external-link" href="https://www.jianshu.com/p/7eaa0224d797" target="_blank">https://www.jianshu.com/p/7eaa0224d797</a>
+<br>
+<br>
+读缓冲区刚开始是空的
+
+<br>
+读缓冲区写入2KB数据
+
+<br>
+水平触发（LT）和边缘触发模式（ET）此时都会发出可读信号
+
+<br>
+收到信号通知后，读取了1kb的数据，读缓冲区还剩余1KB数据
+
+<br>
+水平触发会再次进行通知，而边缘触发不会再进行通知，所以边缘触发需要一次性的把缓冲区的数据读完为止，也就是一直读，直到读到EGAIN为止，EGAIN说明缓冲区已经空了，因为这一点，边缘触发需要设置文件句柄为非阻塞
+//水平触发
+ret = read(fd, buf, sizeof(buf));
+
+//边缘触发
+while(true) {
+    ret = read(fd, buf, sizeof(buf);
+    if (ret == EAGAIN) break;
+}
+复制
+
+<br>区别:水平触发是只要读缓冲区有数据，就会一直触发可读信号，而边缘触发仅仅在空变为非空的时候通知一次.<br><br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/weixin_40204595/article/details/81109644" rel="noopener" class="external-link" href="https://blog.csdn.net/weixin_40204595/article/details/81109644" target="_blank">宏定义中的#，##的含义</a><br>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" target="_blank">linux动态库链接规则</a>]]></description><link>_posts\os.html</link><guid isPermaLink="false">_posts/os.md</guid><pubDate>Tue, 07 Mar 2023 17:00:00 GMT</pubDate><enclosure url="lib\media\段表.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\段表.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[php]]></title><description><![CDATA[ 
+ <br><br><br>
+<br>使用浏览器的cookie
+<br>&lt;?php
+       setcookie('mycookie','自灵');
+?&gt;
+&lt;?php
+     $wuziling = $_COOKIE['mycookie'];
+     echo $wuziling;
+?&gt;
+复制<br>
+<br>使用服务器session
+<br>&lt;?php
+    session_start();
+    $_SESSION["temp"]=array('123','456','789');
+?&gt;
+&lt;?php
+     session_start();
+     for($i=0;$i&lt;3;$i++)
+     {
+             echo $_SESSION['temp'][$i].'&lt;br /&gt;';
+     }
+?&gt;
+复制<br>
+<br>使用表单来传递
+<br>    &lt;form action="page02.php" method="post"&gt;
+         &lt;input type="text" name="wuziling" /&gt;
+         &lt;input type="submit" name="submit" value="提交" /&gt;
+    &lt;/form&gt;
+复制<br>    &lt;?php
+        //使用post变量来获取
+        $wu = $_POST['wuziling'];
+        echo $wu;
+    ?&gt;
+复制<br>
+<br>使用超链接
+<br>    &lt;?php
+    $var = 'I love you !';
+    ?&gt;
+    &lt;a href="&lt;?php echo "page02.php?new=".$var ?&gt;"&gt;get&lt;/a&gt;
+
+    &lt;?php
+         echo   $_GET['new'];
+    ?&gt;
+复制]]></description><link>_posts\php.html</link><guid isPermaLink="false">_posts/php.md</guid><pubDate>Thu, 11 May 2023 13:16:16 GMT</pubDate></item><item><title><![CDATA[powershell]]></title><description><![CDATA[ 
+ <br><br>类似与linux的bash<br><br>Q: powershell如何alias？<br>
+A: 修改用户的配置文件<br>
+Set-ExecutionPolicy RemoteSigned<br>
+C:\Users\Lost\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1]]></description><link>_posts\powershell.html</link><guid isPermaLink="false">_posts/powershell.md</guid><pubDate>Tue, 07 Mar 2023 17:01:48 GMT</pubDate></item><item><title><![CDATA[ProtoBuf]]></title><description><![CDATA[ 
+ <br><br><br>一种序列化工具。<br>序列化指的是：将一个对象的状态（各个变量）保存起来，在需要使用的时候再复原的技术。<br>]]></description><link>_posts\protobuf.html</link><guid isPermaLink="false">_posts/ProtoBuf.md</guid><pubDate>Mon, 06 Mar 2023 08:41:52 GMT</pubDate></item><item><title><![CDATA[python_network]]></title><description><![CDATA[ 
+ <br><br><br>
+<br>为了后向兼容，新代码建议使用 asyncio 。
+<br>模块提供了基本的基础设施，用于实现异步socket服务器和socket客户端
+<br>单处理器实现同时做多件不同的事只有两种方式，一种是多线程，另一种是使用现代操作系统提供的io多路复用系统调用：select，poll。
+<br>该模块基本的思路是：通过继承 asyncore.dispatcher 或 asyncore.async_chat 并实现多个channel实例，然后将这些channel添加到全局的一个map中进行维护，一般是在loop函数中提供了该全局map。这个loop会等待所有handle处理完成才会退出关闭
+<br>asyncore.dispatcher 作为channel的实现，使用者继承该类之后，通过override重写父类中的如下方法，可以实现自定义读写等操作
+
+<br>handle_read
+<br>handle_write
+<br>handle_connect
+<br>handle_close
+<br>handle_accept
+
+
+<br>此外 asyncore.dispatcher 作为socket对象的代理，也提供了一些与原生socket一致的接口，他们的参数很多与原生socket是一致的
+
+<br>create_socket
+<br>connect
+<br>send
+<br>recv
+<br>listen
+<br>bind
+<br>accept
+<br>close
+
+
+<br>]]></description><link>_posts\python-network.html</link><guid isPermaLink="false">_posts/python-network.md</guid><pubDate>Sat, 01 Apr 2023 03:25:56 GMT</pubDate></item><item><title><![CDATA[python导入系统]]></title><description><![CDATA[ 
+ <br>
+<br>python中有多种导入机制，import语句是最常用的，但不是唯一的，importlib.import_module() 函数和内建的 __import__() 函数也能用于模块导入。
+<br>import语句会执行两部操作来实现导入机制：首先查找命名的模块，然后将找到的结果绑定到本地空间的一个名称上
+<br>查找操作实际调用的是 __import__() 函数，如果找到了则会执行模块创建操作，但是会有一些副作用，比如会导入parent package，更新各种缓存，只用 import 语句会执行名称绑定操作
+<br>当import语句执行的时候，标准的 __import__() 函数会被调用到，其他的一些导入方式如 importlib.import_module() 可以选择不通过 __import__() 而使用自己定义的方式来实现导入功能
+<br>当一个模块第一次被导入，python会搜索这个模块，如果找到了就会创建一个模块对象并初始化它，如果没有找到，ModuleNotFoundError 就会被抛出。python有各种搜索命名模块的策略，这些策略可以通过使用各种hook技术来进行修改和扩展
+<br>importlib 模块提供了丰富的接口用于修改python的导入系统
+<br><br>
+<br>python中只有一种模块对象————packages
+<br>可以拿文件系统中的目录和文件来打比方，packages相当于目录，modules相当于文件，但是又与这个比喻(analogy)有差异。因为packages和modules不是通过文件系统来组成的，packages可以递归包含，这个和 regular modules 是一样的
+<br>所有的packages都是modules，但不是所有的modules都是packages。一个module如果包含一个 __path__ 属性，那么它就被看作一个package
+<br>所有的modules都有一个名字，子包名称与其父包名称之间用一个点分隔，类似于 Python 的标准属性访问语法。例如：父包 email ，包含有一个子包 email.mime ，子包中又包含一个module叫做 email.mime.text 
+<br><br>
+<br>python中两种package类型
+
+<br>regular packages（以下简称RP）
+<br>namespace packages（简称NP）
+
+
+<br>regular packages属于传统的包类型存在于python3.2之前。典型的特征是一个目录中包含一个 __init__.py 文件。当一个RP被导入，这个init文件就会被隐式被执行，其中的对象就会被绑定到这个包的namespace中
+<br><br>
+<br>NP是由多个部分(portion)组合而成的一个集合体（composite），每个部分看作父包的一个子包。每个部分可能存在于文件系统中的不同位置。可能存在于zip等压缩文件中，在网络上，在任何python导入时可以搜索到的地方
+<br>NP不使用一般的list作为 __path__ 属性，而是使用一个自定义的可迭代类型，该迭代类型可用于执行自动进行下一步搜索
+<br>NP不存在 __init__.py 文件，因为NP中的各部分都是由散落各地的package组成。
+<br><br>
+<br>开始搜索模块之前，python需要获取模块的完全限定的名称，该名称会用于搜索的不同阶段。例如 foo.bar.baz 这个名称，python搜索分为3个阶段，首先尝试导入 foo ， 然后尝试导入 foo.bar ，最后尝试导入 foo.bar.baz ，这中间的(intermediate)任何一个阶段导入失败，都会抛出模块未找到的异常
+<br>搜索策略如下：
+
+<br>首先搜索模块缓存 sys.modules 这个字典对象，key为模块名，value为module object。
+<br>如果在模块缓存中搜索不到指定的模块，python下一步搜索 sys.meta_path 这个list中存储的所有 meta path finder 对象（简称：MPF），这些MPF按照顺序进行查找相关模块，MPF对象必须实现 find_spec() 方法，用于实现搜索策略
+<br>import机制是可扩展的，因此可以添加新的finder，从而扩展模块的搜索范围。finder在找到模块之后不会实际地加载模块，而是返回一个 module spec 对象，该对象中包含了模块导入相关的信息，然后import机制之后根据这个spec对象加载模块
+
+
+<br>import hooks：为了实现导入机制的可扩展，基本的方式就是使用 import hooks 技术，该技术分为两种： meta hooks 和 import path hooks 。
+<br>meta.hooks 在所有导入步骤之前起作用(当然 sys.modules 缓存查找不算在内)，因此这就允许该类型hook可以复写 sys.path 过程，frozen modules, 甚至是内建模块。通过在 sys.meta_path 中新增一个finder对象（对应于 meta path finder ），我们就实现了一个meta hooks的注册
+<br>import path hooks 被认作是 sys.path 处理过程中的一部分，该hooks可以通过往 sys.path_hooks 中添加新的可调用对象来实现。这种hooks方式对应于 path entries finder 。
+<br><br><a data-tooltip-position="top" aria-label="https://docs.python.org/3/reference/import.html#package-relative-imports" rel="noopener" class="external-link" href="https://docs.python.org/3/reference/import.html#package-relative-imports" target="_blank">5. The import system — Python 3.11.2 documentation</a>]]></description><link>_posts\python_import_system.html</link><guid isPermaLink="false">_posts/python_import_system.md</guid><pubDate>Tue, 04 Apr 2023 11:46:22 GMT</pubDate></item><item><title><![CDATA[python实现proxy]]></title><description><![CDATA[ 
+ <br><br>PAC（proxy auto-configuration）文件是用来自动配置代理的一个JavaScript文件，该文件中会实现一个 FindProxyForURL 方法，用于返回访问请求url中的host是否需要通过代理，该函数返回一个字符串。例如如下都是正确的返回值 <a data-tooltip-position="top" aria-label="https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file#return_value_format" rel="noopener" class="external-link" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file#return_value_format" target="_blank">return value</a> 。<br><img src="lib\media\pac_return.png"><br>Note
+可以使用<a data-tooltip-position="top" aria-label="https://github.com/manugarg/pacparser" rel="noopener" class="external-link" href="https://github.com/manugarg/pacparser" target="_blank">pactester</a>，来对pac文件进行测试。<br>
+eg:<br>
+pactester -p pac.txt -u <a rel="noopener" class="external-link" href="https://www.google.com" target="_blank">https://www.google.com</a>
+<br><br>
+<br>配置windows代理使用自动配置脚本，在脚本地址中填写相应的pac文件获取途径，注意不能是本地路劲。
+<br>Note
+<a data-tooltip-position="top" aria-label="https://support.microsoft.com/zh-cn/windows/%E5%9C%A8-windows-%E4%B8%AD%E4%BD%BF%E7%94%A8%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8-03096c53-0554-4ffe-b6ab-8b1deee8dae1" rel="noopener" class="external-link" href="https://support.microsoft.com/zh-cn/windows/%E5%9C%A8-windows-%E4%B8%AD%E4%BD%BF%E7%94%A8%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8-03096c53-0554-4ffe-b6ab-8b1deee8dae1" target="_blank">在 Windows 中使用代理服务器</a> 有三种方式。其中自动的方式是通过WPAD协议来实现的 <a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/winhttp/winhttp-autoproxy-support#overview-of-autoproxy" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/winhttp/winhttp-autoproxy-support#overview-of-autoproxy" target="_blank">WinHTTP AutoProxy 支持 - Win32 apps | Microsoft Learn</a> 。
+<br><img src="lib\media\auto_proxy.png"><br>
+<br>client端代码
+<br>import http.server as hs
+from multiprocessing import Pipe, Process
+import asyncore
+from multiprocessing.connection import PipeConnection
+
+IP = 'localhost'
+PORT = 8989
+PAC = ''
+
+class RemoteServer(asyncore.dispatcher):
+    def __init__(self, pipe:PipeConnection) -&gt; None:
+        super().__init__()
+        self.pipe = pipe
+        self.create_socket()
+        self.connect((IP, PORT))
+    # 对请求加密
+    def crypto(self, data):
+        return b''
+	# 加密传输
+    def writable(self) -&gt; bool:
+        if self.pipe.readable:
+            return True
+        return False
+
+    def handle_write(self) -&gt; None:
+        data = self.pipe.recv()
+        data = self.crypto(data)
+        self.send(data)
+        
+
+class HttpRequestHandler(hs.BaseHTTPRequestHandler):
+    def do_GET(self):
+	    # 处理pac文件请求
+        if self.path[:4] == '/pac':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/x-ns-proxy-autoconfig')
+            self.end_headers()
+            with open(PAC, 'rb') as f:
+                self.wfile.write(f.read())
+            print(self.path[:4], "pac文件发送完成")
+        # 其他需要走代理的get请求
+        else:
+            # 代理转发
+            parent_conn.send(self.headers.as_string())
+        return
+
+    def do_CONNECT(self):
+        print(self.path)
+        parent_conn.send(self.headers.as_string())
+
+def ConnectToRemoteServer(conn):
+    rs = RemoteServer(conn)
+    asyncore.loop()
+
+if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=ConnectToRemoteServer, args=(child_conn,))
+    p.start()
+    addr = ('127.0.0.1', 1080)
+    httpd = hs.ThreadingHTTPServer(addr, HttpRequestHandler)
+    httpd.serve_forever()
+    p.join()
+复制]]></description><link>_posts\python-simple-proxy.html</link><guid isPermaLink="false">_posts/python-simple-proxy.md</guid><pubDate>Thu, 06 Apr 2023 02:27:18 GMT</pubDate><enclosure url="lib\media\pac_return.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\pac_return.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[python术语]]></title><description><![CDATA[ 
+ <br>
+<br>module(模块)<br>
+python代码组织单元
+<br>package（包）<br>
+一种特殊的module，包含path属性。在一个包中可以包含其他子模块，和子包。有常规包和命名空间包之分，常规包就是包含init.py文件的目录，命名空间包只包含其他子包的，命名空间包没有物理实体对应，这一点不同于常规包。
+<br>表达式
+<br>语句
+<br>推导式
+<br>生成器（generator）<br>
+生成器是一个函数，可以返回生成器迭代器对象的函数。和普通函数的区别就是，普通函数的return语句替换为yield表达式。
+<br>生成器表达式<br>
+使用"()"包裹起来的表达式，与推导式的区别在于使用的是()包裹，而不是推导式的[]或者{},生成器表达式会产生生成器对象。
+<br>生成器函数，异步生成器函数
+<br>yield表达式<br>
+yield 表达式在定义<a data-href="|生成器函数" href="|生成器函数" class="internal-link" target="_self" rel="noopener">|生成器函数</a>或<a data-href="|异步生成器函数" href="|异步生成器函数" class="internal-link" target="_self" rel="noopener">|异步生成器函数</a>时才会用到因此只能在函数定义的内部使用
+<br><br>
+<br>yield关键字
+<br>pdb:python命令行debug工具
+<br>
+<br>yield关键字<br>
+<a data-tooltip-position="top" aria-label="https://docs.python.org/zh-cn/3/whatsnew/2.2.html?#pep-255-simple-generators" rel="noopener" class="external-link" href="https://docs.python.org/zh-cn/3/whatsnew/2.2.html?#pep-255-simple-generators" target="_blank">Python 2.2 有什么新变化 — Python 3.10.7 文档</a><br>
+根据文档解释，yield是2.2版本引入的新关键字。yield是一种用来控制函数运行的方式，一般函数通过return返回，而yield出现的地方是返回一个generator（生成器）对象。当外部调用生成器的next()方法后，函数会继续运行yield之后的语句。
+<br>def generate_ints(N):
+    for i in range(N):
+        yield i+1
+复制<br>调用上面的函数，函数会运行到yield这里会直接挂起改函数，并返回一个generator对象。外部可以通过next方法，再次恢复(resume)函数的执行。并从yield之后开始执行，也就是执行i+1]]></description><link>_posts\python.html</link><guid isPermaLink="false">_posts/Python.md</guid><pubDate>Mon, 03 Apr 2023 07:38:18 GMT</pubDate></item><item><title><![CDATA[qt-network]]></title><description><![CDATA[ 
+ <br>
+<br>abstract：抽象基类
+<br>dns：dns相关网络
+<br>Dtls：套接字，套接字加密，验证，cookies
+<br>host
+<br>hsts
+<br>http2
+<br>http
+<br>local
+<br>network
+<br>sctp
+<br>ssl
+<br>tcp
+]]></description><link>_posts\qt-network.html</link><guid isPermaLink="false">_posts/qt-network.md</guid><pubDate>Tue, 25 Oct 2022 13:31:38 GMT</pubDate></item><item><title><![CDATA[qt多线程]]></title><description><![CDATA[ 
+ <br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1iN411f7dY?p=8&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1iN411f7dY?p=8&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">08-线程的使用方式2-添加修改任务类_哔哩哔哩_bilibili</a><br><br>两种使用方式：<br>
+<br>继承QThread类
+
+<br>任务类继承QThread类
+<br>重写QThread的run方法，实现子线程业务逻辑
+
+
+<br>moveToThread方式(属于QObject类的一个方法)
+
+<br>任务类继承QObject类
+<br>添加任务方法
+<br>主线程中创建QThread类，和任务类
+<br>workclass-&gt;moveToThread(thread_1)
+
+
+<br><br>使用方式：<br>
+<br>任务类继承QRunnable类，重写纯虚函数run
+<br>调用QThreadPool静态方法 QThreadPool::globalInstance() 返回全局线程池对象
+<br>调用全局线程池对象的start，将任务类实例添加进去
+]]></description><link>_posts\qt多线程.html</link><guid isPermaLink="false">_posts/qt多线程.md</guid><pubDate>Tue, 23 May 2023 04:58:24 GMT</pubDate></item><item><title><![CDATA[qt重点内容]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1km4y1k7CW/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1km4y1k7CW/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">《Qt6 C++开发指南》2023_哔哩哔哩_bilibili</a><br><br>
+<br>*.pro(项目描述文件)
+<br>qmake -project "QT+=widgets"
+复制<br>
+<br>*.qrc(项目的临时资源文件)
+<br>*.rcc(项目代码中使用的资源文件)
+<br># qt中使用资源有两种方式：
+1. 作为外挂资源使用(将*.qrc转换为*.rcc文件，在代码中进行注册使用)
+rcc -binary myresource.qrc -o myresource.rcc
+QResource::registerResource("/path/to/myresource.rcc");
+2. 作为内嵌资源使用(*.qrc转换为qrc_*.cpp加入代码编译)
+rcc -name application  application.qrc -o qrc_application.cpp
+复制<br>
+<br>*.ui(界面的描述文件，xml格式的)
+<br>uic hello.ui -o ui_hello.h
+复制<br>
+<br>包含Q_OBJECT的头文件(该宏用在含有槽函数的文件中)
+<br>moc hellowidget.h -o moc_hellowidget.cpp (hellowidget中的类中含有该宏)
+复制<br><br>
+<br>创建ui文件
+<br>使用uic命令生成ui_*.h头文件
+<br>书写主程序
+<br>moc生成元对象代码moc_xxx.cpp
+<br><br>
+<br>qmake -project "QT+=widgets"<br>
+qmake根据项目中的文件，自动生成pro项目配置文件
+<br>qmake<br>
+第二次执行qmake生成makefile
+<br>make
+<br><br><br>元对象系统室qt专门对c++做的扩展，用来支持信号和槽机制、运行时类型定义、动态属性系统。<br>
+<br>信号和槽
+<br>信号与槽机制是用来解决这样的问题而产生的即：当我们改变一个widget时，我们希望另外一个widget被提醒。这种notify的功能，传统的使用callback回调来实现。但是回调的方法的问题在于不够直观并且很容易出问题在参数上。<br><br><br>0:25 - <br>
+<br>The Animation Framework
+<br>The Graphics View Framework
+<br>The State machine Framwork
+<br><br>| <a data-tooltip-position="top" aria-label="https://qtguide.ustclug.org/" rel="noopener" class="external-link" href="https://qtguide.ustclug.org/" target="_blank">中文教程</a> | <a data-tooltip-position="top" aria-label="https://doc.qt.io/qt-5/topics-network-connectivity.html" rel="noopener" class="external-link" href="https://doc.qt.io/qt-5/topics-network-connectivity.html" target="_blank">官方文档</a> | <a data-tooltip-position="top" aria-label="http://qt6.digitser.net/index.html" rel="noopener" class="external-link" href="http://qt6.digitser.net/index.html" target="_blank">中文文档</a> |<br><br>
+<br>qwidgetstack用于多个widget组合切换
+<br>model/view framework
+<br>代码中修改动态属性值<br>
+widget-&gt;setProperty("property", value);
+<br>animation framework
+<br>qt sqlite module
+]]></description><link>_posts\qt.html</link><guid isPermaLink="false">_posts/qt.md</guid><pubDate>Sat, 13 Apr 2024 16:47:24 GMT</pubDate></item><item><title><![CDATA[react]]></title><description><![CDATA[ 
+ <br><br><a rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1Yv4y1u7ar?t=6.9" target="_blank">https://www.bilibili.com/video/BV1Yv4y1u7ar?t=6.9</a>]]></description><link>_posts\react.html</link><guid isPermaLink="false">_posts/react.md</guid><pubDate>Thu, 11 May 2023 12:36:54 GMT</pubDate></item><item><title><![CDATA[Rpc框架]]></title><description><![CDATA[ 
+ <br><br><br>
+<br>实现跨主机，跨进程的函数调用
+<br>跨语言调用。如server（Java），clients（python，ruby，go）----使用protobuf来实现的。
+<br><br><br>
+<br>facebook opensource
+<br>apache licence
+<br>]]></description><link>_posts\rpc.html</link><guid isPermaLink="false">_posts/RPC.md</guid><pubDate>Fri, 15 Mar 2024 17:02:10 GMT</pubDate></item><item><title><![CDATA[scrapy]]></title><description><![CDATA[ 
+ <br><br>
+<br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1p84y1z7kp/?spm_id_from=333.999.0.0" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1p84y1z7kp/?spm_id_from=333.999.0.0" target="_blank">简单视频入门</a>
+<br><br><br>
+<br>
+为了排查爬虫运行时出现的异常问题，需要调试手段。常用的将log输出保存到文件中，便于查找问题<br>
+<a data-tooltip-position="top" aria-label="https://blog.csdn.net/weixin_41666747/article/details/82716688" rel="noopener" class="external-link" href="https://blog.csdn.net/weixin_41666747/article/details/82716688" target="_blank">爬虫scrapy框架--log日志输出配置及使用scrapy 日志</a>
+
+<br>
+当数据中有gbk无法写入的字符时，文件在保存的时候记得设置encoding为utf-8,如果时windows上，需要设置为utf-8-sig（utf-8 with bom）
+
+<br>open('bilibili-top100-{}.csv'.format(self.today), 'w', encoding='utf-8')
+复制<br>
+<br>
+当出现需要代理才能连接上的网站时，需要设置代理。有两种方式设置代理，一种是直接在构造request请求时添加meta参数。第二种是自定义download middleware。<br>
+<a data-tooltip-position="top" aria-label="https://zhuanlan.zhihu.com/p/79067223" rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/79067223" target="_blank">Scrapy 设置代理终极宝典 - 知乎 (zhihu.com)</a>
+若出现如下错误，就代表需要通过代理才能访问该网站
+
+<br>[&lt;twisted.python.failure.Failure OpenSSL.SSL.Error: [('SSL routines', '', 'unexpected eof while reading')]&gt;]
+复制]]></description><link>_posts\scrapy.html</link><guid isPermaLink="false">_posts/scrapy.md</guid><pubDate>Mon, 06 Mar 2023 06:29:52 GMT</pubDate></item><item><title><![CDATA[sdl2]]></title><description><![CDATA[ 
+ <br><br><br><br>
+<br>错误处理，获取错误信息等
+<br>日志处理
+<br>初始化sdl默认子系统。sdl_init等
+<br><br>
+<br>
+<br><br><br><br>
+<br>
+surface：表面<br>
+surface结构保存一堆像素，是像素的集合。可以看作是装bmp位图，或rect等的容器
+
+<br>
+texture：纹理<br>
+在SDL2中，Texture是一个表示图像的对象。它包含了像素数据以及与之相关的元数据，如宽度、高度和格式等信息。<br>
+使用SDL2创建Texture可以让我们更高效地渲染图像，因为Texture通常存储在显存中，可以快速地被GPU读取和渲染到屏幕上。此外，Texture还支持一些高级的特性，如Alpha通道混合、颜色调整和纹理平铺等，这些特性可以让我们更加灵活地处理图像。<br>
+在使用SDL2进行游戏开发时，Texture常常被用来表示游戏中的角色、场景和UI元素等图像资源。
+
+]]></description><link>_posts\sdl2.html</link><guid isPermaLink="false">_posts/sdl2.md</guid><pubDate>Sat, 01 Apr 2023 02:44:20 GMT</pubDate></item><item><title><![CDATA[shell]]></title><description><![CDATA[ 
+ <br><br>
+<br>判断是否为数字
+<br>if [ "$1" -gt 0 ] 2&gt;/dev/null;then
+    $port = $1
+else
+    echo "Usage: $0 &lt;port number&gt;"
+    exit -1
+fi
+复制<br>
+<br>函数声明方式
+<br>function name(){
+
+}
+复制<br>
+<br>查找进程pid
+<br>pgrep -f progressname
+pkill -f progressname //kill it after find it
+
+复制<br><br>
+<br>sed
+]]></description><link>_posts\shell.html</link><guid isPermaLink="false">_posts/shell.md</guid><pubDate>Tue, 07 Mar 2023 17:06:10 GMT</pubDate></item><item><title><![CDATA[smart-pointer]]></title><description><![CDATA[ 
+ <br><br>
+  std::unique_ptr<br>
+std::share_ptr<br>
+std::weak_ptr
+<br>
+  std::make_unique<br>
+std::make_shared<br>
+enable_shared_from_this
+<br>]]></description><link>_posts\smart-pointer.html</link><guid isPermaLink="false">_posts/smart-pointer.md</guid><pubDate>Tue, 07 Mar 2023 17:06:44 GMT</pubDate></item><item><title><![CDATA[tmux配置与使用]]></title><description><![CDATA[<a class="tag" href="?query=tag:在tmux中输入命令" style="background-color: rgb(4, 108, 116); color: white; font-weight: 700; border: none; border-radius: 1em; padding: 0.2em 0.5em;">#在tmux中输入命令</a> <a class="tag" href="?query=tag:创建新window" style="background-color: rgb(4, 108, 116); color: white; font-weight: 700; border: none; border-radius: 1em; padding: 0.2em 0.5em;">#创建新window</a> <a class="tag" href="?query=tag:关闭当前window" style="background-color: rgb(4, 108, 116); color: white; font-weight: 700; border: none; border-radius: 1em; padding: 0.2em 0.5em;">#关闭当前window</a> <a class="tag" href="?query=tag:关闭当前panel" style="background-color: rgb(4, 108, 116); color: white; font-weight: 700; border: none; border-radius: 1em; padding: 0.2em 0.5em;">#关闭当前panel</a> 
+ <br><br>session: a session could include mutil-windows<br>
+windows: just the window<br>
+panle: a window contains muti-panle<br><br>sudo apt install tmux -y<br><br>tmux new -s <br>
+tmux new-session -s <br>tmux ls<br>
+tmux kill-<br>
+tmux list-<br>
+tmux attach-<br>tmux a -t  # 从新进入临时退出的tmux会话<br>c-b %       # verhicel<br>
+c-b "<br>
+c-b :       <a href=".?query=tag:在tmux中输入命令" class="tag" target="_blank" rel="noopener">#在tmux中输入命令</a><br>
+c-b c       <a href=".?query=tag:创建新window" class="tag" target="_blank" rel="noopener">#创建新window</a><br>
+c-b &amp;       <a href=".?query=tag:关闭当前window" class="tag" target="_blank" rel="noopener">#关闭当前window</a><br>
+c-b x       <a href=".?query=tag:关闭当前panel" class="tag" target="_blank" rel="noopener">#关闭当前panel</a><br>
+c-b space<br>
+c-b d       # 临时退出tmux<br>
+c-b up/down/left/right # foucs windows<br>
+c-b [   # pageup/pagedown  q to exit page mode<br>c-b z   # enter / return full screen<br>c-b (   # 切换到上一个session<br>
+c-b )   # 切换到下一个session<br>
+c-b L   # 切换到最后一个session<br><br># source the tmux config file
+# tmux source-file ~/.tmux.conf
+
+
+
+set -g base-index 1 # 设置窗口的起始下标为1
+set -g pane-base-index 1 # 设置面板的起始下标为1
+
+set -g status-interval 1 # 状态栏刷新时间
+set -g status-justify left # 状态栏列表左对齐
+
+set -wg window-status-format " #I #W " # 状态栏窗口名称格式
+set -wg window-status-current-format " #I:#W#F " # 状态栏当前窗口名称格式(#I：序号，#w：窗口名称，#F：间隔符)
+set -wg window-status-separator "" # 状态栏窗口名称之间的间隔
+
+set -g default-terminal "screen-256color" # tmux和vim配色冲突
+
+
+# tmux 插件管理---begin
+set -g @plugin 'tmux-plugins/tpm'
+#set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+# 会话保存插件
+# prefix+ ctrl+s == 保存会话
+# prefix+ ctrl+r == 加载保存的会话
+
+run '~/.tmux/plugins/tpm/tpm'
+# tmux 插件管理---end
+
+set-option -g mouse on
+set-option -g prefix C-x
+unbind ^X
+bind -r ^X next-window
+
+
+bind-key -n M-1 previous-window
+bind-key -n M-2 next-window
+
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+bind-key q set-option status
+
+复制<br><br><a data-tooltip-position="top" aria-label="https://www.cnblogs.com/lizhang4/p/7325086.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/lizhang4/p/7325086.html" target="_blank">常用快捷键</a><br>
+<a data-tooltip-position="top" aria-label="https://tao-of-tmux.readthedocs.io/zh_CN/latest/manuscript/05-session.html#tmux-sessions" rel="noopener" class="external-link" href="https://tao-of-tmux.readthedocs.io/zh_CN/latest/manuscript/05-session.html#tmux-sessions" target="_blank">官方使用文档</a><br>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/bamanzi/p/tmux-mouse-tips.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/bamanzi/p/tmux-mouse-tips.html" target="_blank">用鼠标切换窗口/调节分屏大小</a><br>
+unknown option: mouse-resize-pane错误<br>
+set-option -g mouse on<br>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/hongdada/p/13528984.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/hongdada/p/13528984.html" target="_blank">tmux插件管理器的安装和使用</a><br>
+<a data-tooltip-position="top" aria-label="http://louiszhai.github.io/2017/09/30/tmux/#%E5%AF%BC%E8%AF%BB" rel="noopener" class="external-link" href="http://louiszhai.github.io/2017/09/30/tmux/#%E5%AF%BC%E8%AF%BB" target="_blank">写的好的个人博客</a>]]></description><link>_posts\tmux.html</link><guid isPermaLink="false">_posts/tmux.md</guid><pubDate>Tue, 07 Mar 2023 17:10:36 GMT</pubDate></item><item><title><![CDATA[tree]]></title><description><![CDATA[ 
+ <br><br><br>
+<br>为什么出现tree这种数据结构？
+]]></description><link>_posts\tree.html</link><guid isPermaLink="false">_posts/tree.md</guid><pubDate>Tue, 25 Apr 2023 10:46:56 GMT</pubDate></item><item><title><![CDATA[vim]]></title><description><![CDATA[ 
+ <br>NOTE：<br>vim作为文本编辑器，虽然其本质也一直在变在发展。但是，最根本的作为编辑器来说。不应该去追求花哨看似有用的功能。而应该在这些实用方面深入：<br>
+<br>快速移动，和定位。比鼠标移动的快才算合格
+<br>快速搜索文件，创建文件，删除文件，创建文件夹，删除文件夹
+<br>快速字符串查找
+<br><br><a data-tooltip-position="top" aria-label="https://github.com/vim/vim/blob/master/src/INSTALLpc.txt" rel="noopener" class="external-link" href="https://github.com/vim/vim/blob/master/src/INSTALLpc.txt" target="_blank">msvc编译步骤官方文档</a><br>1. 进入src目录
+
+2. nmake -f Make_mvc.mak PYTHON3=C:\Users\ming\AppData\Local\Programs\Python\Python310 DYNAMIC_PYTHON3=yes PYTHON3_VER=310
+
+3. 在顶级目录下查看是否有vim90目录，没有创建
+
+4. Copy the "runtime" files into "vim90":
+copy runtime\* vim90
+xcopy /s runtime\* vim90
+
+5. Copy the new binaries into the "vim90" directory
+copy src\*.exe vim90
+copy src\tee\tee.exe vim90
+copy src\xxd\xxd.exe vim90
+
+6. Copy gettext and iconv DLLs into the "vim90" directory【从E:/vim/vim90中搜索dll，拷贝到新的vim90中】
+
+7. 执行老vim90中的uninstall.bat,删除老的vim90
+8. 将新vim90拷贝到E:/vim中，并执行vim90中的install.bat
+
+复制<br><br><br>The following builtin types are supported:<br>
+bool<br>
+number<br>
+float<br>
+string<br>
+blob<br>
+list&lt;{type}&gt;<br>
+dict&lt;{type}&gt;<br>
+job<br>
+channel<br>
+func<br>
+func: {type}<br>
+func({type}, ...)<br>
+func({type}, ...): {type}<br>
+void<br><br>
+<br>全局变量	g:name
+<br>脚本范围局部变量    s:name 
+<br>vim预定义变量    v:name 
+<br>函数内局部变量：l:name 
+<br>函数参数：a:name 
+<br>缓冲区局部变量：b:name 
+<br>窗口局部变量：w:name 
+<br>标签页局部变量：t:name 
+<br>
+  脚本范围的局部变量，相当于c语言中static关键字，定义之后，只在当前声明的文件范围有效。
+<br><br><br><br>let g:a = 123
+let s:b = "adf"
+复制<br><br>unlet s:a
+复制<br><br>1 基本表达式<br>
+数值<br>
+字符串常量<br>
+$name 环境变量<br>
+&amp;name 选项<br>
+@reg  寄存器<br>
+2 算法表达式<br>
++ - * / %<br>
+"hello" . "world" =="helloworld" 字符串拼接<br><br>call function_name(para1,para2) 	调用函数<br>
+let line = getline('.') 			调用函数作为表达式<br>
+:functions 							查看vim中内置的完整函数列表<br>1 定义函数<br>
+function {name}({var1,{var2},...})<br>
+{body}<br>
+endfunction<br>
+- 函数名必须以大写字母开始<br>
+- a:var1 代表函数参数变量<br>
+- 函数内部没有特殊标识的变量(g: a: s:)都是局部变量<br>
+- 函数内部访问全局变量要加 g:<br>
+2 重定义函数<br>
+function! name(var1,var2)<br>
+3 范围使用<br>
+:10,30call funcname()<br>
+function funcname() range 	定义<br>
+4 可变参数<br>
+function Show(start,...)<br>
+a:0 	可变参数个数<br>
+a:1 	第一个可变参数<br>
+a:2 	第二个可变参数<br>
+a:000 	可变参数列表<br>
+5 删除函数<br>
+delfunction xxx]]></description><link>_posts\vim.html</link><guid isPermaLink="false">_posts/vim.md</guid><pubDate>Mon, 06 Mar 2023 04:15:34 GMT</pubDate></item><item><title><![CDATA[vim-manual]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="https://vimhelp.org/" rel="noopener" class="external-link" href="https://vimhelp.org/" target="_blank">Vim: help.txt (vimhelp.org)</a><br>
+<img alt="vim manual" src="lib\media\pasted-image-20221018235635.png"><br>
+<br><br>
+vim文档分为基础文档和高阶文档，分别面向vim基本使用者和想要详细了解vim方方面面的高阶用户。<br><br>文档分为四个部分：<br>
+<br><a class="internal-link" data-href="#快速开始" href="about:blank#快速开始" target="_self" rel="noopener">快速开始</a>：对vim的一个简单上手教程
+<br><a class="internal-link" data-href="#高效编辑" href="about:blank#高效编辑" target="_self" rel="noopener">高效编辑</a>：一些好用的vim建议
+<br>调整vim：一些自定义的方式
+<br>写自己的vimscrpit脚本：
+<br>快速开始<br><br>
+<br>对两种手册文档的介绍（user manual/reference manual），并介绍如何在文档之间跳转
+<br>让用户确认vi-compatibility选项set compatible?选项是否关闭
+<br>教你如何使用vim tutor一个vim内置的沙盒，用于学习vim基本操作
+<br>版权信息
+<br><br><br>做小的修改<br>三种基本的修改文本的方式：<br>
+<br>
+operation-motion（操作+光标运动）  
+operation操作是对文本的具体操作，motion代表光标运动的方式。这种方式意思就是，在光标运动的范围内进行某项具体操作。比如：`dw`, `dl`, `cw`
+vim中包含的[==operator==]([Vim: motion.txt (vimhelp.org)](https://vimhelp.org/motion.txt.html#operator))如下：
+复制
+<img alt="operator" src="lib\media\pasted-image-20221019212831.png"><br>
+vim中支持的光标运动方式motion，可以分为如下几类。【重点】<br>
+1. left-right motion（光标左右运动）<br>
+2. up-down motion（光标上下运动）<br>
+3. word motions（光标单词范围运动）<br>
+单词包括<br>
+- word【字母+数字+下划线/非空字符组成的字符串】<br>
+- WORD【非空字符组成的字符串】<br>
+print("hello")<br>
+对上面的句子来说<br>
+word 有四个 print, (", hello, ")<br>
+WORD 有一个 print("hello")<br>
+4. text object motion（光标文本对象范围运动）<br>
+文本对象包含<br>
+- sentence【句子】<br>
+- paragraphs【段落】<br>
+- sections【节】<br>
+5. marks motions（光标标记之间运动）<br>
+6. jump motions（光标的跳转运动）<br>
+7. various motions（其他的光标运动）
+
+<br><br><br>
+<br>
+visual mode（可视模式）<br>
+按v进入可是模式，然后移动光标选择想要操作的范围，最后使用operation对选中的部分进行操作。<br>
+1. 多行选择（V进入多行选择模式）<br>
+2. 块选择（c-v进入块选择，操作一个矩形区域）<br>
+3. 光标跳转到另一边（进入可视模式后，按o光标跳转到选择区域的另一边<br>
+<br>
+
+<br>
+text objects（文本对象）<br>
+当光标处于一个单词的中间，但是你想删除这整个单词，普通操作是将光标移动到这个单词开始位置，然后再dw，vim提供了一种更简单的方式：文本对象。可以用<br>
+operation-textobject方式来总结这种文本修改方式。这种模式是第一种方式的一种特殊情形，属于text-object motion类别<br>
+因此daw就可以直接删除光标的单词(delete a word)。
+
+<br><br><br><br>
+<br>
+vimrc文件
+
+<br>
+example vimrc解释
+
+<br>
+default.vim文件解释
+
+<br>
+<a data-tooltip-position="top" aria-label="https://vimhelp.org/usr_05.txt.html#05.4" rel="noopener" class="external-link" href="https://vimhelp.org/usr_05.txt.html#05.4" target="_blank">简单映射</a>
+
+mapping:=让你将一系列vim commands绑定到一个key上<br>
+:map :=map命令，显示当前的mapping
+
+
+<br>
+<a data-tooltip-position="top" aria-label="https://vimhelp.org/usr_05.txt.html#05.5" rel="noopener" class="external-link" href="https://vimhelp.org/usr_05.txt.html#05.5" target="_blank">添加<mark></mark></a>package
+
+<br>
+package:= 包是一个目录，用于包含一个或多个plugin。<br>
+optional package<br>
+automatically load package<br>
+packadd!
+<br>~/.vim/pack/fancy/start/fancytext/plugin/fancy.vim
+上面的fancy目录是自己起的任意名称，用于对插件进行分类存储。其中fancytext才是package的名称
+复制<br>
+<br><a data-tooltip-position="top" aria-label="https://vimhelp.org/usr_05.txt.html#05.6" rel="noopener" class="external-link" href="https://vimhelp.org/usr_05.txt.html#05.6" target="_blank">添加<mark></mark></a>plugin
+
+global plugin:=全局插件<br>
+filetype plugin:=文件类型插件
+
+
+<br>
+<br>全局插件
+<br>创建一个全局插件
+<br>使用一个全局插件
+<br>文件类型插件
+<br>创建一个文件类型插件
+<br>使用一个文件类型插件
+<br>
+<br><a data-tooltip-position="top" aria-label="https://vimhelp.org/usr_05.txt.html#05.7" rel="noopener" class="external-link" href="https://vimhelp.org/usr_05.txt.html#05.7" target="_blank">添加帮助文档</a>
+
+runtimepath:=<br>
+:helptags := 生成本地tags文件<a data-tooltip-position="top" aria-label="https://vimhelp.org/helphelp.txt.html#%3Ahelptags" rel="noopener" class="external-link" href="https://vimhelp.org/helphelp.txt.html#%3Ahelptags" target="_blank">helptags</a>
+
+
+<br>
+<br>写本地的帮助文件
+<br>
+<br>options窗口
+
+options:=vim中内部的变量或者开关，设置用于实现一些特殊功能。options的值分为三类：boolen，number，string<br>
+:options:=用于查看vim中的内置选项，会打开一个选项窗口
+
+
+<br>
+<br><a data-tooltip-position="top" aria-label="https://vimhelp.org/options.txt.html#set-option" rel="noopener" class="external-link" href="https://vimhelp.org/options.txt.html#set-option" target="_blank">设置options</a>
+<br><a data-tooltip-position="top" aria-label="https://vimhelp.org/options.txt.html#auto-setting" rel="noopener" class="external-link" href="https://vimhelp.org/options.txt.html#auto-setting" target="_blank">自动设置options</a>
+<br><a data-tooltip-position="top" aria-label="https://vimhelp.org/options.txt.html#option-summary" rel="noopener" class="external-link" href="https://vimhelp.org/options.txt.html#option-summary" target="_blank">可用options列表</a>
+<br>
+<br>经常使用的options
+<br>
+<br>不要自动换行(set nowrap)
+<br>前进，后退自动换行(set whichwrap=b,s)
+<br>显示tabs（set list）
+<br>定义word的构成字符（set iskeyword+=）
+<br>设置底部命令行的空间大小(set cmdheight=3)<br>
+<br>
+<br>使用语法高亮<br>
+<br>开关语法高亮功能
+<br>颜色错误，没有颜色的可能原因
+<br>不同颜色
+<br>开启颜色，或关闭颜色
+<br>带颜色打印文本
+<br>跟多相关内容
+<br>
+<br><a data-tooltip-position="top" aria-label="https://vimhelp.org/usr_44.txt.html#usr_44.txt" rel="noopener" class="external-link" href="https://vimhelp.org/usr_44.txt.html#usr_44.txt" target="_blank">自定义语法高亮</a>
+<br><br><br>编辑多个文件<br><br><br>窗口拆分<br><br><br>使用GUI界面<br><br><br>做大修改<br>在visual模式下可以做大范围修改<br>
+<br>录制和回放一系列命令
+<br><br><br>从crash中恢复<br><br><br>一些技巧<br><br>高效编辑<br>快速输入命令行命令<br>离开和回来<br>查找文件去编辑<br>编辑其他文件<br>快速插入<br>编辑格式化文本<br>重复<br>搜索命令和模板<br>折叠<br>在程序文件之间移动<br>编辑代码<br>使用gui<br>undo树<br>调整vim<br>vimscript入门<br><br>这部分文档介绍vim的方方面面的特性和机制，文档分为11个部分<br>
+<br>通用主题
+<br>基本编辑
+<br>进阶编辑
+<br>特殊问题
+<br>编程相关特性支持
+<br>文本语言支持
+<br>gui界面相关
+<br>编程接口相关
+<br>vim版本变迁（changelog）
+<br>特殊系统需要注意的问题
+<br>vim标准插件
+<br>虽然有11个部分，但是我们需要特别学习的其实就是前5个部分。第8个部分对写vim插件的开发者有帮助]]></description><link>_posts\vim-manual.html</link><guid isPermaLink="false">_posts/vim-manual.md</guid><pubDate>Tue, 07 Mar 2023 17:11:14 GMT</pubDate><enclosure url="lib\media\pasted-image-20221018235635.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\pasted-image-20221018235635.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vim-node-yarn-git配置国内源]]></title><description><![CDATA[ 
+ <br><br><br>查询当前镜像<br>npm get registry
+复制<br>设置<br>npm config set registry https://registry.npm.taobao.org/        (旧地址)
+npm config set registry https://registry.npmmirror.com/         (最新地址)
+复制<br>还原<br>npm config set registry https://registry.npmjs.org/
+复制<br><br>查询<br>yarn config get registry
+复制<br>设置<br>yarn config set registry https://registry.npm.taobao.org/        (旧地址)
+yarn config set registry https://registry.npmmirror.com/         (最新地址)
+复制<br>还原<br>yarn config set registry https://registry.yarnpkg.com
+复制<br><br><a data-tooltip-position="top" aria-label="https://juejin.cn/post/7219651766707421221" rel="noopener" class="external-link" href="https://juejin.cn/post/7219651766707421221" target="_blank">前端npm和yarn更换国内淘宝镜像</a><br><br><br><br>使用github proxy代理网站如：<br>
+<a data-tooltip-position="top" aria-label="https://gh-proxy.com/" rel="noopener" class="external-link" href="https://gh-proxy.com/" target="_blank">github proxy</a><br>永久将github.com映射到代理网站方法:<br>
+<br>设置映射
+<br>git config --global url."https://gh-proxy.com/https://github.com/".insteadOf "https://github.com/"
+复制<br>
+<br>关闭ssl verify验证
+<br>git config --global http.sslVerify false
+复制<br><br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/CouragelDesire/article/details/113762643" rel="noopener" class="external-link" href="https://blog.csdn.net/CouragelDesire/article/details/113762643" target="_blank">关于Git在克隆远程仓库时候，出现：SSL certificate problem:certificate has expired</a> <br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/qq_41071191/article/details/121367039" rel="noopener" class="external-link" href="https://blog.csdn.net/qq_41071191/article/details/121367039" target="_blank">git clone 换源 / GitHub 国内镜像</a> <br><br>使用vim-plug管理插件会从github等地方下载插件，可以通过设置一个全局参数来设置代理GitHub<br>let g:plug_url_format='https://gh-proxy.com/https://github.com/%s.git'
+call plug#begin('~/AppData/Local/nvim/plugged')
+
+"	Plug 'jiangmiao/auto-pairs'
+"	Plug 'dhruvasagar/vim-table-mode'
+"	Plug 'habamax/vim-select'
+"	Plug 'mhinz/vim-grepper'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app &amp;&amp; yarn install' }
+Plug 'aklt/plantuml-syntax'
+Plug 'tyru/open-browser.vim'
+Plug 'weirongxu/plantuml-previewer.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'preservim/nerdcommenter'
+"
+call plug#end()
+
+复制<br>然后就可以快速下载了<br><br>修改$home/.npmrc，添加如下<br># 淘宝镜像
+coc.nvim:registry=https://registry.npmmirror.com/
+复制<br><br>
+<br>
+<a data-tooltip-position="top" aria-label="https://github.com/wbthomason/packer.nvim" rel="noopener" class="external-link" href="https://github.com/wbthomason/packer.nvim" target="_blank">安装packer.nvim</a> 
+
+<br>
+在lua/plugins.lua文件中添加lua插件
+
+<br>
+nvim中执行:PackerInstall。
+
+<br>
+在init.vim中添加插件plugins.lua模块
+
+<br>lua require('plugins')
+复制]]></description><link>_posts\常用软件配置国内源.html</link><guid isPermaLink="false">_posts/常用软件配置国内源.md</guid><pubDate>Fri, 15 Mar 2024 16:57:48 GMT</pubDate></item><item><title><![CDATA[vim默认主题]]></title><description><![CDATA[ 
+ <br><br>terminal的配色方案: one-half-dark<br><br><img src="lib\media\habamax.png"><br><br><img src="lib\media\pablo.png"><br><br><img src="lib\media\torte.png"><br><br>
+<br>posh-git
+<br>oh-my-posh
+]]></description><link>_posts\vim默认主题.html</link><guid isPermaLink="false">_posts/vim默认主题.md</guid><pubDate>Wed, 12 Apr 2023 05:08:14 GMT</pubDate><enclosure url="lib\media\habamax.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\habamax.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vimspector]]></title><description><![CDATA[ 
+ <br><br>
+<br>使用vim插件管理器plug.vim安装，添加 Plug 'puremourning/vimspector'
+<br>安装debug adapters（gadgets），实际在后台工作的程序，vimspector只是一个前台交互wrapper
+<br>配置项目的debug配置文件 .vimspector.json 
+<br>Note
+步骤二中需要设置在terminal中操作，因为需要代理网络访问。
+
+<br>$env:HTTPS_PROXY = "xxxx"   [设置环境变量HTTPS_PROXY,用于python网络接口]
+<br>python .\install_gadget.py --enable-c --enable-python
+
+<br><img src="lib\media\adaptor.png"><br>可以看到安装adaptor有两种方式，一种通过vim中的命令（不推荐）会由于网络导致安装失败，并且该失败会导致后续通过脚本成功安装之后检测不到成功安装。另一种是通过 install_gadget.py 脚本来安装adapter（推荐）<br><br>官网给出了一些简单的vimspector.json的配置：<a data-tooltip-position="top" aria-label="https://github.com/puremourning/vimspector#debug-profile-configuration" rel="noopener" class="external-link" href="https://github.com/puremourning/vimspector#debug-profile-configuration" target="_blank">puremourning/vimspector: vimspector - A multi-language debugging system for Vim (github.com)</a><br>配置文件中具体的手册参考文档：<a data-tooltip-position="top" aria-label="https://puremourning.github.io/vimspector/configuration.html" rel="noopener" class="external-link" href="https://puremourning.github.io/vimspector/configuration.html" target="_blank">Configuration | Vimspector Documentation (puremourning.github.io)</a><br>//vimspector.json中可以有配置，且vimspector官方对该json配置做了一些扩展支持符号扩展等特性
+
+{                                                                                                      
+    "configurations": {
+        "cpp_launch": {
+            "adapter": "CodeLLDB",
+            "configuration": {
+                "name": "cpp:launch",
+                "stopAtEntry": true,
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "${workspaceRoot}/ninja_build/out/decoder.exe",
+				"args": [ "*${CommandLineArgs}" ],
+                "cwd": "${workspaceRoot}/ninja_build/out",
+                "environment": [], 
+                "externalConsole": true,
+                "MIMode": "gdb"
+           }   
+        } 
+		"python_Launch": {
+			"adapter": "debugpy",
+			"configuration": {
+				"name": "python3: Launch",
+				"type": "python",
+				"request": "launch",
+				"cwd": "${workspaceRoot}",
+				"stopOnEntry": true,
+				"console": "externalTerminal",
+				"debugOptions": [],
+				"program": "${script:${file\\}}"
+			}
+		}
+
+
+   }   
+}
+
+复制<br><br>
+<br>
+首先是快捷键映射，官方已经有两套默认配置，只需设置全局变量 let g:vimspector_enable_mappings = 'VISUAL_STUDIO' 或 let g:vimspector_enable_mappings = 'HUMAN' 即可使用。所有可用映射参见官网<a data-tooltip-position="top" aria-label="https://github.com/puremourning/vimspector#mappings" rel="noopener" class="external-link" href="https://github.com/puremourning/vimspector#mappings" target="_blank">puremourning/vimspector: vimspector - A multi-language debugging system for Vim (github.com)</a>
+
+<br>
+vim界面上可以点击（winbar），不需要自己重写打乱自己的映射
+
+]]></description><link>_posts\vimspector.html</link><guid isPermaLink="false">_posts/vimspector.md</guid><pubDate>Tue, 04 Apr 2023 08:48:48 GMT</pubDate><enclosure url="lib\media\adaptor.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\adaptor.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[vps]]></title><description><![CDATA[ 
+ <br><br><br>
+### 安全管理<br>设置使用密钥登录<br>
+<br>在客户端使用ssh-keygen的非对称加密算法，生成公私钥(id_rsa--私钥,id_rsa.pub--公钥）
+<br>将公钥(id_rsa.pub)添加到vps的.ssh/authorized_keys中(私钥很重要，是密钥登录的核心保存好)
+<br>确保以下的文件权限(authorized_keys--600 ~/.ssh--700)
+<br>设置服务器sshd配置如下:
+<br>#/etc/ssh/sshd_config
+
+# 使用公钥认证的方式登录
+PubkeyAuthentication yes
+
+# 禁止使用密码登录的方式
+PasswordAuthentication no
+复制<br>
+<br>修改sshd服务的默认端口为10086
+<br>#/etc/ssh/sshd_config
+Port 10086
+复制<br>
+<br>设置防火墙开放10086端口
+<br># 查看防火墙是否开启
+firewall-cmd --state
+
+# 添加规则
+firewall-cmd --permanent --add-port=10086/tcp
+
+# 确认
+firewall-cmd --list-all
+复制<br>
+<br>重启sshd服务<br>
+service sshd restart
+<br><br><br><a data-tooltip-position="top" aria-label="https://www.liuzhanwu.cn/" rel="noopener" class="external-link" href="https://www.liuzhanwu.cn/" target="_blank">主机之家测评- 专注分享便宜vps - 国外vps - 国外服务器 - 国外主机 - 测评及优惠码 (liuzhanwu.cn)</a>]]></description><link>_posts\vps.html</link><guid isPermaLink="false">_posts/vps.md</guid><pubDate>Sun, 07 May 2023 23:52:36 GMT</pubDate></item><item><title><![CDATA[web前端]]></title><description><![CDATA[<a class="tag" href="?query=tag:react" style="background-color: rgb(4, 108, 116); color: white; font-weight: 700; border: none; border-radius: 1em; padding: 0.2em 0.5em;">#react</a> 
+ <br><br><br><br>[sass]<br>
+[postcss]<br>
+[less]<br><br>视频资料：<br>
+[js速通]<br>
+[es6 new feature 速通]<br>
+<a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1CR4y1k7Az?t=499.3" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1CR4y1k7Az?t=499.3" target="_blank">ts速通</a><br>文档资料：<br>
+<br><a data-tooltip-position="top" aria-label="https://www.ecma-international.org/publications-and-standards/standards/ecma-262/" rel="noopener" class="external-link" href="https://www.ecma-international.org/publications-and-standards/standards/ecma-262/" target="_blank">ECMA-262 - Ecma International (ecma-international.org)</a>
+<br><a data-tooltip-position="top" aria-label="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" rel="noopener" class="external-link" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target="_blank">JavaScript | MDN (mozilla.org)</a>
+<br><a data-tooltip-position="top" aria-label="https://www.w3school.com.cn/js/index.asp" rel="noopener" class="external-link" href="https://www.w3school.com.cn/js/index.asp" target="_blank">JavaScript 教程 (w3school.com.cn)</a> 十分全面
+<br><br><br>
+框架是建立在基础技术之上的，应用于开发某特定领域，而构建的一套技术
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<br>网站
+<br> <a href=".?query=tag:react" class="tag" target="_blank" rel="noopener">#react</a> <br>
+<br>桌面应用
+<br>开源实战做贡献：<br>
+<a data-tooltip-position="top" aria-label="https://github.com/arashrun/fluent-reader" rel="noopener" class="external-link" href="https://github.com/arashrun/fluent-reader" target="_blank">arashrun/fluent-reader: Modern desktop RSS reader built with Electron, React, and Fluent UI (github.com)</a><br>
+<br>
+移动应用
+
+<br>
+小程序
+
+<br><br>
+<br><a data-tooltip-position="top" aria-label="https://juejin.cn/post/7044817289270525965" rel="noopener" class="external-link" href="https://juejin.cn/post/7044817289270525965" target="_blank">js操作节点</a>
+<br><a data-tooltip-position="top" aria-label="https://www.w3school.com.cn/jquery/jquery_dom_set.asp" rel="noopener" class="external-link" href="https://www.w3school.com.cn/jquery/jquery_dom_set.asp" target="_blank">jquery设置内容和属性</a>
+<br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/zhengyinling/article/details/111587670" rel="noopener" class="external-link" href="https://blog.csdn.net/zhengyinling/article/details/111587670" target="_blank">js模糊查询,不区分大小写</a>
+<br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1jj411c7sb/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1jj411c7sb/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">前端开发的主流技术_哔哩哔哩_bilibili</a><br>
+<a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1Nt411q73a/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1Nt411q73a/?spm_id_from=333.337.search-card.all.click&amp;vd_source=0a2bd2d5e3c437b3fd7699cd52ebe78d" target="_blank">为初学者准备的：DOM 速成_哔哩哔哩_bilibili</a><br><br><img src="lib\media\jishupang.png">]]></description><link>_posts\web.html</link><guid isPermaLink="false">_posts/web.md</guid><pubDate>Fri, 12 May 2023 07:30:32 GMT</pubDate><enclosure url="lib\media\jishupang.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\jishupang.png&quot;&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Windows开发]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/desktop-programming" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/desktop-programming" target="_blank">开始使用 - Win32 apps | Microsoft Learn</a><br>Win32 API（也称为 Windows API）是需要直接访问 Windows 和硬件的本机 C/C++ Windows 应用程序的原始平台。 它提供一流的开发体验，而无需依赖于适用于 Windows 10) 的 UWP 应用的托管运行时环境（如 .NET 和 WinRT (）。 这使得 Win32 API 成为需要最高级别性能和直接访问系统硬件的应用程序的首选平台。<br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/api/" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/api/" target="_blank">Win32 API 编程参考 - Win32 apps | Microsoft Learn</a><br><img src="lib\media\win32-api.png"><br>通过win32 API参考可以看到win32api提供的操作功能范围涉及到windows系统的方方面面，其实就是最原始的windows编程接口。windows操作系统之上的最底层的库<br><br>组件对象模型<br>
+<a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/what-is-a-com-interface-" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/what-is-a-com-interface-" target="_blank">什么是 COM 接口 - Win32 apps | Microsoft Learn</a><br>COM 是创建可重用软件组件的规范。 在基于新式Windows的程序中使用的许多功能都依赖于 COM。其实就是一堆接口，用于隔离应用调用和应用实现库而实现的一个接口库。<br><br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/prepare-your-development-environment" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/learnwin32/prepare-your-development-environment" target="_blank">准备开发环境 - Win32 apps | Microsoft Learn</a><br>若要用 C 或 C++ 编写Windows程序，必须安装 Microsoft Windows 软件开发工具包 (SDK) 或者Microsoft Visual Studio。<br>windows sdk包含如下部分：<br>
+<br>Windows SDK 包含编译和链接应用程序所需的头文件和库文件。因为要使用c++生成windows应用程序，因此不仅包含标准库头文件库文件，还要包含面相特定版本的windows系统的系统api头文件和库文件（win32 api）
+<br>Windows SDK 还包含用于生成Windows应用程序的命令行工具，包括 Visual C++ 编译器（MSVC）和链接器
+<br><br>DirectX 是用于开发Windows游戏的主要图形 API 集，该api集合用于操作GPU设备的，属于windows api的一部分，下载了windows sdk就可以使用directx功能了。<br><a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/win32/direct3dgetstarted/pre-requisites-for-developing-a-tailored-c---with-directx-app" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/win32/direct3dgetstarted/pre-requisites-for-developing-a-tailored-c---with-directx-app" target="_blank">使用 DirectX 进行开发的先决条件 - Win32 apps | Microsoft Learn</a><br><img src="lib\media\directx.png"><br><br>通用windows平台<br>
+<a data-tooltip-position="top" aria-label="https://learn.microsoft.com/zh-cn/windows/uwp/get-started/universal-application-platform-guide" rel="noopener" class="external-link" href="https://learn.microsoft.com/zh-cn/windows/uwp/get-started/universal-application-platform-guide" target="_blank">什么是通用 Windows 平台 (UWP) 应用？ - UWP applications | Microsoft Learn</a><br>UWP 是创建适用于 Windows 的客户端应用程序的众多方法之一。 UWP 应用使用 WinRT API 来提供强大的 UI 和高级异步功能，这些功能非常适用于 Internet 连接的设备。<br><br><br>]]></description><link>_posts\windows开发.html</link><guid isPermaLink="false">_posts/Windows开发.md</guid><pubDate>Wed, 15 Mar 2023 06:53:30 GMT</pubDate><enclosure url="lib\media\win32-api.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;lib\media\win32-api.png&quot;&gt;&lt;/figure&gt;</content:encoded></item></channel></rss>

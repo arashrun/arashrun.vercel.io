@@ -1,0 +1,360 @@
+<!DOCTYPE html> <html><head>
+		<title>archlinux</title>
+		<base href="../">
+		<meta id="root-path" root-path="../">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0">
+		<meta charset="UTF-8">
+		<meta name="description" content="source - archlinux">
+		<meta property="og:title" content="archlinux">
+		<meta property="og:description" content="source - archlinux">
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="_posts/archlinux.html">
+		<meta property="og:image" content="undefined">
+		<meta property="og:site_name" content="source">
+		<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="lib/rss.xml"><script async="" id="webpage-script" src="lib/scripts/webpage.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><script type="module" async="" id="graph-view-script" src="lib/scripts/graph-view.js"></script><script async="" id="graph-wasm-script" src="lib/scripts/graph-wasm.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><script async="" id="graph-render-worker-script" src="lib/scripts/graph-render-worker.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><script async="" id="tinycolor-script" src="lib/scripts/tinycolor.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><script async="" id="pixi-script" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.4.0/pixi.min.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><script async="" id="minisearch-script" src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><link rel="icon" href="lib/media/favicon.png"><script async="" id="graph-data-script" src="lib/scripts/graph-data.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><style>body{--line-width:40em;--line-width-adaptive:40em;--file-line-width:40em;--sidebar-width:min(20em, 80vw);--collapse-arrow-size:11px;--tree-horizontal-spacing:0.6em;--tree-vertical-spacing:0.6em;--sidebar-margin:12px}.sidebar{height:100%;min-width:calc(var(--sidebar-width) + var(--divider-width-hover));max-width:calc(var(--sidebar-width) + var(--divider-width-hover));font-size:14px;z-index:10;position:relative;overflow:hidden;transition:min-width ease-in-out,max-width ease-in-out;transition-duration:.2s;contain:size}.sidebar-left{left:0}.sidebar-right{right:0}.sidebar.is-collapsed{min-width:0;max-width:0}body.floating-sidebars .sidebar{position:absolute}.sidebar-content{height:100%;min-width:calc(var(--sidebar-width) - var(--divider-width-hover));top:0;padding:var(--sidebar-margin);padding-top:4em;line-height:var(--line-height-tight);background-color:var(--background-secondary);transition:background-color,border-right,border-left,box-shadow;transition-duration:var(--color-fade-speed);transition-timing-function:ease-in-out;position:absolute;display:flex;flex-direction:column}.sidebar:not(.is-collapsed) .sidebar-content{min-width:calc(max(100%,var(--sidebar-width)) - 3px);max-width:calc(max(100%,var(--sidebar-width)) - 3px)}.sidebar-left .sidebar-content{left:0;border-top-right-radius:var(--radius-l);border-bottom-right-radius:var(--radius-l)}.sidebar-right .sidebar-content{right:0;border-top-left-radius:var(--radius-l);border-bottom-left-radius:var(--radius-l)}.sidebar:has(.sidebar-content:empty):has(.topbar-content:empty){display:none}.sidebar-topbar{height:2em;width:var(--sidebar-width);top:var(--sidebar-margin);padding-inline:var(--sidebar-margin);z-index:1;position:fixed;display:flex;align-items:center;transition:width ease-in-out;transition-duration:inherit}.sidebar.is-collapsed .sidebar-topbar{width:calc(2.3em + var(--sidebar-margin) * 2)}.sidebar .sidebar-topbar.is-collapsed{width:0}.sidebar-left .sidebar-topbar{left:0}.sidebar-right .sidebar-topbar{right:0}.topbar-content{overflow:hidden;overflow:clip;width:100%;height:100%;display:flex;align-items:center;transition:inherit}.sidebar.is-collapsed .topbar-content{width:0;transition:inherit}.clickable-icon.sidebar-collapse-icon{background-color:transparent;color:var(--icon-color-focused);padding:0!important;margin:0!important;height:100%!important;width:2.3em!important;margin-inline:0.14em!important;position:absolute}.sidebar-left .clickable-icon.sidebar-collapse-icon{transform:rotateY(180deg);right:var(--sidebar-margin)}.sidebar-right .clickable-icon.sidebar-collapse-icon{transform:rotateY(180deg);left:var(--sidebar-margin)}.clickable-icon.sidebar-collapse-icon svg.svg-icon{width:100%;height:100%}.sidebar-section-header{margin:0 0 1em 0;text-transform:uppercase;letter-spacing:.06em;font-weight:600}body{transition:background-color var(--color-fade-speed) ease-in-out}.webpage-container{display:flex;flex-direction:row;height:100%;width:100%;align-items:stretch;justify-content:center}.document-container{opacity:1;flex-basis:100%;max-width:100%;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;transition:opacity .2s ease-in-out;contain:inline-size}.hide{opacity:0;transition:opacity .2s ease-in-out}.document-container>.markdown-preview-view{margin:var(--sidebar-margin);margin-bottom:0;width:100%;width:-webkit-fill-available;width:-moz-available;width:fill-available;background-color:var(--background-primary);transition:background-color var(--color-fade-speed) ease-in-out;border-top-right-radius:var(--window-radius,var(--radius-m));border-top-left-radius:var(--window-radius,var(--radius-m));overflow-x:hidden!important;overflow-y:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;contain:inline-size}.document-container>.markdown-preview-view>.markdown-preview-sizer{padding-bottom:80vh!important;width:100%!important;max-width:var(--line-width)!important;flex-basis:var(--line-width)!important;transition:background-color var(--color-fade-speed) ease-in-out;contain:inline-size}.markdown-rendered img:not([width]),.view-content img:not([width]){max-width:100%;outline:0}.document-container>.view-content.embed{display:flex;padding:1em;height:100%;width:100%;align-items:center;justify-content:center}.document-container>.view-content.embed>*{max-width:100%;max-height:100%;object-fit:contain}:has(> :is(.math,table)){overflow-x:auto!important}.document-container>.view-content{overflow-x:auto;contain:content;padding:0;margin:0;height:100%}.scroll-highlight{position:absolute;width:100%;height:100%;pointer-events:none;z-index:1000;background-color:hsla(var(--color-accent-hsl),.25);opacity:0;padding:1em;inset:50%;translate:-50% -50%;border-radius:var(--radius-s)}</style><script defer="">async function loadIncludes(){if("file:"!=location.protocol){let e=document.querySelectorAll("include");for(let t=0;t<e.length;t++){let o=e[t],l=o.getAttribute("src");try{const e=await fetch(l);if(!e.ok){console.log("Could not include file: "+l),o?.remove();continue}let t=await e.text(),n=document.createRange().createContextualFragment(t),i=Array.from(n.children);for(let e of i)e.classList.add("hide"),e.style.transition="opacity 0.5s ease-in-out",setTimeout((()=>{e.classList.remove("hide")}),10);o.before(n),o.remove(),console.log("Included file: "+l)}catch(e){o?.remove(),console.log("Could not include file: "+l,e);continue}}}else{if(document.querySelectorAll("include").length>0){var e=document.createElement("div");e.id="error",e.textContent="Web server exports must be hosted on an http / web server to be viewed correctly.",e.style.position="fixed",e.style.top="50%",e.style.left="50%",e.style.transform="translate(-50%, -50%)",e.style.fontSize="1.5em",e.style.fontWeight="bold",e.style.textAlign="center",document.body.appendChild(e),document.querySelector(".document-container")?.classList.remove("hide")}}}document.addEventListener("DOMContentLoaded",(()=>{loadIncludes()}));let isFileProtocol="file:"==location.protocol;function waitLoadScripts(e,t){let o=e.map((e=>document.getElementById(e+"-script"))),l=0;!function e(){let n=o[l];l++,n&&"true"!=n.getAttribute("loaded")||l<o.length&&e(),l<o.length?n.addEventListener("load",e):t()}()}</script><link rel="stylesheet" href="lib/styles/obsidian.css"><link rel="preload" href="lib/styles/global-variable-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="lib/styles/global-variable-styles.css"></noscript><link rel="preload" href="lib/styles/main-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="lib/styles/main-styles.css"></noscript></head><body class="publish css-settings-manager theme-dark show-inline-title"><script defer="">let theme=localStorage.getItem("theme")||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");"dark"==theme?(document.body.classList.add("theme-dark"),document.body.classList.remove("theme-light")):(document.body.classList.add("theme-light"),document.body.classList.remove("theme-dark")),window.innerWidth<480?document.body.classList.add("is-phone"):window.innerWidth<768?document.body.classList.add("is-tablet"):window.innerWidth<1024?document.body.classList.add("is-small-screen"):document.body.classList.add("is-large-screen")</script><div class="webpage-container workspace"><div class="sidebar-left sidebar"><div class="sidebar-handle"></div><div class="sidebar-topbar"><div class="topbar-content"><label class="theme-toggle-container" for="theme_toggle"><input class="theme-toggle-input" type="checkbox" id="theme_toggle"><div class="toggle-background"></div></label></div><div class="clickable-icon sidebar-collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="M21 3H3C1.89543 3 1 3.89543 1 5V19C1 20.1046 1.89543 21 3 21H21C22.1046 21 23 20.1046 23 19V5C23 3.89543 22.1046 3 21 3Z"></path><path d="M10 4V20"></path><path d="M4 7H7"></path><path d="M4 10H7"></path><path d="M4 13H7"></path></svg></div></div><div class="sidebar-content"><div class="search-input-container"><input enterkeyhint="search" type="search" spellcheck="false" placeholder="Search..."><div class="search-input-clear-button" aria-label="Clear search"></div></div><include src="lib/html/file-tree.html"></include></div><script defer="">let ls = document.querySelector(".sidebar-left"); ls.classList.add("is-collapsed"); if (window.innerWidth > 768) ls.classList.remove("is-collapsed"); ls.style.setProperty("--sidebar-width", localStorage.getItem("sidebar-left-width"));</script></div><div class="document-container markdown-reading-view hide"><div class="markdown-preview-view markdown-rendered allow-fold-headings allow-fold-lists is-readable-line-width"><style id="MJX-CHTML-styles"></style><pre class="frontmatter language-yaml" tabindex="0" style="display: none;"><code class="language-yaml is-loaded"><span class="token key atrule">title</span><span class="token punctuation">:</span> archlinux
+<span class="token key atrule">date</span><span class="token punctuation">:</span> <span class="token datetime number">2022-04-07 22:32:19</span>
+<span class="token key atrule">categories</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> linux
+<span class="token key atrule">tags</span><span class="token punctuation">:</span> 
+<span class="token punctuation">-</span> linux</code><button class="copy-code-button">复制</button></pre><div class="markdown-preview-sizer markdown-preview-section"><h1 class="page-title heading inline-title" id="archlinux"><p>archlinux</p></h1><div class="heading-wrapper"><h2 data-heading="安装流程" class="heading" id="安装流程"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>安装流程</h2><div class="heading-children"><div><pre class="language-bash" tabindex="0"><code class="language-bash is-loaded"><span class="token number">0</span>.References
+https://www.jianshu.com/p/7c78dc4c53e5
+https://zhuanlan.zhihu.com/p/202914804
+
+<span class="token number">0</span>. 下载镜像，并制作镜像盘
+制作iso镜像工具：https://www.balena.io/etcher/
+
+<span class="token number">1</span>.网络连接检测
+<span class="token punctuation">(</span>使用iwctl连接无线网络<span class="token punctuation">]</span><span class="token punctuation">(</span>https://www.debugpoint.com/2020/11/connect-wifi-terminal-linux/<span class="token punctuation">)</span>
+<span class="token function">ping</span> -c <span class="token number">3</span> baidu.com
+
+<span class="token number">2</span>.更新系统时间
+timedatectl set-ntp <span class="token boolean">true</span>
+
+<span class="token number">3</span>.硬盘分区
+<span class="token function">fdisk</span> /dev/sda
+
+<span class="token number">4</span>.分区格式化
+mkfs.ext4 /dev/sda1
+
+<span class="token number">5</span>.磁盘挂载
+<span class="token function">mount</span> /dev/sda1  /mnt
+
+<span class="token number">6</span>.置国内archlinux软件下载镜像源
+<span class="token function">vim</span> /etc/pacman.d/mirrorlist
+Server <span class="token operator">=</span> https://mirrors.163.com/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span>
+Server <span class="token operator">=</span> https://mirrors.tuna.tsinghua.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span>
+
+<span class="token number">7</span>.安装基本软件和kernel
+pacstrap /mnt base base-devel linux linux-firmware
+
+<span class="token number">8</span>.生成挂载信息文件
+genfstab -U /mnt <span class="token operator">&gt;&gt;</span> /mnt/etc/fstab
+
+<span class="token number">9</span>.切换到新系统
+arch-chroot /mnt
+
+<span class="token number">10</span>.安装vim
+pacman -S <span class="token function">vim</span>
+
+<span class="token number">11</span>.设置时区
+<span class="token function">ln</span> -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock --systohc
+
+<span class="token number">12</span>.设置本地化文本编码
+<span class="token function">vim</span> /etc/locale.gen
+zh_CN.UTF-8 UTF-8
+
+locale-gen
+
+<span class="token function">vim</span> /etc/locale.conf
+<span class="token assign-left variable"><span class="token environment constant">LANG</span></span><span class="token operator">=</span>en_US.UTF-8
+
+<span class="token number">13</span>.设置主机名
+<span class="token function">vim</span> /etc/hostname
+
+<span class="token number">14</span>.配置hosts文件
+<span class="token function">vim</span> /etc/hosts
+<span class="token number">127.0</span>.0.1   localhost
+::1         localhost
+<span class="token number">127.0</span>.1.1   hellokitty.localdomain  hellokitty
+
+<span class="token number">15</span>.管理员账号设置密码
+<span class="token function">passwd</span>
+
+<span class="token number">16</span>.创建新普通用户
+<span class="token function">useradd</span> -m tom
+<span class="token function">passwd</span> tom
+
+<span class="token number">17</span>.安装grub,设置引导（bios主板）
+pacman -S intel-ucode grub
+grub-install /dev/sda
+<span class="token function">grub-mkconfig</span> -o /boot/grub/grub.cfg
+
+<span class="token number">17.2</span>. 安装grub（UEFI主板）<span class="token punctuation">(</span>查考UEFI系统：https://wiki.archlinux.org/index.php/GRUB<span class="token punctuation">)</span>
+pacman -S grub efibootmgr
+<span class="token function">fdisk</span> -l （查看efi是在哪个分区）
+<span class="token function">mkdir</span> /uefi<span class="token punctuation">;</span><span class="token function">mount</span> /dev/efi所在分区 /uefi
+grub-install --target<span class="token operator">=</span>x86_64-efi --efi-directory<span class="token operator">=</span>/uefi --bootloader-id<span class="token operator">=</span>自己命名
+
+<span class="token number">18</span>.配置完毕
+<span class="token builtin class-name">exit</span>
+<span class="token function">reboot</span>
+
+
+</code><button class="copy-code-button">复制</button></pre></div></div></div><div class="heading-wrapper"><h2 data-heading="after first reboot, connect the wifi network" class="heading" id="after_first_reboot,_connect_the_wifi_network"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>after first reboot, connect the wifi network</h2><div class="heading-children"><div><p>systemctl enable NetworkManager.service</p></div><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded"><span class="token comment">#1.list nearby Wi-Fi networks</span>
+$ nmcli device wifi list
+<span class="token comment">#2.connect to a wifi network</span>
+nmcli device wifi connect AP_NAME password PASSWORD
+<span class="token comment">#3.show the connected wifi information</span>
+nmcli connection show
+</code><button class="copy-code-button">复制</button></pre></div></div></div><div class="heading-wrapper"><h2 data-heading="change terminal font size" class="heading" id="change_terminal_font_size"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>change terminal font size</h2><div class="heading-children"><div><ol>
+<li data-line="0">pacman -S terminus-font</li>
+<li data-line="1"><div class="list-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>configure
+<ul>
+<li data-line="2">temporary changes<br>
+setfont xxx(/usr/share/kbd/consolefonts/)</li>
+<li data-line="4">persistent change<br>
+vim /etc/vconsole.conf
+<pre class="language-shell" tabindex="0"><code class="language-shell is-loaded">    <span class="token assign-left variable">FONT</span><span class="token operator">=</span>ter-u32b
+</code><button class="copy-code-button">复制</button></pre>
+</li>
+</ul>
+</li>
+</ol></div></div></div><div class="heading-wrapper"><h2 data-heading="configure the pacman mirrorlist" class="heading" id="configure_the_pacman_mirrorlist"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>configure the pacman mirrorlist</h2><div class="heading-children"><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded"><span class="token comment"># /etc/pacman.d/mirrorlist</span>
+Server <span class="token operator">=</span> https://mirrors.tuna.tsinghua.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span>
+Server <span class="token operator">=</span> https://mirrors.163.com/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span>
+</code><button class="copy-code-button">复制</button></pre></div><div><p>pacman -Sy</p></div></div></div><div class="heading-wrapper"><h2 data-heading="core software lists" class="heading" id="core_software_lists"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>core software lists</h2><div class="heading-children"><div style="overflow-x: auto;"><table>
+<thead>
+<tr>
+<th>names</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vim</td>
+<td></td>
+</tr>
+<tr>
+<td>zsh</td>
+<td></td>
+</tr>
+<tr>
+<td>git</td>
+<td></td>
+</tr>
+<tr>
+<td>firefox</td>
+<td></td>
+</tr>
+<tr>
+<td>python3</td>
+<td></td>
+</tr>
+<tr>
+<td>dropbear</td>
+<td>a implementation of ssh/scp/..</td>
+</tr>
+<tr>
+<td>dropbear-scp</td>
+<td>used to scp and ssh</td>
+</tr>
+</tbody>
+</table></div></div></div><div class="heading-wrapper"><h2 data-heading="git config" class="heading" id="git_config"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>git config</h2><div class="heading-children"><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded">user.name<span class="token operator">=</span>dere-arch
+user.email<span class="token operator">=</span>catt82401@gmail.com
+core.editor<span class="token operator">=</span>vim
+</code><button class="copy-code-button">复制</button></pre></div></div></div><div class="heading-wrapper"><h2 data-heading="X server &amp; i3-gaps" class="heading" id="X_server_&amp;_i3-gaps"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>X server &amp; i3-gaps</h2><div class="heading-children"><div><p>pacman -S xorg-xserver xorg-xinit<br>
+pacman -S i3-gaps compton feh i3status dmenu<br>
+NOTE:<br>
+|tools name |description |<br>
+|-----------|------------|<br>
+|compton |used to transparent the windows |<br>
+|feh |a tool to change the wallpaper |<br>
+|i3status |i3 buttom status line |<br>
+|dmenu |a application startup tool |</p></div><div><p>configure:</p></div><div><ol>
+<li data-line="0">cp /etc/X11/xinit/xinitrc ~/.xinitrc</li>
+<li data-line="1">edit .xinitrc</li>
+</ol></div><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded"><span class="token comment">#twm &amp;</span>
+<span class="token comment">#xterm -geometry 80x50+494+51 &amp;</span>
+<span class="token comment">#xterm -geometry 80x20+494-0 &amp;</span>
+<span class="token comment">#exec xterm -geometry 80x66+0+0 -name login</span>
+<span class="token builtin class-name">exec</span> feh --bg-max --randomize ~/wallpapers/* <span class="token operator">&amp;</span>
+<span class="token comment">#exec fcitx &amp;</span>
+<span class="token builtin class-name">exec</span> i3
+</code><button class="copy-code-button">复制</button></pre></div><div><ol start="3">
+<li data-line="0">vim ~/.config/i3/config</li>
+</ol></div><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded"><span class="token builtin class-name">set</span> <span class="token variable">$mod</span> Mod4
+font pango:monospace <span class="token number">16</span>
+<span class="token builtin class-name">exec</span>  --no-startup-id compton -b
+</code><button class="copy-code-button">复制</button></pre></div></div></div><div class="heading-wrapper"><h2 data-heading="sound control" class="heading" id="sound_control"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>sound control</h2><div class="heading-children"><div><p>pacman -S alsa-utils</p></div><div><ol>
+<li data-line="0">alsamixer -- a gui setting<br>
+00 --&gt; not mute<br>
+MM --&gt; is mute<br>
+rotation key to switch items and set sound size</li>
+<li data-line="5">amixer sset Master unmute</li>
+</ol></div></div></div><div class="heading-wrapper"><h2 data-heading="backlight control" class="heading" id="backlight_control"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>backlight control</h2><div class="heading-children"><div><ol>
+<li data-line="0">
+<p>if your grapic card is inter.<br>
+pacman -S xorg-xbacklight</p>
+</li>
+<li data-line="3">
+<p>otherwish, use a common interface controllor tools.<br>
+pacman -S acpilight</p>
+</li>
+</ol></div><div><p>usage:<br>
+xbacklight -get<br>
+xbacklight -set 30<br>
+xbacklight -inc 10<br>
+xbacklight -dec 10</p></div></div></div><div class="heading-wrapper"><h2 data-heading="shadowsocks-libev" class="heading" id="shadowsocks-libev"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>shadowsocks-libev</h2><div class="heading-children"><div><ol>
+<li data-line="0">download<br>
+pacman -S shadowsocks-libev asciidoc xmlto</li>
+</ol></div><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded"><span class="token function">git</span> clone https://github.com/shadowsocks/simple-obfs.git
+<span class="token builtin class-name">cd</span> simple-obfs
+<span class="token function">git</span> submodule update --init --recursive
+./autogen.sh
+./configure <span class="token operator">&amp;&amp;</span> <span class="token function">make</span>
+<span class="token function">make</span> <span class="token function">install</span>
+</code><button class="copy-code-button">复制</button></pre></div><div><ol start="2">
+<li data-line="0">configure</li>
+</ol></div><div><ul>
+<li data-line="0">shadowsocks-libev(ss-local, ss-server...)</li>
+</ul></div><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded"><span class="token variable"><span class="token variable">`</span>/etc/shadowsocks/config.json<span class="token variable">`</span></span>
+<span class="token punctuation">{</span>
+    <span class="token string">"server"</span><span class="token builtin class-name">:</span><span class="token string">"xxx"</span>,
+    <span class="token string">"server_port"</span><span class="token builtin class-name">:</span><span class="token string">"443"</span>,
+    <span class="token string">"local_ipv4_address"</span><span class="token builtin class-name">:</span><span class="token string">"127.0.0.1"</span>,
+    <span class="token string">"local_port"</span><span class="token builtin class-name">:</span><span class="token string">"1314"</span>,
+    <span class="token string">"password"</span><span class="token builtin class-name">:</span><span class="token string">"xxx"</span>,
+    <span class="token string">"method"</span><span class="token builtin class-name">:</span><span class="token string">"xchacha20-ietf-poly1305"</span>,
+
+    <span class="token string">"plugin"</span><span class="token builtin class-name">:</span><span class="token string">"obfs-local"</span>,
+    <span class="token string">"plugin_opts"</span><span class="token builtin class-name">:</span><span class="token string">"obfs=tls"</span>,
+
+    <span class="token string">"timeout"</span><span class="token builtin class-name">:</span> <span class="token number">10</span>
+<span class="token punctuation">}</span>
+
+<span class="token variable"><span class="token variable">`</span>/usr/lib/systemd/system/shadowsocks-libev@.service<span class="token variable">`</span></span>
+<span class="token assign-left variable">ExecStart</span><span class="token operator">=</span>/usr/bin/ss-local -c /etc/shadowsocks/%i.json -v
+
+</code><button class="copy-code-button">复制</button></pre></div><div><ol start="3">
+<li data-line="0">startup<br>
+systemctl start <a data-tooltip-position="top" aria-label="mailto:shadowsocks-libev@config.service" rel="noopener" class="external-link" href="mailto:shadowsocks-libev@config.service" target="_blank">shadowsocks-libev@config.service</a><br>
+systemctl status shadowsocks-libev@config</li>
+</ol></div></div></div><div class="heading-wrapper"><h2 data-heading="privoxy" class="heading" id="privoxy"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>privoxy</h2><div class="heading-children"><div><blockquote>
+<p>A tool convert socks5 proxy to http proxy.</p>
+</blockquote></div><div><ol>
+<li data-line="0">
+<p>download<br>
+pacman -S privoxy</p>
+</li>
+<li data-line="3">
+<p>configure</p>
+</li>
+</ol></div><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded">::::/etc/privoxy/config
+
+//The privoxy work <span class="token function">ip</span> and port
+listen-address <span class="token number">127.0</span>.0.1:8118
+
+//socks5 work <span class="token function">ip</span> <span class="token operator">&amp;</span> port
+forward-socks5 / <span class="token number">127.0</span>.0.1:1314 <span class="token builtin class-name">.</span>
+
+::::~/.zshrc
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">http_proxy</span><span class="token operator">=</span><span class="token string">"http://localhost:8118"</span>
+</code><button class="copy-code-button">复制</button></pre></div><div><ol start="3">
+<li data-line="0">start<br>
+systemctl start privoxy.service<br>
+systemctl enable privoxy.service</li>
+</ol></div></div></div><div class="heading-wrapper"><h2 data-heading="aur (archlinux user repository)" class="heading" id="aur_(archlinux_user_repository)"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>aur (archlinux user repository)</h2><div class="heading-children"><div class="heading-wrapper"><h3 data-heading="prebuild" class="heading" id="prebuild"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>prebuild</h3><div class="heading-children"><div><blockquote>
+<p>To run the makepkg can not be root, so first we should to add a aur user used to do this job.</p>
+</blockquote></div><div><pre class="language-shell" tabindex="0"><code class="language-shell is-loaded"><span class="token function">useradd</span> aur
+<span class="token function">passwd</span> github
+<span class="token function">mkdir</span> /home/aur <span class="token operator">&amp;&amp;</span> <span class="token function">chown</span> aur:aur /home/aur
+visudo <span class="token punctuation">(</span>Note: <span class="token builtin class-name">export</span> <span class="token assign-left variable">VISUAL</span><span class="token operator">=</span><span class="token string">"vim"</span><span class="token punctuation">)</span>
+    aur <span class="token assign-left variable">ALL</span><span class="token operator">=</span><span class="token punctuation">(</span>ALL<span class="token punctuation">)</span>ALL
+
+<span class="token comment">### manual install aur package</span>
+<span class="token number">1</span>. download the PKGBUILD <span class="token function">file</span> <span class="token punctuation">(</span>from archlinux offical website or <span class="token function">git</span> clone from the url<span class="token punctuation">)</span>
+<span class="token number">2</span>. makepkg -ris <span class="token punctuation">(</span>r <span class="token operator">=</span> remove<span class="token punctuation">[</span>clean the instal<span class="token punctuation">]</span>, i <span class="token operator">=</span> install<span class="token punctuation">[</span>install the package<span class="token punctuation">]</span>, s <span class="token operator">=</span> dependiency<span class="token punctuation">[</span>auto download dependiency<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+
+
+<span class="token comment">## systemd timer (used for Timers)</span>
+<span class="token operator">&gt;</span> Is build-in support <span class="token keyword">for</span> archlinux, need not to be <span class="token function">install</span>
+
+<span class="token comment">### A demostration</span>
+<span class="token number">1</span>. create <span class="token variable"><span class="token variable">`</span>.timer<span class="token variable">`</span></span> suffix <span class="token function">file</span> <span class="token keyword">in</span> /etc/systemd/system/
+```ini
+<span class="token comment">#filename: foo.timer</span>
+<span class="token punctuation">[</span>Unit<span class="token punctuation">]</span>
+<span class="token assign-left variable">Description</span><span class="token operator">=</span>xxx
+
+<span class="token punctuation">[</span>Timer<span class="token punctuation">]</span>
+<span class="token assign-left variable">OnBootSec</span><span class="token operator">=</span>10min
+<span class="token comment"># OnCalendar format:</span>
+<span class="token comment"># DayOfWeek Y-M-D H-M-S</span>
+<span class="token comment"># 1. Mon,Tue *-*-01..04 12:00:00</span>
+<span class="token comment"># equal to under</span>
+<span class="token comment"># OnCalendar=*-*-*</span>
+<span class="token assign-left variable">OnCalendar</span><span class="token operator">=</span>daily
+<span class="token comment"># when the system boot from powered off that missed the last start time it triggers the sevice immediately</span>
+<span class="token assign-left variable">Persistent</span><span class="token operator">=</span>true
+
+<span class="token punctuation">[</span>Install<span class="token punctuation">]</span>
+<span class="token comment">#systemd build-in target which sets up all timers that should be active after boot</span>
+<span class="token assign-left variable">WantedBy</span><span class="token operator">=</span>timers.target
+</code><button class="copy-code-button">复制</button></pre></div><div><ol start="2">
+<li data-line="0">create <code>.service</code> suffix file in /etc/systemd/system/</li>
+</ol></div><div><pre class="language-ini" tabindex="0"><code class="language-ini is-loaded"><span class="token comment">#filename foo.service</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Unit</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">Description</span><span class="token punctuation">=</span><span class="token value attr-value">xxx</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Service</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">Type</span><span class="token punctuation">=</span><span class="token value attr-value">simple</span>
+<span class="token key attr-name">ExecStart</span><span class="token punctuation">=</span><span class="token value attr-value">/bin/bash /path/to/needed-to-exec.sh</span>
+
+</code><button class="copy-code-button">复制</button></pre></div><div><ol start="3">
+<li data-line="0">startup<br>
+systemctl enable foo.timer<br>
+systemctl start foo.timer</li>
+</ol></div></div></div><div class="heading-wrapper"><h3 data-heading="Note(relativly command)" class="heading" id="Note(relativly_command)"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>Note(relativly command)</h3><div class="heading-children"><div><p>systemctl status foo.service<br>
+systemctl list-timers</p></div></div></div></div></div><div class="heading-wrapper"><h2 data-heading="archlinux虚拟机版本必要服务配置启动" class="heading" id="archlinux虚拟机版本必要服务配置启动"><div class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div>archlinux虚拟机版本必要服务配置启动</h2><div class="heading-children"><div><pre class="language-bash" tabindex="0"><code class="language-bash is-loaded">
+<span class="token number">1</span>.网络配置
+- 保证虚拟机网卡是桥接模式
+- 查看是否存在无线网卡
+<span class="token function">ls</span> /sys/class/net/en*/
+如果存在wireless或phy80211文件夹，存在无线网卡
+- 使用systemd-networkd来管理网络
+<span class="token number">2</span>.为有线网卡配置静态ip
+<span class="token function">vim</span> /etc/systemd/network/20-wired.network
+
+<span class="token punctuation">[</span>Match<span class="token punctuation">]</span>
+<span class="token assign-left variable">Name</span><span class="token operator">=</span>ensxx
+<span class="token punctuation">[</span>Network<span class="token punctuation">]</span>
+<span class="token assign-left variable">Address</span><span class="token operator">=</span><span class="token number">192.168</span>.1.200/24
+<span class="token assign-left variable">Gateway</span><span class="token operator">=</span><span class="token number">192.168</span>.1.1
+<span class="token assign-left variable">DNS</span><span class="token operator">=</span><span class="token number">192.168</span>.1.1
+<span class="token assign-left variable">DNS</span><span class="token operator">=</span><span class="token number">8.8</span>.8.8
+<span class="token assign-left variable">DNS</span><span class="token operator">=</span><span class="token number">114.114</span>.114.114
+
+<span class="token number">3</span>.设置后台服务（systemd-networkd.service）开机启动
+systemctl <span class="token builtin class-name">enable</span> systemd-networkd.service
+
+
+<span class="token number">4</span>.安装sshd
+pacman -S openssh
+systemctl start sshd
+systemctl <span class="token builtin class-name">enable</span> sshd.service
+
+<span class="token number">5</span>.让普通用户使用sudo权力
+<span class="token function">sudo</span> -
+chattr -i /etc/sudoers
+<span class="token function">vim</span> /etc/sudoers
+xxx <span class="token assign-left variable">ALL</span><span class="token operator">=</span><span class="token punctuation">(</span>ALL<span class="token punctuation">)</span>ALL
+chattr +i /etc/sudoers
+
+</code><button class="copy-code-button">复制</button></pre></div><div class="mod-footer"></div></div></div></div></div></div><div class="sidebar-right sidebar"><div class="sidebar-handle"></div><div class="sidebar-topbar"><div class="topbar-content"></div><div class="clickable-icon sidebar-collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="M21 3H3C1.89543 3 1 3.89543 1 5V19C1 20.1046 1.89543 21 3 21H21C22.1046 21 23 20.1046 23 19V5C23 3.89543 22.1046 3 21 3Z"></path><path d="M10 4V20"></path><path d="M4 7H7"></path><path d="M4 10H7"></path><path d="M4 13H7"></path></svg></div></div><div class="sidebar-content"><div class="graph-view-wrapper"><div class="sidebar-section-header">Interactive Graph</div><div class="graph-view-placeholder">
+		<div class="graph-view-container">
+			<div class="graph-icon graph-expand" role="button" aria-label="Expand" data-tooltip-position="top"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></div>
+			<canvas id="graph-canvas" class="hide" width="512px" height="512px"></canvas>
+		</div>
+		</div></div><div class="tree-container mod-root nav-folder tree-item outline-tree" data-depth="0"><div class="tree-header"><span class="sidebar-section-header">Table Of Contents</span><button class="clickable-icon collapse-tree-button" aria-label="Collapse All"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button></div><div class="tree-scroll-area tree-item-children nav-folder-children"><div class="tree-item mod-tree-folder nav-folder mod-collapsible is-collapsed" style="display: none;"></div><div class="tree-item" data-depth="1"><a class="tree-link" href="_posts\archlinux.html#archlinux"><div class="tree-item-contents heading-link" heading-name="archlinux"><span class="tree-item-title">archlinux</span></div></a><div class="tree-item-children nav-folder-children"><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#安装流程"><div class="tree-item-contents heading-link" heading-name="安装流程"><span class="tree-item-title">安装流程</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#after_first_reboot,_connect_the_wifi_network"><div class="tree-item-contents heading-link" heading-name="after first reboot, connect the wifi network"><span class="tree-item-title">after first reboot, connect the wifi network</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#change_terminal_font_size"><div class="tree-item-contents heading-link" heading-name="change terminal font size"><span class="tree-item-title">change terminal font size</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#configure_the_pacman_mirrorlist"><div class="tree-item-contents heading-link" heading-name="configure the pacman mirrorlist"><span class="tree-item-title">configure the pacman mirrorlist</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#core_software_lists"><div class="tree-item-contents heading-link" heading-name="core software lists"><span class="tree-item-title">core software lists</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#git_config"><div class="tree-item-contents heading-link" heading-name="git config"><span class="tree-item-title">git config</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#X_server_&amp;_i3-gaps"><div class="tree-item-contents heading-link" heading-name="X server &amp; i3-gaps"><span class="tree-item-title">X server &amp; i3-gaps</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#sound_control"><div class="tree-item-contents heading-link" heading-name="sound control"><span class="tree-item-title">sound control</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#backlight_control"><div class="tree-item-contents heading-link" heading-name="backlight control"><span class="tree-item-title">backlight control</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#shadowsocks-libev"><div class="tree-item-contents heading-link" heading-name="shadowsocks-libev"><span class="tree-item-title">shadowsocks-libev</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#privoxy"><div class="tree-item-contents heading-link" heading-name="privoxy"><span class="tree-item-title">privoxy</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item mod-collapsible" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#aur_(archlinux_user_repository)"><div class="tree-item-contents heading-link" heading-name="aur (archlinux user repository)"><div class="collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></div><span class="tree-item-title">aur (archlinux user repository)</span></div></a><div class="tree-item-children nav-folder-children"><div class="tree-item" data-depth="3"><a class="tree-link" href="_posts\archlinux.html#prebuild"><div class="tree-item-contents heading-link" heading-name="prebuild"><span class="tree-item-title">prebuild</span></div></a><div class="tree-item-children nav-folder-children"></div></div><div class="tree-item" data-depth="3"><a class="tree-link" href="_posts\archlinux.html#Note(relativly_command)"><div class="tree-item-contents heading-link" heading-name="Note(relativly command)"><span class="tree-item-title">Note(relativly command)</span></div></a><div class="tree-item-children nav-folder-children"></div></div></div></div><div class="tree-item" data-depth="2"><a class="tree-link" href="_posts\archlinux.html#archlinux虚拟机版本必要服务配置启动"><div class="tree-item-contents heading-link" heading-name="archlinux虚拟机版本必要服务配置启动"><span class="tree-item-title">archlinux虚拟机版本必要服务配置启动</span></div></a><div class="tree-item-children nav-folder-children"></div></div></div></div></div></div></div><script defer="">let rs = document.querySelector(".sidebar-right"); rs.classList.add("is-collapsed"); if (window.innerWidth > 768) rs.classList.remove("is-collapsed"); rs.style.setProperty("--sidebar-width", localStorage.getItem("sidebar-right-width"));</script></div></div></body></html>

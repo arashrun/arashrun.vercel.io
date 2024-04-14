@@ -1,4 +1,95 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[source]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib\media\favicon.png</url><title>source</title><link/></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Sat, 13 Apr 2024 20:25:46 GMT</lastBuildDate><atom:link href="lib\rss.xml" rel="self" type="application/rss+xml"/><pubDate>Sat, 13 Apr 2024 20:25:46 GMT</pubDate><ttl>60</ttl><dc:creator/><item><title><![CDATA[Hexo指南]]></title><description><![CDATA[ 
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[source]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>lib\media\favicon.png</url><title>source</title><link/></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Sun, 14 Apr 2024 04:03:35 GMT</lastBuildDate><atom:link href="lib\rss.xml" rel="self" type="application/rss+xml"/><pubDate>Sun, 14 Apr 2024 04:03:35 GMT</pubDate><ttl>60</ttl><dc:creator/><item><title><![CDATA[index]]></title><description><![CDATA[ 
+ <br><br>Welcome to My Digital Garden! <br>This website is made from obsidian.<br>There are my plugins which make this website<br>
+<br>webpage html export : md导出为html
+<br>image convert: 图像压缩工具，减小图像体积
+<br>Topic articals:<br><a class="internal-link" data-href="_posts/qt.md" href="_posts\qt.html" target="_self" rel="noopener">qt</a>]]></description><link>index.html</link><guid isPermaLink="false">index.md</guid><pubDate>Sun, 14 Apr 2024 04:03:07 GMT</pubDate></item><item><title><![CDATA[数据结构与算法]]></title><description><![CDATA[ 
+ <br><br><a data-tooltip-position="top" aria-label="https://www.zhihu.com/question/20588261/answer/926157817" rel="noopener" class="external-link" href="https://www.zhihu.com/question/20588261/answer/926157817" target="_blank">如何系统地学习算法？ - 知乎 (zhihu.com)</a><br><br><br><br><br><br><br><br>
+<br>层序遍历<br>
+步骤：
+<br>已知前序，中序求树。已知中序和后序求树。<br>
+步骤:
+<br><br><br>
+<br><br><br><a data-tooltip-position="top" aria-label="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247484184&amp;idx=1&amp;sn=62965b401aa42107b3c17d1d8ea17454&amp;chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&amp;scene=21#wechat_redirect" rel="noopener" class="external-link" href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247484184&amp;idx=1&amp;sn=62965b401aa42107b3c17d1d8ea17454&amp;chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&amp;scene=21#wechat_redirect" target="_blank">十大经典排序算法动画与解析，看我就够了！（配代码完全版） (qq.com)</a><br>十大排序算法的时空复杂度如下图<br><img src="lib\media\排序算法的时空复杂度.png"><br><br>
+
+<br>从数列中挑出一个元素，称为 “基准”（pivot）;
+<br>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+<br>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；
+
+<br><br>
+
+<br>申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列；
+<br>设定两个指针，最初位置分别为两个已经排序序列的起始位置；
+<br>比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；
+<br>重复步骤 3 直到某一指针达到序列尾；
+<br>将另一序列剩下的所有元素直接复制到合并序列尾。
+
+<br><br>
+
+<br>将第一待排序序列第一个元素看做一个有序序列，把第二个元素到最后一个元素当成是未排序序列。
+<br>从头到尾依次扫描未排序序列，将扫描到的每个元素插入有序序列的适当位置。（如果待插入的元素与有序序列中的某个元素相等，则将待插入元素插入到相等元素的后面。）
+
+<br><br>
+
+<br>比较相邻的元素。如果第一个比第二个大，就交换他们两个。
+<br>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。
+<br>针对所有的元素重复以上的步骤，除了最后一个。
+<br>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。
+
+<br><br>
+
+<br>首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置
+<br>再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+<br>重复第二步，直到所有元素均排序完毕。
+
+<br><br>
+
+<br>花O(n)的时间扫描一下整个序列 A，获取最小值 min 和最大值 max
+<br>开辟一块新的空间创建新的数组 B，长度为 ( max - min + 1)
+<br>数组 B 中 index 的元素记录的值是 A 中某元素出现的次数
+<br>最后输出目标整数序列，具体的逻辑是遍历数组 B，输出相应元素以及对应的个数
+
+<br><br>
+
+<br>将所有待比较数值（正整数）统一为同样的数位长度，数位较短的数前面补零
+<br>从最低位开始，依次进行一次排序
+<br>从最低位排序一直到最高位排序完成以后, 数列就变成一个有序序列
+
+<br><br>
+
+<br>创建一个堆 H[0……n-1]；
+<br>把堆首（最大值）和堆尾互换；
+<br>把堆的尺寸缩小 1，并调用 shift_down(0)，目的是把新的数组顶端数据调整到相应位置；
+<br>重复步骤 2，直到堆的尺寸为 1。
+
+<br><br>
+
+<br>设置固定数量的空桶。
+<br>把数据放到对应的桶中。
+<br>对每个不为空的桶中数据进行排序。
+<br>拼接不为空的桶中数据，得到结果
+
+<br><br>
+
+<br>选择一个增量序列 t1，t2，……，tk，其中 ti &gt; tj, tk = 1；
+<br>按增量序列个数 k，对序列进行 k 趟排序；
+<br>每趟排序，根据对应的增量 ti，将待排序列分割成若干长度为 m 的子序列，分别对各子表进行直接插入排序。仅增量因子为 1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。
+
+<br><br>静态查找<br>
+|----- 顺序查找<br>
+|----- 二分查找<br>
+动态查找<br>
+|----- 二叉查找树<br>
++添加平衡条件<br>
+|			|----- 平衡二叉AVL<br>
+|----- 红黑树<br>
+|----- B树和B+树			<br>
+|----- 哈希查找<br><br>为什么可以用不同的语言来实现数据结构和算法？<br>答：数据结构是一种抽象概念，独立于语言和平台，代表着数据和信息在计算机内存中的组织方式。不同语言都有独特的原子数据类型和运算符，代表着不同的语言设计理念。但归根结底语言的作用就两个：<br>1.存储和表示数据（信息）【每种语言都有独特的原子数据类型如c语言中的数组，int，指针。python中的列表，字典，集合。都是用来存放数据的容器】。<br>2.操作数据【每种语言都有运算符（逻辑运算符，算术运算符，）代表着如何操控数据】。<br>于是，各种语言都可以使用语言本身的原子数据结构和操作运算符。将数据在内存中存储和操作了。<br><br>如何学习排序算法：<br>​	单纯地去练习算法还是不好，以应用场景为导向才是正确姿势。要明白算法是解决什么样的问题而产生的。<br><br>
+<br>10个数据结构：数组，链表，栈，队列，二叉树，图，堆，散列表，跳表，trie树
+<br>10个算法：递归，二分查找，搜索，排序，哈希算法，贪心算法，分治算法，动态规划，字符串匹配算法
+<br><img src="lib\media\数据结构与算法.jpg"><br>动态规划(DP)<br>
+<br>字符串转为整形---hash算法
+<br>字符串正则提取
+]]></description><link>_posts\data_structure.html</link><guid isPermaLink="false">_posts/data_structure.md</guid><pubDate>Sun, 14 Apr 2024 03:48:40 GMT</pubDate><enclosure url="lib\media\排序算法的时空复杂度.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\排序算法的时空复杂度.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Hexo指南]]></title><description><![CDATA[ 
  <br><br>
 <br>创建新文章
 <br>hexo new [layout] &lt;title&gt;
@@ -64,7 +155,7 @@ hexo分支：博客修改和创作的分支,md
 <br>Note
 
 <br>hexo部署流程已通过Github Actions的功能进行了优化，文章写完之后推送到远程即可实现自动化部署到Github Pages界面
-<br>更好的笔记部署方式是通过obsidian插件webpage html export 插件将笔记转换成html之后，部署到vercel这个 静态界面托管平台 <a href="about:blank#fn-1-c6c4086470ed9265" class="footnote-link" target="_self" rel="noopener">[1]</a><a href="about:blank#fn-2-c6c4086470ed9265" class="footnote-link" target="_self" rel="noopener">[2]</a> 进行管理，这个平台只需要一个GitHub网址，即可在你更新仓库之后自动部署到vercel平台，不需要编写Github Actions文件。并且该插件能够保留你obsidian中当前的布局和主题，真正做到所见即所得的网址效果
+<br>更好的笔记部署方式是通过obsidian插件webpage html export 插件将笔记转换成html之后，部署到vercel这个 静态界面托管平台 <a href="about:blank#fn-1-590facc086c3734f" class="footnote-link" target="_self" rel="noopener">[1]</a><a href="about:blank#fn-2-590facc086c3734f" class="footnote-link" target="_self" rel="noopener">[2]</a> 进行管理，这个平台只需要一个GitHub网址，即可在你更新仓库之后自动部署到vercel平台，不需要编写Github Actions文件。并且该插件能够保留你obsidian中当前的布局和主题，真正做到所见即所得的网址效果
 
 <br><br>
 <br><a data-tooltip-position="top" aria-label="https://github.com/arashrun.github.io" rel="noopener" class="external-link" href="https://github.com/arashrun.github.io" target="_blank">Github Pages</a>
@@ -77,12 +168,289 @@ hexo分支：博客修改和创作的分支,md
 <br><a data-tooltip-position="top" aria-label="https://www.xxyopen.com/2022/07/19/tools/pages_host.html" rel="noopener" class="external-link" href="https://www.xxyopen.com/2022/07/19/tools/pages_host.html" target="_blank">几个免费的静态网站托管平台对比 | xxyopen</a>
 <br><a data-tooltip-position="top" aria-label="https://zhuanlan.zhihu.com/p/180152636" rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/180152636" target="_blank">静态托管平台收集 - 知乎 (zhihu.com)</a>
 
-<a href="about:blank#fnref-1-c6c4086470ed9265" class="footnote-backref footnote-link" target="_self" rel="noopener">↩︎</a>
+<a href="about:blank#fnref-1-590facc086c3734f" class="footnote-backref footnote-link" target="_self" rel="noopener">↩︎</a>
 
 <br>
-vercel的站点需要一个 index.html 文件才能正常访问，使用webpage插件导出的笔记目录中是没有该index.html的，导致访问vercel站点会出现404错误，可以手写一个入口界面，指向指定的内部界面即可<a href="about:blank#fnref-2-c6c4086470ed9265" class="footnote-backref footnote-link" target="_self" rel="noopener">↩︎</a>
+vercel的站点需要一个 index.html 文件才能正常访问，使用webpage插件导出的笔记目录中是没有该index.html的，导致访问vercel站点会出现404错误，可以手写一个入口界面，指向指定的内部界面即可<a href="about:blank#fnref-2-590facc086c3734f" class="footnote-backref footnote-link" target="_self" rel="noopener">↩︎</a>
 
-]]></description><link>_posts\hexo指南.html</link><guid isPermaLink="false">_posts/Hexo指南.md</guid><pubDate>Sat, 13 Apr 2024 20:10:18 GMT</pubDate></item><item><title><![CDATA[编码和字符集]]></title><description><![CDATA[ 
+]]></description><link>_posts\hexo指南.html</link><guid isPermaLink="false">_posts/Hexo指南.md</guid><pubDate>Sun, 14 Apr 2024 01:14:59 GMT</pubDate></item><item><title><![CDATA[os]]></title><description><![CDATA[ 
+ <br><br>title: OS原理<br>
+date: 2022-04-07 22:31:08<br>
+categories:<br>
+<br>cs基础<br>
+tags:
+<br><br><br>
+编译（源程序模块）---》链接（目标模块）---》装入(装入模块)
+1.链接和装入的策略，分为3种。在磁盘上，在内存中，在cpu执行时。
+2.一个程序的运行，需要经过几道程序的运行。（编译器---链接器---装入内存（装入器）---内存分配（内存管理器））
+​	编译器：将程序员写的源程序编译为目标模块
+​	链接器：多个目标模块拼接，通过一定的策略形成可装入模块
+​	装入器：将可装入模块，通过一定的策略装入内存
+​	内存管理器：配合装入器，通过一定的策略完成对程序运行所需内存的分配
+<br><br>
+<br>静态链接：在装入内存之前，将各个目标模块链接起来。形成可装入模块（linux中就是链接.a静态库）
+<br>装入时动态链接：边装入边链接
+<br>运行时动态链接：执行时需要的时候才链接目标模块
+<br><br>
+<br>绝对装入：程序的逻辑地址==进程的物理地址。缺点：编写的程序必须从指定位置开始，必须非常了解内存要求。常用于单道程序环境
+<br>可重定位装入：当程序被装入程序（loader）装入内存后根据实际可用物理地址来变更程序中全文的地址。此时能够运行躲到程序缺点：程序装入之后，不可动态修改程序中的地址
+<br>运行时动态装入：在指令被执行时，才动态修改地址。
+<br><br>操作系统对内存的分配，大体上可以分为两个思路。1.分割内存，不分割装入模块（连续分区分配）。2.分割内存，并且分割程序（分页，分段，段页）<br>连续分区分配：<br>​	顾名思义，也就是程序作为一个整体装入内存中。而根据对内存的分割策略来看，有3种方式。<br>
+<br>单一连续分配（整个内存分为内核区，和用户区。用户区只有一道程序）
+<br>静态分区分配（将用户区，划分固定大小的几个区域。开始可以存放多道程序，但可能有的程序很小，但是占据很大的区域，造成浪费）
+<br>动态分区分配（根据程序的大小来确定内存分区的大小）
+<br>动态重定位分区分配算法（在动态分区分配的基础上增加“紧凑”功能，减少内存的碎片，为了实现紧凑功能需要配合运行时动态装入的装入算法）
+<br>分页、分段、段页内存分配：<br>​	这些分配方式，不仅分割内存，还分割装入模块（进程）。可以看作数据结构中的链表。整个进程离散地分散到内存不同位置。不像连续分配，将装入模块整体装入。<br>
+<br>
+分页
+将程序和内存空间分割成多个大小一样的片段（页面），操作系统的内存管理模块通过为程序建立页表，然后MTU地址转换单元通过查询进程的页表，来实现程序地址的动态重定位。
+当访问进程的某一条指令（比如：load 1，2500）2500是程序的逻辑地址，MTU首先计算得出该逻辑地址对应的程序分页中的页号，和页内偏移。然后通过在页表中查询到程序分页中的页号对应的物理块号，得到物理块号之后和前边的页内偏移相加，从而完成程序的逻辑地址到物理地址的转换。
+
+<br>
+分段
+由于分页方法（固定大小的页面的缺点：不符合程序中指令和数据的排布，导致）的缺陷，提出一种分段内存分配的算法，将一个程序分割为不同段：代码段，数据段，堆段，栈段，bss段，作为一个查询单位。而将内存分割为与程序相同的段。这样只要通过段表查询到段基址，就能保证能够每一个段在内存中是连续分配的。
+
+<br><img src="lib\media\段表.png"><br>
+<br>
+段页式
+分页的好处是能够节省内存，分段的好处是程序友好，方便编程。为了结合两方面优势，将每一个程序段通过分页处理，然后通过段号找到页号，通过页号找到物理地址。
+
+<br>
+内存模型到底是什么：现在的编译器会将我们的程序进行分段处理，c语言，c++中的内存模型，其实就是编译器所规定的一种逻辑上的程序组织方式，在内存中每一个段可能连续的一块（段式）来存储，也可能一个程序段分布在不同的物理内存（段页式）来存储，然后在执行指令，进行地址转换时，操作系统根据实际内存分配方式，完成逻辑地址（每一个段的逻辑地址都是从0号开始的）到物理地址的转换，然后cpu访问物理地址来执行我们的程序。
+<br><br><br>unix标准<br>
+<br>iso c：该标准定义了c语言语法语义和c语言标准库，因为是所以unix都提供了c标准中的库函数，因此默认也就成了一种标准
+<br>ieee posix：该标准的目的是提高应用程序在各种unix系统环境之间的可移植性
+<br>SUS=single unix specification（单一unix规范）：是posix的超集，在posix的基础上还规定了一些操作系统接口，扩展了posix的功能
+<br>unix实现<br>SVR4(system v release 4)：System V 是 AT&amp;T 的第一个商业UNIX版本（UNIX System III）的加强。传统上，System V 被看作是两种UNIX"风味"之一（另一个是 BSD）。然而，随着一些并不基于这两者代码的<a data-tooltip-position="top" aria-label="https://baike.baidu.com/item/UNIX/219943" rel="noopener" class="external-link" href="https://baike.baidu.com/item/UNIX/219943" target="_blank">UNIX</a>实现的出现，例如 Linux 和 QNX， 这一归纳不再准确，但不论如何，像POSIX这样的标准化努力一直在试图减少各种实现之间的不同。流行的SysV 衍生版本包括 Dell SVR4 和 Bull SVR4。当今广泛使用的 System V 版本是 SCO OpenServer，基于 System V Release 3，以及SUN Solaris 和 SCO UnixWare，都基于 System V Release 4。<br>BSD:<br><br><br>
+文件系统：是一种存储和组织计算机数据的方法，它使得对其访问和查找变得容易，文件系统使用文件和树形目录的抽象逻辑概念代替了硬盘和光盘等物理设备使用数据块的概念，用户使用文件系统来保存数据不必关心数据实际保存在硬盘（或者光盘）的地址为多少的数据块上，只需要记住这个文件的所属目录和文件名。
+<br>数据在硬盘上的存储和组织方式：<br><img src="lib\media\连续块存储.png"><br>连续块存储：这是一种最简单的实现方式，管理便捷。但最大的问题是空洞问题，即使物理磁盘还有空余容量，也不能再写入文件了。常见于CD-ROM等预先明确数据大小的存储器<br><img src="lib\media\链表式存储.png"><br>链表式存储：好处是不存在存储空洞且只需要记住第一个block的位置即可，缺点很明显：就是会造成大量的随机IO，而且读取完一个block才知道下一个block的位置，效率过低。为了改进这种效率问题，FAT诞生<br><img src="lib\media\fat文件系统.png"><br>FAT：链表式存储中，next指针是存储在每个block中的，而FAT把这些指针统一写在一个array中，这样获取一个文件的所有block位置就变得简单很多，效率也更高。但FAT也有一定的限制，比如FAT16只有65536个位置，FAT32虽然有更多的指针位，但是FAT表本身也占用了更大的内存。且FAT在读取某一文件中部时效率低，因为需要链表遍历。此外，FAT格式的文件系统不利于扩展文件的metadata。<br><img src="lib\media\linux的inode原理.png"><br>I-Node：Linux 文件系统的思想是把所有与数据本身无关的data（如类型，大小，owner，创建修改时间等）都存进一个特殊的block中（inode），然后通过这个block可以找到与数据相关的所有block<br><img src="lib\media\inode实现原理.png"><br>可以看到，每个inode都有12个直接block指针，假设每个block是4k，那么有48k的地址可以通过一次寻址直接找到，这对小文件的寻址速度有非常大的帮助，而文件系统中，绝大多数文件都是小文件，这样也就直接提高了文件系统的性能。如果有大文件，可以通过二次甚至三次间接寻址的方式来获取block地址，目的是能节省inode占用的空间，把更多的空间留给数据。<br><img src="lib\media\inode寻址过程.png"><br>这里有一个比较清晰地例子表明，文件系统是如何将path转变为真正的block地址的。简而言之，inode树组成了目录树，通过树形查找获取磁盘信息。<br>
+<br>【原文出处】<a rel="noopener" class="external-link" href="https://www.jianshu.com/p/a5d783643fc2" target="_blank">https://www.jianshu.com/p/a5d783643fc2</a>
+<br>【linux内核对IO体系的实现】<a rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/96391501" target="_blank">https://zhuanlan.zhihu.com/p/96391501</a>
+<br>
+<br><br><br>
+系统调用是操作系统提供给用户态程序使用操作系统功能的接口，是在有操作系统的情况下访问硬件资源或内核的----唯一入口---。
+<br>实现方式：<br>
+《linux下用户态程序使用系统调用》<br>
+1.高级语言如c/c++，通过使用封装好的c库（lib）函数，通常一个标准函数会使用一个或多个系统调用来实现<br>
+例如：printf --》 write系统调用<br>
+scanf	--》	read系统调用	<br>
+2.汇编语言，则是直接跟内核通信。内核中系统调用是通过中断机制来实现的，操作系统通过自定义内存中的中断向量表，将中断向量指向内核中的中断处理例程（程序）。而系统调用的中断在汇编中是用（int 80h）指令来实现的，<br>
+参考<br>
+<a rel="noopener" class="external-link" href="http://blog.sina.com.cn/s/blog_51e9c0ab010099ow.html" target="_blank">http://blog.sina.com.cn/s/blog_51e9c0ab010099ow.html</a>	系统调用<br><br>​	/*<br>
+​		linux中文件的内涵很多，<br>
+​		内核将加载到内存中的文件称为文件描述符，文件有很多种：普通文件，pipe（管道），fifo，终端。。。<br>
+​		进程通过使用文件描述符来使用内存中的文件对象。通常加载文件使用open系统调用来完成。<br>
+​		使用文件描述符的I/O函数是无缓冲，以字节为单位进行读写的。而标准io设置了缓冲区，读写单位可以是行（以换行符结尾）<br>
+​		全文（通过malloc分配文件大小的内存）。<br>​		<br>​		文件描述符fd---&gt;文件表项---&gt;i节点表项<br>​	/<br>
+​	int open(const char filename, int flags, ...)<br>
+​											filename:要打开的文件名<br>
+​											flags:	设置文件的操作方式（只读，只写，读写）<br><br>操作进程环境表<br>#include&lt;stdlib.h&gt;
+//每一个进程都会在栈段的上部存放一些系统的相关信息（环境表）
+
+//获取name对应的value
+char *getenv(const char *name)//cg=value
+//将name=value字符串放入环境表
+int putenv(char *str)//cg=0
+//将name设置为value.
+int setenv(char *name, char *value, int rewrite)//cg=0
+int unsetenv(const char *name)//cg=0
+复制<br>进程创建与退出<br>#include&lt;unistd.h&gt;
+	pid_t fork(void);//cg:father=pid,son=0
+#include&lt;stdlib.h&gt;
+		void exit(int status);//执行清理工作（执行终止处理程序，关闭标准IO），然后陷入内核
+		void _Exit(int status);//status：进程终止状态
+		//进程注册终止处理函数
+		int atexit(void (*func)(void));//cg=0
+#include&lt;unistd.h&gt;
+		void _exit(int status);
+
+复制<br>执行新程序<br>#include&lt;unistd.h&gt;
+//区别：1.前四个使用路径名，后两个使用文件名 2.参数arg传递方式l（代表list=独立参数），v（代表vector=指针数组）
+int execl(const char *pathname, const char *arg0, ...);
+int execv(const char *pathname, const char *arg[]);
+int execle(const char *pathname, const char *arg0, ...);
+int execve(const char *pathname, const char *arg[], char *const envp[]);
+int execlp(const char *filename, const char *arg0, ...);
+int execvp(const char *filename, const char *arg[]);
+复制<br>获得进程终止状态<br>#include&lt;sys/wait.h&gt;
+pid_t wait(int *statloc);
+pid_t waitpid(pid_t pid, int *statloc, int opt);
+int waitid(idtype_t idtype, id_t id, siginfo *infop, int opt);//cg=0
+pid_t wait3(int *statloc, struct rusage *rusage);
+pid_t wait4(pid_t pid, int *statloc, int opt, struct rusage *ruage);
+复制<br><br>
+pipe（管道）
+fifo（命名管道）
+消息队列
+信号量
+共享存储
+套接字
+<br>XSI ipc(标识符用于进程中，键key可用于不同进程中标识同一个内核ipc结构)<br>消息队列<br>#include&lt;sys/msg.h&gt;
+int msgget(key_t key, int flag);//cg=队列标识符
+//cmd对队列要执行的操作（IPC_STAT,IPC_SET,IPC_RMID)分别取buf，设置buf，移除buf
+int msgctl(int msgid, int cmd, struct msgid_ds *buf);//cg=0
+//ptr代表消息，nbytes消息大小，flag可以设置为非阻塞发送消息到队列
+int msgsend(int msgid, const void *ptr, size_t nbytes, int flag);//cg=0
+//type代表取消息的方式，flag可以设置为MSG_NOERROR
+int msgrecv(int msgid, const void *ptr, size_t nbytes, long type, int flag);
+复制<br>信号量<br>#include&lt;sys/sem.h&gt;
+//linux上是信号量集合，因此需要一个参数nsems指定集合大小
+int semget(key_t key, int nsems, int flag);//cg=信号量标识符
+int semctl(int semid, int nsems, int cmd, ...);//cg=0
+int semop(int semid, struct sembuf semoparray[], size_t nops);//cg=0
+复制<br>共享存储<br>#include&lt;sys/shm.h&gt;
+int shmget(key_t key, size_t size, int flag);//cg=共享存储id
+int shmctl(int shmid, int cmd, struct shmid_ds *buf);//cg=0
+void *shmat(int shmid, const void *addr, int flag);//cg=共享存储的地址
+int shmdt(void *addr);//cg=0
+复制<br>shm共享内存和内存映射mmap<br>
+<a data-tooltip-position="top" aria-label="https://blog.csdn.net/ababab12345/article/details/102931841" rel="noopener" class="external-link" href="https://blog.csdn.net/ababab12345/article/details/102931841" target="_blank">shm &amp; mmap</a>
+<br>shm_open
+mmap
+munmap
+shm_unlink
+ftruncate
+复制<br>套接字<br>
+套接字是一种进程间通信的形式，如同管道，fifo，信号量，共享存储等。套接字可以在不同通信范围（domain）内的进程之间通信，而套接字就是一个传输中介。
+<br><img src="lib\media\socket结构.png"><br>创建于销毁<br>#include&lt;sys/socket.h&gt;
+//domain确定通信范围(AF_INET,AF_INET6,AF_UNIX,AF_UNSPEC)，间接影响了地址格式
+//type确定套接字类型(SOCK_STREAM,SOCK_DGRAM,SOCK_RAW,SOCK_SEQPACKET)
+int socket(int domain, int type, int protocol);//cg=描述符
+
+//how关闭套接字：SHUT_RD(关闭读取),SHUT_WR(关闭写入),SHUT_RDWR(关闭读写)
+int shutdown(int socket, int how);//cg=0
+复制<br>设置套接字选项<br>#include&lt;sys/socket.h&gt;
+//option代表要设置套接字的功能选项，level代表选项所修改的协议。
+int setsockopt(int sockfd, int level, int option, const void *val, socklen_t len);//cg=0
+int getsockopt(int sockfd, int level, int option, const void *val, socklen_t len);//cg=0
+
+
+复制<br>地址格式<br>//地址格式：(地址格式，在不同的通信域中是不一样的。但为了使用同一套接口，不同地址可以转换成统一的地址:sockaddr)
+#include&lt;netinet/in.h&gt;
+	AF_INET域:	
+		sockaddr_in
+		{
+							sin_family;	//地址族
+							sin_port;	//端口
+			struct in_addr	sin_addr;	//ipv4地址
+		}
+
+		in_addr
+		{
+			s_addr;						//ipv4地址
+		}
+复制<br>#include&lt;sys/socket.h&gt;
+客户端：
+	
+		//创建socket
+		int connect(int sockfd,	const struct sockaddr*addr,	socklen_t len)//cg=0
+
+服务器：
+		//socket绑定网卡
+		int bind(int sockfd, const struct sockaddr* addr, socklen_t len)//cg=0
+		int listen(int sockfd,	int backlog)//cg=0
+		int accept(int sockfd,	struct sockaddr*addr,	socklen_t* len)//cg=clientfd
+
+共用：
+		//关闭socket
+		int socket(int domain,int type,int protocol)//cg=socketfd
+		int shutdown(int sockfd,int how)//cg=0
+		int close(int sockfd)//cg=0
+		//数据传输
+		ssize_t send(int sockfd,const void*buf,	size_t nbytes,	int flags);
+		ssize_t recv(int sockfd, void* buf, size_t nbytes, int flags);
+		read(),write()
+		//设置套接字选项
+		int setsockopt(int sockfd, int level, int option, const void* val, socklen_t len)//cg=0
+复制<br><br>创建与销毁<br>#include&lt;pthread.h&gt;
+    int pthread_equal(pthread_t t1, pthread_t t2);//不等0，相等=0
+    pthread_t pthread_self(void); //线程id
+    int pthread_create(pthread_t *tid, pthread_attr_t *attr/线程属性/, void*(*func)(void*)/调用函数/, void*arg/函数参数/)//cg=0
+    //线程退出的三种方式1.正常退出 2.被其他线程取消pthread_cancel，pthread_exit(PTHREAD_CANCELED) 3.调用pthread_exit
+    void pthread_exit(void\*ptr);//线程退出
+    int pthread_cancel(pthread_t t);//cg=0//只是提出取消请求，具体是否取消可以在线程中设置
+    int pthread_join(pthread_t t, void\*\*ptr)//cg=0
+复制<br><br>
+<br>互斥量(pthread_mutex_t)
+<br>//初始化方法有两种1.pthread_mutex_t = PTHREAD_MUTEX_INITIALIZER; 2.使用下面的init方法。
+int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t*attr);//cg=0
+int pthread_mutex_destroy(pthread_mutex_t \*mutex);//cg=0
+//互斥量加锁和解锁方法
+int pthread_mutex_lock(pthread_mutex_t *mutex);//cg=0
+int pthread_mutex_unlock(pthread_mutex_t *mutex);//cg=0
+int pthread_mutex_trylock(pthread_mutex_t*mutex);//cg=0
+复制<br>
+<br>读写锁(pthread_rwlock_t)
+<br>//初始化方法
+int pthread_rwlock_init(pthread_rwlock_t *rwlock, const pthread_rwlockattr_t*attr);
+int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
+//读写锁，两种加锁方式和一种解锁方式//cg=0
+int pthread_rwlock_rdlock(pthread_rwlock_t*rwlock);
+int pthread_rwlock_wrlock(pthread_rwlock_t*rwlock);
+int pthread_rwlock_unlock(pthread_rwlock_t*rwlock);
+复制<br>
+<br>条件变量(pthread_cond_t)
+<br>//初始化方法有两种1.pthread_cond_t = PTHREAD_COND_INITIALIZER 2.使用下面的方法
+int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t* attr);//cg=0
+int pthread_cond_destroy(pthread_cond_t *cond);//cg=0
+//等待条件发生
+int pthread_cond_wait(pthread_cond_t*cond, pthread_mutex_t *mutex);//cg=0
+int pthread_cond_timewait(pthread_cond_t*cond,pthread_mutex*mutex,const timespec*timeout);//cg=0
+复制<br><br><br>从用户的角度来看，操作系统的核心是由抽象概念和其上的基本操作所构成的，而基本操作则可通过系统调用加以利用<br>
+<br>定义抽象概念（--进程抽象【cpu】、虚拟地址空间抽象【内存】、文件和目录抽象【硬盘】、IO抽象【键盘鼠标。。。】、）
+<br>提供基本操作（向上，对开发人员）
+<br>确保隔离
+<br>管理硬件（对下，屏蔽硬件差异）
+<br>进程有关的信息存放在：地址空间中、内核的进程表<br>地址空间：指令，数据，堆（储物间），栈（垃圾桶），外部数据源（文件，socket）<br><br>•阻塞式IO       阻塞于read（）<br>
+•非阻塞IO       立即返回错误码（进程对多个套接字轮寻）<br>
+•上两种+多线程 线程切换开销大<br>
+•IO复用        调用epoll<br>
+•异步IO        （内核将就绪的描述符，准备好并通知进程来取用。显然这样就解放了进程，将复杂任务交给内核来完成）<br>
+•reactor模式   基于事件触发机制。将需要判断的描述符注册入reactor中，然后由reactor调用事件关联处理函数。<br>reactor：<br>
+​描述符fd --事件<br>
+​事件分用器 --epoll/poll/select<br>
+​事件处理器 --将处理器中的回调函数声明为虚函数，便于具体的处理器继承和实现<br>
+​reactor管理器 --包含事件分用器<br><br>
+<br>虚拟内存=硬盘上的一块空间，当作内存看待。通过缺页中断来调入内存，通过页面替换算法调出内存
+<br>虚拟地址空间 = 32位系统上，每一个进程有4GB的虚拟地址空间（虚拟的可用的空间）。当cpu寄存器CR0的31位分页标志位置为1时，cpu启用MMU机构（地址转换机构），读入虚拟地址，然后根据该进程在内核中对应的页目录和页表，将该进程的虚拟地址转换为实际的物理地址。<br>
+{<br>
+★ 每一个程序自以为自己真有4GB的空间。<br>
+★ 每一个进程都有在内核区会有一个页表和页目录<br>
+}
+<br>可重定向文件（relocatable）：编译器编译而成的.o文件，可以重新定向组合成可执行文件也称之为目标文件
+<br>可执行文件（executable）：操作系统能够直接运行的文件
+<br>共享库（shared object）：在程序运行过程中被动态链接的文件，可以减小可执行文件的大小
+<br>其中可执行文件和共享库文件都是由目标文件（.o文件）构成的，因此他们的文件格式和目标文件的格式是一样的，在linux上目标文件的格式称之为（elf）文件格式
+<br><br>
+参考:
+[epoll水平触发和边缘触发]<a rel="noopener" class="external-link" href="https://www.jianshu.com/p/7eaa0224d797" target="_blank">https://www.jianshu.com/p/7eaa0224d797</a>
+<br>
+<br>
+读缓冲区刚开始是空的
+
+<br>
+读缓冲区写入2KB数据
+
+<br>
+水平触发（LT）和边缘触发模式（ET）此时都会发出可读信号
+
+<br>
+收到信号通知后，读取了1kb的数据，读缓冲区还剩余1KB数据
+
+<br>
+水平触发会再次进行通知，而边缘触发不会再进行通知，所以边缘触发需要一次性的把缓冲区的数据读完为止，也就是一直读，直到读到EGAIN为止，EGAIN说明缓冲区已经空了，因为这一点，边缘触发需要设置文件句柄为非阻塞
+//水平触发
+ret = read(fd, buf, sizeof(buf));
+
+//边缘触发
+while(true) {
+    ret = read(fd, buf, sizeof(buf);
+    if (ret == EAGAIN) break;
+}
+复制
+
+<br>区别:水平触发是只要读缓冲区有数据，就会一直触发可读信号，而边缘触发仅仅在空变为非空的时候通知一次.<br><br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/weixin_40204595/article/details/81109644" rel="noopener" class="external-link" href="https://blog.csdn.net/weixin_40204595/article/details/81109644" target="_blank">宏定义中的#，##的含义</a><br>
+<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" target="_blank">linux动态库链接规则</a>]]></description><link>_posts\os.html</link><guid isPermaLink="false">_posts/os.md</guid><pubDate>Sun, 14 Apr 2024 02:52:27 GMT</pubDate><enclosure url="lib\media\段表.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\段表.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[编码和字符集]]></title><description><![CDATA[ 
  <br><br><br><img src="lib\media\字符集.png"><br>
 要点分析：<br>
 <br>字符集，是字符与其标识代码值的映射关系
@@ -1381,100 +1749,7 @@ target_link_libraries(name ws2_32.lib)	//具体链接的库
  <br><br>
 <br><a data-tooltip-position="top" aria-label="https://www.bilibili.com/video/BV1X7411F744?t=4.7" rel="noopener" class="external-link" href="https://www.bilibili.com/video/BV1X7411F744?t=4.7" target="_blank">GAMES101-现代计算机图形学入门-闫令琪</a> 
 <br>tiger_book
-]]></description><link>_posts\computer-图形学.html</link><guid isPermaLink="false">_posts/computer-图形学.md</guid><pubDate>Sat, 01 Apr 2023 02:48:02 GMT</pubDate></item><item><title><![CDATA[data_structure]]></title><description><![CDATA[ 
- <br><br>title: 数据结构与算法<br>
-date: 2021/6/19 16:43:23<br><br><br>
-学习方式：<a rel="noopener" class="external-link" href="https://www.zhihu.com/question/20588261/answer/926157817" target="_blank">https://www.zhihu.com/question/20588261/answer/926157817</a>
-<br><br><br><br><br><br><br><br>
-<br>层序遍历<br>
-步骤：
-<br>已知前序，中序求树。已知中序和后序求树。<br>
-步骤:
-<br><br><br>
-<br><br><br>
-出自链接：
-<a rel="noopener" class="external-link" href="https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247484184&amp;idx=1&amp;sn=62965b401aa42107b3c17d1d8ea17454&amp;chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&amp;scene=21#wechat_redirect" target="_blank">https://mp.weixin.qq.com/s?__biz=MzUyNjQxNjYyMg==&amp;mid=2247484184&amp;idx=1&amp;sn=62965b401aa42107b3c17d1d8ea17454&amp;chksm=fa0e6c99cd79e58f298e9026f677f912bd8c8e55edb48fc509b2b5834f05e529a9b47d59d202&amp;scene=21#wechat_redirect</a>
-<br>十大排序算法的时空复杂度如下图<br><img alt="十大排序" src="lib\media\排序算法的时空复杂度.png" referrerpolicy="no-referrer"><br><br>
-
-<br>从数列中挑出一个元素，称为 “基准”（pivot）;
-<br>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
-<br>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；
-
-<br><img style="zoom:67%;" alt="kuaipai" src="\pics\快速排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列；
-<br>设定两个指针，最初位置分别为两个已经排序序列的起始位置；
-<br>比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；
-<br>重复步骤 3 直到某一指针达到序列尾；
-<br>将另一序列剩下的所有元素直接复制到合并序列尾。
-
-<br><img style="zoom:67%;" alt="guibing" src="\pics\归并排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>将第一待排序序列第一个元素看做一个有序序列，把第二个元素到最后一个元素当成是未排序序列。
-<br>从头到尾依次扫描未排序序列，将扫描到的每个元素插入有序序列的适当位置。（如果待插入的元素与有序序列中的某个元素相等，则将待插入元素插入到相等元素的后面。）
-
-<br><img style="zoom:67%;" alt="charu" src="\pics\插入排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>比较相邻的元素。如果第一个比第二个大，就交换他们两个。
-<br>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。
-<br>针对所有的元素重复以上的步骤，除了最后一个。
-<br>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。
-
-<br><img style="zoom:67%;" alt="maopao" src="\pics\冒泡排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置
-<br>再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
-<br>重复第二步，直到所有元素均排序完毕。
-
-<br><img style="zoom:67%;" alt="xuanze" src="\pics\选择排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>花O(n)的时间扫描一下整个序列 A，获取最小值 min 和最大值 max
-<br>开辟一块新的空间创建新的数组 B，长度为 ( max - min + 1)
-<br>数组 B 中 index 的元素记录的值是 A 中某元素出现的次数
-<br>最后输出目标整数序列，具体的逻辑是遍历数组 B，输出相应元素以及对应的个数
-
-<br><img style="zoom:67%;" alt="jisu" src="\pics\计数排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>将所有待比较数值（正整数）统一为同样的数位长度，数位较短的数前面补零
-<br>从最低位开始，依次进行一次排序
-<br>从最低位排序一直到最高位排序完成以后, 数列就变成一个有序序列
-
-<br><img style="zoom:67%;" alt="jisu" src="\pics\基数排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>创建一个堆 H[0……n-1]；
-<br>把堆首（最大值）和堆尾互换；
-<br>把堆的尺寸缩小 1，并调用 shift_down(0)，目的是把新的数组顶端数据调整到相应位置；
-<br>重复步骤 2，直到堆的尺寸为 1。
-
-<br><img style="zoom:67%;" alt="dui" src="\pics\堆排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>设置固定数量的空桶。
-<br>把数据放到对应的桶中。
-<br>对每个不为空的桶中数据进行排序。
-<br>拼接不为空的桶中数据，得到结果
-
-<br><img style="zoom:67%;" alt="tong" src="\pics\桶排序.gif" referrerpolicy="no-referrer"><br><br>
-
-<br>选择一个增量序列 t1，t2，……，tk，其中 ti &gt; tj, tk = 1；
-<br>按增量序列个数 k，对序列进行 k 趟排序；
-<br>每趟排序，根据对应的增量 ti，将待排序列分割成若干长度为 m 的子序列，分别对各子表进行直接插入排序。仅增量因子为 1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。
-
-<br><img style="zoom:67%;" alt="xier" src="\pics\希尔排序.gif" referrerpolicy="no-referrer"><br><br>静态查找<br>
-|----- 顺序查找<br>
-|----- 二分查找<br>
-动态查找<br>
-|----- 二叉查找树<br>
-+添加平衡条件<br>
-|			|----- 平衡二叉AVL<br>
-|----- 红黑树<br>
-|----- B树和B+树			<br>
-|----- 哈希查找<br><br>为什么可以用不同的语言来实现数据结构和算法？<br>答：数据结构是一种抽象概念，独立于语言和平台，代表着数据和信息在计算机内存中的组织方式。不同语言都有独特的原子数据类型和运算符，代表着不同的语言设计理念。但归根结底语言的作用就两个：<br>1.存储和表示数据（信息）【每种语言都有独特的原子数据类型如c语言中的数组，int，指针。python中的列表，字典，集合。都是用来存放数据的容器】。<br>2.操作数据【每种语言都有运算符（逻辑运算符，算术运算符，）代表着如何操控数据】。<br>于是，各种语言都可以使用语言本身的原子数据结构和操作运算符。将数据在内存中存储和操作了。<br><br>如何学习排序算法：<br>​	单纯地去练习算法还是不好，以应用场景为导向才是正确姿势。要明白算法是解决什么样的问题而产生的。<br><br>
-<br>10个数据结构：数组，链表，栈，队列，二叉树，图，堆，散列表，跳表，trie树
-<br>10个算法：递归，二分查找，搜索，排序，哈希算法，贪心算法，分治算法，动态规划，字符串匹配算法
-<br><img style="zoom:67%;" alt="ds" src="\pics\数据结构与算法.jpg" referrerpolicy="no-referrer"><br><br>像这种算法问题，其实最终说到底是数学问题，所以数学不好的，搞算法是有难度的。既然自己目前不感兴趣，那就先放着，弄一些有趣的项目来玩，在玩中学习把！不要为了学习技术而学习，兴趣才是第一推动力，再说技术这个东西，如果不是"技术达人"，学习技术，其实只是一种生存的工具罢了。想赚大钱，如果时间都投入到技术中，顶多就是好用的一点的工具。你的世界不应该只有技术！你赚的每一分钱，都是对这个世界的认知的变现。所以要善于结合现实世界，学会把知识变现。<br>
-<br>字符串转为整形---hash算法
-<br>字符串正则提取
-]]></description><link>_posts\data_structure.html</link><guid isPermaLink="false">_posts/data_structure.md</guid><pubDate>Sun, 05 Mar 2023 13:46:34 GMT</pubDate><enclosure url="lib\media\排序算法的时空复杂度.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\排序算法的时空复杂度.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[database]]></title><description><![CDATA[ 
+]]></description><link>_posts\computer-图形学.html</link><guid isPermaLink="false">_posts/computer-图形学.md</guid><pubDate>Sat, 01 Apr 2023 02:48:02 GMT</pubDate></item><item><title><![CDATA[database]]></title><description><![CDATA[ 
  ]]></description><link>_posts\database.html</link><guid isPermaLink="false">_posts/database.md</guid><pubDate>Tue, 08 Nov 2022 09:48:28 GMT</pubDate></item><item><title><![CDATA[Docker]]></title><description><![CDATA[ 
  <br><br>
 <a data-tooltip-position="top" aria-label="https://docs.docker.com/engine/reference/builder/" rel="noopener" class="external-link" href="https://docs.docker.com/engine/reference/builder/" target="_blank">Dockerfile reference | Docker Documentation</a><br>
@@ -2381,284 +2656,7 @@ OpenGrok wiki<br>
 <a rel="noopener" class="external-link" href="https://github.com/oracle/opengrok/wiki/How-to-setup-OpenGrok" target="_blank">https://github.com/oracle/opengrok/wiki/How-to-setup-OpenGrok</a>
 
 ]]></description><link>_posts\opengrok.html</link><guid isPermaLink="false">_posts/opengrok.md</guid><pubDate>Tue, 07 Mar 2023 16:59:18 GMT</pubDate></item><item><title><![CDATA[OR操作]]></title><description><![CDATA[ 
- <br><br>OR运算就是 或 运算。<br><br>一个值A如果是多个值OR运算之后的结果，如何判断该值A中是否包含某值？<br>答：]]></description><link>_posts\or操作.html</link><guid isPermaLink="false">_posts/OR操作.md</guid><pubDate>Sun, 21 Jan 2024 02:03:41 GMT</pubDate></item><item><title><![CDATA[os]]></title><description><![CDATA[ 
- <br><br>title: OS原理<br>
-date: 2022-04-07 22:31:08<br>
-categories:<br>
-<br>cs基础<br>
-tags:
-<br><br><br>
-编译（源程序模块）---》链接（目标模块）---》装入(装入模块)
-1.链接和装入的策略，分为3种。在磁盘上，在内存中，在cpu执行时。
-2.一个程序的运行，需要经过几道程序的运行。（编译器---链接器---装入内存（装入器）---内存分配（内存管理器））
-​	编译器：将程序员写的源程序编译为目标模块
-​	链接器：多个目标模块拼接，通过一定的策略形成可装入模块
-​	装入器：将可装入模块，通过一定的策略装入内存
-​	内存管理器：配合装入器，通过一定的策略完成对程序运行所需内存的分配
-<br><br>
-<br>静态链接：在装入内存之前，将各个目标模块链接起来。形成可装入模块（linux中就是链接.a静态库）
-<br>装入时动态链接：边装入边链接
-<br>运行时动态链接：执行时需要的时候才链接目标模块
-<br><br>
-<br>绝对装入：程序的逻辑地址==进程的物理地址。缺点：编写的程序必须从指定位置开始，必须非常了解内存要求。常用于单道程序环境
-<br>可重定位装入：当程序被装入程序（loader）装入内存后根据实际可用物理地址来变更程序中全文的地址。此时能够运行躲到程序缺点：程序装入之后，不可动态修改程序中的地址
-<br>运行时动态装入：在指令被执行时，才动态修改地址。
-<br><br>操作系统对内存的分配，大体上可以分为两个思路。1.分割内存，不分割装入模块（连续分区分配）。2.分割内存，并且分割程序（分页，分段，段页）<br>连续分区分配：<br>​	顾名思义，也就是程序作为一个整体装入内存中。而根据对内存的分割策略来看，有3种方式。<br>
-<br>单一连续分配（整个内存分为内核区，和用户区。用户区只有一道程序）
-<br>静态分区分配（将用户区，划分固定大小的几个区域。开始可以存放多道程序，但可能有的程序很小，但是占据很大的区域，造成浪费）
-<br>动态分区分配（根据程序的大小来确定内存分区的大小）
-<br>动态重定位分区分配算法（在动态分区分配的基础上增加“紧凑”功能，减少内存的碎片，为了实现紧凑功能需要配合运行时动态装入的装入算法）
-<br>分页、分段、段页内存分配：<br>​	这些分配方式，不仅分割内存，还分割装入模块（进程）。可以看作数据结构中的链表。整个进程离散地分散到内存不同位置。不像连续分配，将装入模块整体装入。<br>
-<br>
-分页
-将程序和内存空间分割成多个大小一样的片段（页面），操作系统的内存管理模块通过为程序建立页表，然后MTU地址转换单元通过查询进程的页表，来实现程序地址的动态重定位。
-当访问进程的某一条指令（比如：load 1，2500）2500是程序的逻辑地址，MTU首先计算得出该逻辑地址对应的程序分页中的页号，和页内偏移。然后通过在页表中查询到程序分页中的页号对应的物理块号，得到物理块号之后和前边的页内偏移相加，从而完成程序的逻辑地址到物理地址的转换。
-
-<br>
-分段
-由于分页方法（固定大小的页面的缺点：不符合程序中指令和数据的排布，导致）的缺陷，提出一种分段内存分配的算法，将一个程序分割为不同段：代码段，数据段，堆段，栈段，bss段，作为一个查询单位。而将内存分割为与程序相同的段。这样只要通过段表查询到段基址，就能保证能够每一个段在内存中是连续分配的。
-
-<br><img src="lib\media\段表.png"><br>
-<br>
-段页式
-分页的好处是能够节省内存，分段的好处是程序友好，方便编程。为了结合两方面优势，将每一个程序段通过分页处理，然后通过段号找到页号，通过页号找到物理地址。
-
-<br>
-内存模型到底是什么：现在的编译器会将我们的程序进行分段处理，c语言，c++中的内存模型，其实就是编译器所规定的一种逻辑上的程序组织方式，在内存中每一个段可能连续的一块（段式）来存储，也可能一个程序段分布在不同的物理内存（段页式）来存储，然后在执行指令，进行地址转换时，操作系统根据实际内存分配方式，完成逻辑地址（每一个段的逻辑地址都是从0号开始的）到物理地址的转换，然后cpu访问物理地址来执行我们的程序。
-<br><br><br>unix标准<br>
-<br>iso c：该标准定义了c语言语法语义和c语言标准库，因为是所以unix都提供了c标准中的库函数，因此默认也就成了一种标准
-<br>ieee posix：该标准的目的是提高应用程序在各种unix系统环境之间的可移植性
-<br>SUS=single unix specification（单一unix规范）：是posix的超集，在posix的基础上还规定了一些操作系统接口，扩展了posix的功能
-<br>unix实现<br>SVR4(system v release 4)：System V 是 AT&amp;T 的第一个商业UNIX版本（UNIX System III）的加强。传统上，System V 被看作是两种UNIX"风味"之一（另一个是 BSD）。然而，随着一些并不基于这两者代码的<a data-tooltip-position="top" aria-label="https://baike.baidu.com/item/UNIX/219943" rel="noopener" class="external-link" href="https://baike.baidu.com/item/UNIX/219943" target="_blank">UNIX</a>实现的出现，例如 Linux 和 QNX， 这一归纳不再准确，但不论如何，像POSIX这样的标准化努力一直在试图减少各种实现之间的不同。流行的SysV 衍生版本包括 Dell SVR4 和 Bull SVR4。当今广泛使用的 System V 版本是 SCO OpenServer，基于 System V Release 3，以及SUN Solaris 和 SCO UnixWare，都基于 System V Release 4。<br>BSD:<br><br><br>
-文件系统：是一种存储和组织计算机数据的方法，它使得对其访问和查找变得容易，文件系统使用文件和树形目录的抽象逻辑概念代替了硬盘和光盘等物理设备使用数据块的概念，用户使用文件系统来保存数据不必关心数据实际保存在硬盘（或者光盘）的地址为多少的数据块上，只需要记住这个文件的所属目录和文件名。
-<br>数据在硬盘上的存储和组织方式：<br><img src="lib\media\连续块存储.png"><br>连续块存储：这是一种最简单的实现方式，管理便捷。但最大的问题是空洞问题，即使物理磁盘还有空余容量，也不能再写入文件了。常见于CD-ROM等预先明确数据大小的存储器<br><img src="lib\media\链表式存储.png"><br>链表式存储：好处是不存在存储空洞且只需要记住第一个block的位置即可，缺点很明显：就是会造成大量的随机IO，而且读取完一个block才知道下一个block的位置，效率过低。为了改进这种效率问题，FAT诞生<br><img src="lib\media\fat文件系统.png"><br>FAT：链表式存储中，next指针是存储在每个block中的，而FAT把这些指针统一写在一个array中，这样获取一个文件的所有block位置就变得简单很多，效率也更高。但FAT也有一定的限制，比如FAT16只有65536个位置，FAT32虽然有更多的指针位，但是FAT表本身也占用了更大的内存。且FAT在读取某一文件中部时效率低，因为需要链表遍历。此外，FAT格式的文件系统不利于扩展文件的metadata。<br><img src="lib\media\linux的inode原理.png"><br>I-Node：Linux 文件系统的思想是把所有与数据本身无关的data（如类型，大小，owner，创建修改时间等）都存进一个特殊的block中（inode），然后通过这个block可以找到与数据相关的所有block<br><img src="lib\media\inode实现原理.png"><br>可以看到，每个inode都有12个直接block指针，假设每个block是4k，那么有48k的地址可以通过一次寻址直接找到，这对小文件的寻址速度有非常大的帮助，而文件系统中，绝大多数文件都是小文件，这样也就直接提高了文件系统的性能。如果有大文件，可以通过二次甚至三次间接寻址的方式来获取block地址，目的是能节省inode占用的空间，把更多的空间留给数据。<br><img src="lib\media\inode寻址过程.png"><br>这里有一个比较清晰地例子表明，文件系统是如何将path转变为真正的block地址的。简而言之，inode树组成了目录树，通过树形查找获取磁盘信息。<br>
-<br>【原文出处】<a rel="noopener" class="external-link" href="https://www.jianshu.com/p/a5d783643fc2" target="_blank">https://www.jianshu.com/p/a5d783643fc2</a>
-<br>【linux内核对IO体系的实现】<a rel="noopener" class="external-link" href="https://zhuanlan.zhihu.com/p/96391501" target="_blank">https://zhuanlan.zhihu.com/p/96391501</a>
-<br>
-<br><br><br>
-系统调用是操作系统提供给用户态程序使用操作系统功能的接口，是在有操作系统的情况下访问硬件资源或内核的----唯一入口---。
-<br>实现方式：<br>
-《linux下用户态程序使用系统调用》<br>
-1.高级语言如c/c++，通过使用封装好的c库（lib）函数，通常一个标准函数会使用一个或多个系统调用来实现<br>
-例如：printf --》 write系统调用<br>
-scanf	--》	read系统调用	<br>
-2.汇编语言，则是直接跟内核通信。内核中系统调用是通过中断机制来实现的，操作系统通过自定义内存中的中断向量表，将中断向量指向内核中的中断处理例程（程序）。而系统调用的中断在汇编中是用（int 80h）指令来实现的，<br>
-参考<br>
-<a rel="noopener" class="external-link" href="http://blog.sina.com.cn/s/blog_51e9c0ab010099ow.html" target="_blank">http://blog.sina.com.cn/s/blog_51e9c0ab010099ow.html</a>	系统调用<br><br>​	/*<br>
-​		linux中文件的内涵很多，<br>
-​		内核将加载到内存中的文件称为文件描述符，文件有很多种：普通文件，pipe（管道），fifo，终端。。。<br>
-​		进程通过使用文件描述符来使用内存中的文件对象。通常加载文件使用open系统调用来完成。<br>
-​		使用文件描述符的I/O函数是无缓冲，以字节为单位进行读写的。而标准io设置了缓冲区，读写单位可以是行（以换行符结尾）<br>
-​		全文（通过malloc分配文件大小的内存）。<br>​		<br>​		文件描述符fd---&gt;文件表项---&gt;i节点表项<br>​	/<br>
-​	int open(const char filename, int flags, ...)<br>
-​											filename:要打开的文件名<br>
-​											flags:	设置文件的操作方式（只读，只写，读写）<br><br>操作进程环境表<br>#include&lt;stdlib.h&gt;
-//每一个进程都会在栈段的上部存放一些系统的相关信息（环境表）
-
-//获取name对应的value
-char *getenv(const char *name)//cg=value
-//将name=value字符串放入环境表
-int putenv(char *str)//cg=0
-//将name设置为value.
-int setenv(char *name, char *value, int rewrite)//cg=0
-int unsetenv(const char *name)//cg=0
-复制<br>进程创建与退出<br>#include&lt;unistd.h&gt;
-	pid_t fork(void);//cg:father=pid,son=0
-#include&lt;stdlib.h&gt;
-		void exit(int status);//执行清理工作（执行终止处理程序，关闭标准IO），然后陷入内核
-		void _Exit(int status);//status：进程终止状态
-		//进程注册终止处理函数
-		int atexit(void (*func)(void));//cg=0
-#include&lt;unistd.h&gt;
-		void _exit(int status);
-
-复制<br>执行新程序<br>#include&lt;unistd.h&gt;
-//区别：1.前四个使用路径名，后两个使用文件名 2.参数arg传递方式l（代表list=独立参数），v（代表vector=指针数组）
-int execl(const char *pathname, const char *arg0, ...);
-int execv(const char *pathname, const char *arg[]);
-int execle(const char *pathname, const char *arg0, ...);
-int execve(const char *pathname, const char *arg[], char *const envp[]);
-int execlp(const char *filename, const char *arg0, ...);
-int execvp(const char *filename, const char *arg[]);
-复制<br>获得进程终止状态<br>#include&lt;sys/wait.h&gt;
-pid_t wait(int *statloc);
-pid_t waitpid(pid_t pid, int *statloc, int opt);
-int waitid(idtype_t idtype, id_t id, siginfo *infop, int opt);//cg=0
-pid_t wait3(int *statloc, struct rusage *rusage);
-pid_t wait4(pid_t pid, int *statloc, int opt, struct rusage *ruage);
-复制<br><br>
-pipe（管道）
-fifo（命名管道）
-消息队列
-信号量
-共享存储
-套接字
-<br>XSI ipc(标识符用于进程中，键key可用于不同进程中标识同一个内核ipc结构)<br>消息队列<br>#include&lt;sys/msg.h&gt;
-int msgget(key_t key, int flag);//cg=队列标识符
-//cmd对队列要执行的操作（IPC_STAT,IPC_SET,IPC_RMID)分别取buf，设置buf，移除buf
-int msgctl(int msgid, int cmd, struct msgid_ds *buf);//cg=0
-//ptr代表消息，nbytes消息大小，flag可以设置为非阻塞发送消息到队列
-int msgsend(int msgid, const void *ptr, size_t nbytes, int flag);//cg=0
-//type代表取消息的方式，flag可以设置为MSG_NOERROR
-int msgrecv(int msgid, const void *ptr, size_t nbytes, long type, int flag);
-复制<br>信号量<br>#include&lt;sys/sem.h&gt;
-//linux上是信号量集合，因此需要一个参数nsems指定集合大小
-int semget(key_t key, int nsems, int flag);//cg=信号量标识符
-int semctl(int semid, int nsems, int cmd, ...);//cg=0
-int semop(int semid, struct sembuf semoparray[], size_t nops);//cg=0
-复制<br>共享存储<br>#include&lt;sys/shm.h&gt;
-int shmget(key_t key, size_t size, int flag);//cg=共享存储id
-int shmctl(int shmid, int cmd, struct shmid_ds *buf);//cg=0
-void *shmat(int shmid, const void *addr, int flag);//cg=共享存储的地址
-int shmdt(void *addr);//cg=0
-复制<br>shm共享内存和内存映射mmap<br>
-<a data-tooltip-position="top" aria-label="https://blog.csdn.net/ababab12345/article/details/102931841" rel="noopener" class="external-link" href="https://blog.csdn.net/ababab12345/article/details/102931841" target="_blank">shm &amp; mmap</a>
-<br>shm_open
-mmap
-munmap
-shm_unlink
-ftruncate
-复制<br>套接字<br>
-套接字是一种进程间通信的形式，如同管道，fifo，信号量，共享存储等。套接字可以在不同通信范围（domain）内的进程之间通信，而套接字就是一个传输中介。
-<br><img src="lib\media\socket结构.png"><br>创建于销毁<br>#include&lt;sys/socket.h&gt;
-//domain确定通信范围(AF_INET,AF_INET6,AF_UNIX,AF_UNSPEC)，间接影响了地址格式
-//type确定套接字类型(SOCK_STREAM,SOCK_DGRAM,SOCK_RAW,SOCK_SEQPACKET)
-int socket(int domain, int type, int protocol);//cg=描述符
-
-//how关闭套接字：SHUT_RD(关闭读取),SHUT_WR(关闭写入),SHUT_RDWR(关闭读写)
-int shutdown(int socket, int how);//cg=0
-复制<br>设置套接字选项<br>#include&lt;sys/socket.h&gt;
-//option代表要设置套接字的功能选项，level代表选项所修改的协议。
-int setsockopt(int sockfd, int level, int option, const void *val, socklen_t len);//cg=0
-int getsockopt(int sockfd, int level, int option, const void *val, socklen_t len);//cg=0
-
-
-复制<br>地址格式<br>//地址格式：(地址格式，在不同的通信域中是不一样的。但为了使用同一套接口，不同地址可以转换成统一的地址:sockaddr)
-#include&lt;netinet/in.h&gt;
-	AF_INET域:	
-		sockaddr_in
-		{
-							sin_family;	//地址族
-							sin_port;	//端口
-			struct in_addr	sin_addr;	//ipv4地址
-		}
-
-		in_addr
-		{
-			s_addr;						//ipv4地址
-		}
-复制<br>#include&lt;sys/socket.h&gt;
-客户端：
-	
-		//创建socket
-		int connect(int sockfd,	const struct sockaddr*addr,	socklen_t len)//cg=0
-
-服务器：
-		//socket绑定网卡
-		int bind(int sockfd, const struct sockaddr* addr, socklen_t len)//cg=0
-		int listen(int sockfd,	int backlog)//cg=0
-		int accept(int sockfd,	struct sockaddr*addr,	socklen_t* len)//cg=clientfd
-
-共用：
-		//关闭socket
-		int socket(int domain,int type,int protocol)//cg=socketfd
-		int shutdown(int sockfd,int how)//cg=0
-		int close(int sockfd)//cg=0
-		//数据传输
-		ssize_t send(int sockfd,const void*buf,	size_t nbytes,	int flags);
-		ssize_t recv(int sockfd, void* buf, size_t nbytes, int flags);
-		read(),write()
-		//设置套接字选项
-		int setsockopt(int sockfd, int level, int option, const void* val, socklen_t len)//cg=0
-复制<br><br>创建与销毁<br>#include&lt;pthread.h&gt;
-    int pthread_equal(pthread_t t1, pthread_t t2);//不等0，相等=0
-    pthread_t pthread_self(void); //线程id
-    int pthread_create(pthread_t *tid, pthread_attr_t *attr/线程属性/, void*(*func)(void*)/调用函数/, void*arg/函数参数/)//cg=0
-    //线程退出的三种方式1.正常退出 2.被其他线程取消pthread_cancel，pthread_exit(PTHREAD_CANCELED) 3.调用pthread_exit
-    void pthread_exit(void\*ptr);//线程退出
-    int pthread_cancel(pthread_t t);//cg=0//只是提出取消请求，具体是否取消可以在线程中设置
-    int pthread_join(pthread_t t, void\*\*ptr)//cg=0
-复制<br><br>
-<br>互斥量(pthread_mutex_t)
-<br>//初始化方法有两种1.pthread_mutex_t = PTHREAD_MUTEX_INITIALIZER; 2.使用下面的init方法。
-int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t*attr);//cg=0
-int pthread_mutex_destroy(pthread_mutex_t \*mutex);//cg=0
-//互斥量加锁和解锁方法
-int pthread_mutex_lock(pthread_mutex_t *mutex);//cg=0
-int pthread_mutex_unlock(pthread_mutex_t *mutex);//cg=0
-int pthread_mutex_trylock(pthread_mutex_t*mutex);//cg=0
-复制<br>
-<br>读写锁(pthread_rwlock_t)
-<br>//初始化方法
-int pthread_rwlock_init(pthread_rwlock_t *rwlock, const pthread_rwlockattr_t*attr);
-int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
-//读写锁，两种加锁方式和一种解锁方式//cg=0
-int pthread_rwlock_rdlock(pthread_rwlock_t*rwlock);
-int pthread_rwlock_wrlock(pthread_rwlock_t*rwlock);
-int pthread_rwlock_unlock(pthread_rwlock_t*rwlock);
-复制<br>
-<br>条件变量(pthread_cond_t)
-<br>//初始化方法有两种1.pthread_cond_t = PTHREAD_COND_INITIALIZER 2.使用下面的方法
-int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t* attr);//cg=0
-int pthread_cond_destroy(pthread_cond_t *cond);//cg=0
-//等待条件发生
-int pthread_cond_wait(pthread_cond_t*cond, pthread_mutex_t *mutex);//cg=0
-int pthread_cond_timewait(pthread_cond_t*cond,pthread_mutex*mutex,const timespec*timeout);//cg=0
-复制<br><br><br>从用户的角度来看，操作系统的核心是由抽象概念和其上的基本操作所构成的，而基本操作则可通过系统调用加以利用<br>
-<br>定义抽象概念（--进程抽象【cpu】、虚拟地址空间抽象【内存】、文件和目录抽象【硬盘】、IO抽象【键盘鼠标。。。】、）
-<br>提供基本操作（向上，对开发人员）
-<br>确保隔离
-<br>管理硬件（对下，屏蔽硬件差异）
-<br>进程有关的信息存放在：地址空间中、内核的进程表<br>地址空间：指令，数据，堆（储物间），栈（垃圾桶），外部数据源（文件，socket）<br><br>•阻塞式IO       阻塞于read（）<br>
-•非阻塞IO       立即返回错误码（进程对多个套接字轮寻）<br>
-•上两种+多线程 线程切换开销大<br>
-•IO复用        调用epoll<br>
-•异步IO        （内核将就绪的描述符，准备好并通知进程来取用。显然这样就解放了进程，将复杂任务交给内核来完成）<br>
-•reactor模式   基于事件触发机制。将需要判断的描述符注册入reactor中，然后由reactor调用事件关联处理函数。<br>reactor：<br>
-​描述符fd --事件<br>
-​事件分用器 --epoll/poll/select<br>
-​事件处理器 --将处理器中的回调函数声明为虚函数，便于具体的处理器继承和实现<br>
-​reactor管理器 --包含事件分用器<br><br>
-<br>虚拟内存=硬盘上的一块空间，当作内存看待。通过缺页中断来调入内存，通过页面替换算法调出内存
-<br>虚拟地址空间 = 32位系统上，每一个进程有4GB的虚拟地址空间（虚拟的可用的空间）。当cpu寄存器CR0的31位分页标志位置为1时，cpu启用MMU机构（地址转换机构），读入虚拟地址，然后根据该进程在内核中对应的页目录和页表，将该进程的虚拟地址转换为实际的物理地址。<br>
-{<br>
-★ 每一个程序自以为自己真有4GB的空间。<br>
-★ 每一个进程都有在内核区会有一个页表和页目录<br>
-}
-<br>可重定向文件（relocatable）：编译器编译而成的.o文件，可以重新定向组合成可执行文件也称之为目标文件
-<br>可执行文件（executable）：操作系统能够直接运行的文件
-<br>共享库（shared object）：在程序运行过程中被动态链接的文件，可以减小可执行文件的大小
-<br>其中可执行文件和共享库文件都是由目标文件（.o文件）构成的，因此他们的文件格式和目标文件的格式是一样的，在linux上目标文件的格式称之为（elf）文件格式
-<br><br>
-参考:
-[epoll水平触发和边缘触发]<a rel="noopener" class="external-link" href="https://www.jianshu.com/p/7eaa0224d797" target="_blank">https://www.jianshu.com/p/7eaa0224d797</a>
-<br>
-<br>
-读缓冲区刚开始是空的
-
-<br>
-读缓冲区写入2KB数据
-
-<br>
-水平触发（LT）和边缘触发模式（ET）此时都会发出可读信号
-
-<br>
-收到信号通知后，读取了1kb的数据，读缓冲区还剩余1KB数据
-
-<br>
-水平触发会再次进行通知，而边缘触发不会再进行通知，所以边缘触发需要一次性的把缓冲区的数据读完为止，也就是一直读，直到读到EGAIN为止，EGAIN说明缓冲区已经空了，因为这一点，边缘触发需要设置文件句柄为非阻塞
-//水平触发
-ret = read(fd, buf, sizeof(buf));
-
-//边缘触发
-while(true) {
-    ret = read(fd, buf, sizeof(buf);
-    if (ret == EAGAIN) break;
-}
-复制
-
-<br>区别:水平触发是只要读缓冲区有数据，就会一直触发可读信号，而边缘触发仅仅在空变为非空的时候通知一次.<br><br><a data-tooltip-position="top" aria-label="https://blog.csdn.net/weixin_40204595/article/details/81109644" rel="noopener" class="external-link" href="https://blog.csdn.net/weixin_40204595/article/details/81109644" target="_blank">宏定义中的#，##的含义</a><br>
-<a data-tooltip-position="top" aria-label="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" rel="noopener" class="external-link" href="https://www.cnblogs.com/vanishfan/archive/2013/01/15/2861211.html" target="_blank">linux动态库链接规则</a>]]></description><link>_posts\os.html</link><guid isPermaLink="false">_posts/os.md</guid><pubDate>Tue, 07 Mar 2023 17:00:00 GMT</pubDate><enclosure url="lib\media\段表.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src="lib\media\段表.png"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[php]]></title><description><![CDATA[ 
+ <br><br>OR运算就是 或 运算。<br><br>一个值A如果是多个值OR运算之后的结果，如何判断该值A中是否包含某值？<br>答：]]></description><link>_posts\or操作.html</link><guid isPermaLink="false">_posts/OR操作.md</guid><pubDate>Sun, 21 Jan 2024 02:03:41 GMT</pubDate></item><item><title><![CDATA[php]]></title><description><![CDATA[ 
  <br><br><br>
 <br>使用浏览器的cookie
 <br>&lt;?php
